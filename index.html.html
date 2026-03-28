@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#ffffff" id="tc">
+<title>YKP Warszawa - Optimist Sailing Weather</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+/* ═══ LIGHT THEME (default) ═══ */
+:root{
+  --bg:#f5f6f8;
+  --surface:#ffffff;
+  --surface2:#f0f2f5;
+  --surface3:#e8ebf0;
+  --glass:rgba(0,0,0,.02);
+  --glass2:rgba(0,0,0,.04);
+  --border:rgba(0,0,0,.07);
+  --border2:rgba(0,0,0,.1);
+  --text:#111827;
+  --text2:#6b7280;
+  --text3:#9ca3af;
+  --blue:#2563eb;
+  --cyan:#0891b2;
+  --green:#059669;
+  --amber:#d97706;
+  --red:#dc2626;
+  --ring-track:rgba(0,0,0,.06);
+  --bar-bg:#0f172a;
+  --bar-text:#fff;
+  --bar-text2:rgba(255,255,255,.5);
+  --bar-text3:rgba(255,255,255,.3);
+  --bar-border:rgba(255,255,255,.08);
+  --r:14px;--r2:10px;--r3:20px;
+}
+
+/* ═══ DARK THEME ═══ */
+[data-theme="dark"]{
+  --bg:#0a0f1a;
+  --surface:#111827;
+  --surface2:#1a2237;
+  --surface3:#222d44;
+  --glass:rgba(255,255,255,.03);
+  --glass2:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.06);
+  --border2:rgba(255,255,255,.1);
+  --text:#f1f5f9;
+  --text2:rgba(255,255,255,.55);
+  --text3:rgba(255,255,255,.3);
+  --blue:#3b82f6;
+  --cyan:#22d3ee;
+  --green:#34d399;
+  --amber:#fbbf24;
+  --red:#f87171;
+  --ring-track:rgba(255,255,255,.06);
+  --bar-bg:rgba(10,15,26,.85);
+  --bar-text:#fff;
+  --bar-text2:rgba(255,255,255,.5);
+  --bar-text3:rgba(255,255,255,.3);
+  --bar-border:rgba(255,255,255,.06);
+}
+
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100dvh;transition:background .3s,color .3s}
+
+/* ═══ TOPBAR ═══ */
+.topbar{
+  background:var(--bar-bg);color:var(--bar-text);
+  border-bottom:1px solid var(--bar-border);
+  position:sticky;top:0;z-index:50;
+}
+[data-theme="dark"] .topbar{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.topbar-inner{max-width:680px;margin:0 auto;padding:0 20px;display:flex;align-items:center;height:48px;gap:10px}
+.tb-logo{width:26px;height:26px;border-radius:7px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center}
+.tb-logo img{width:100%;height:100%;object-fit:cover;border-radius:7px}
+.tb-name{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;flex:1;color:var(--bar-text);letter-spacing:.2px}
+.tb-name span{font-weight:300;color:var(--bar-text2);margin-left:5px}
+.tb-actions{display:flex;gap:4px;flex-shrink:0;align-items:center}
+.tb-actions a,.tb-actions button{color:var(--bar-text3);transition:all .2s;display:flex;padding:6px;border-radius:7px;background:none;border:none;cursor:pointer;font-size:14px}
+.tb-actions a:hover,.tb-actions a:active,.tb-actions button:hover{color:var(--bar-text);background:rgba(255,255,255,.08)}
+.tb-actions svg{width:14px;height:14px}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px}
+
+/* Browser hint */
+.browser-hint{display:none;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:var(--r2);padding:12px 14px;margin:10px 0;font-size:13px;color:var(--amber);line-height:1.5}
+.browser-hint b{font-weight:700}
+.browser-hint.show{display:block}
+
+/* ═══ SEARCH ═══ */
+.loc-bar{padding:16px 0 4px}
+.search-wrap{position:relative;margin-bottom:12px}
+.search-input{
+  width:100%;padding:10px 14px 10px 38px;border-radius:var(--r3);
+  background:var(--surface);border:1px solid var(--border2);
+  font:13px 'DM Sans',sans-serif;color:var(--text);outline:none;transition:all .2s;
+}
+.search-input:focus{border-color:rgba(37,99,235,.35);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.search-input::placeholder{color:var(--text3)}
+.s-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+.s-icon svg{width:15px;height:15px}
+.s-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:4px;display:none}
+.s-clear.show{display:block}
+.s-results{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:100;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);box-shadow:0 12px 40px rgba(0,0,0,.12);max-height:260px;overflow-y:auto;display:none}
+[data-theme="dark"] .s-results{box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.s-results.open{display:block}
+.sr-item{padding:10px 14px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);transition:background .12s}
+.sr-item:last-child{border-bottom:none}
+.sr-item:hover,.sr-item:active{background:var(--glass2)}
+.sr-name{font-weight:600;color:var(--text)}.sr-det{font-size:11px;color:var(--text3)}.sr-fl{font-size:15px;flex-shrink:0}
+
+/* ═══ CHIPS ═══ */
+.cg{margin-bottom:10px}
+.cg-title{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:5px;padding-left:2px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:6px 12px;border-radius:var(--r3);
+  background:var(--surface);border:1px solid var(--border);
+  font-size:11.5px;font-weight:500;color:var(--text2);
+  cursor:pointer;transition:all .2s;white-space:nowrap;-webkit-user-select:none;user-select:none;
+}
+.chip:active{transform:scale(.97)}
+.chip:hover{border-color:var(--border2);color:var(--text)}
+.chip.on{background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.25);color:var(--blue);font-weight:600}
+.chip .fl{font-size:12px;line-height:1}
+
+/* ═══ HERO (compact) ═══ */
+.wx{padding:4px 0 0}
+.hero-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);margin-bottom:14px;overflow:hidden;
+  transition:background .3s,border-color .3s;
+}
+
+.hero-main{display:flex;align-items:center;padding:14px 16px;gap:16px}
+
+/* Left: temp + condition */
+.hero-left{flex:1;min-width:0}
+.hero-loc{font-size:11px;color:var(--text3);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hero-temp-row{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+.hero-wx-icon{font-size:22px}
+.hero-temp{font-family:'Outfit',sans-serif;font-size:40px;font-weight:300;line-height:1;letter-spacing:-1.5px;color:var(--text)}
+.hero-temp .deg{font-size:18px;font-weight:300;color:var(--text3)}
+.hero-sub{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11px;color:var(--text2);margin-top:2px}
+.hero-sub b{font-weight:600}
+
+/* Right: score ring */
+.ring-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ring-box{position:relative;width:68px;height:68px}
+.ring-box canvas{width:68px;height:68px}
+.ring-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;line-height:1}
+.ring-lbl{font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3)}
+.ring-desc{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;text-align:center}
+
+/* Stats strip */
+.stats-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--border);
+}
+.stat{padding:8px 6px;text-align:center;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-val{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:var(--text);line-height:1.3}
+.stat-val .su{font-size:9px;font-weight:400;color:var(--text3)}
+.stat-lbl{font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+
+@media(max-width:380px){
+  .hero-temp{font-size:34px}
+  .ring-box{width:58px;height:58px}
+  .ring-box canvas{width:58px;height:58px}
+  .ring-pct{font-size:17px}
+  .stats-strip{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--border)}
+}
+
+/* ═══ 7-DAY ═══ */
+.section-label{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;padding-left:2px}
+.day-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:5px;overflow:hidden;transition:all .2s}
+.day-row:hover{border-color:var(--border2)}
+.day-row.expanded{border-color:var(--border2)}
+
+.day-head{
+  display:grid;grid-template-columns:46px 26px 1fr auto 20px;
+  align-items:center;gap:6px;padding:10px 12px;cursor:pointer;transition:background .12s;
+}
+.day-head:active{background:var(--glass)}
+.dh-day{font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;color:var(--text);line-height:1.15}
+.dh-day small{display:block;font-size:9px;font-weight:400;color:var(--text3)}
+.dh-wx{text-align:center;font-size:17px}
+.dh-info{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--text2);min-width:0;flex-wrap:wrap}
+.dh-temps{font-family:'Outfit',sans-serif;font-weight:600;color:var(--text);white-space:nowrap}
+.dh-temps span{font-weight:400;color:var(--text3);font-size:10px}
+.dh-wind{white-space:nowrap;font-size:10.5px}
+.dh-rain{white-space:nowrap;font-size:10.5px;color:var(--text3)}
+.dh-score{flex-shrink:0}
+.pill{font-family:'Outfit',sans-serif;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px;font-size:10.5px}
+.pill-sm{font-size:9px;padding:2px 6px}
+.dh-arr{text-align:center;color:var(--text3);transition:transform .25s;font-size:10px}
+.day-row.expanded .dh-arr{transform:rotate(180deg)}
+
+.day-detail{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+.day-row.expanded .day-detail{max-height:1200px}
+.detail-inner{padding:0 8px 8px}
+.detail-div{height:1px;background:var(--border);margin:0 4px 6px}
+
+.h-row{
+  display:grid;grid-template-columns:38px 22px 46px 42px 68px 52px 1fr auto;
+  align-items:center;gap:3px;padding:5px 4px;
+  border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);
+}
+.h-row:last-child{border-bottom:none}
+.h-row:hover{background:var(--glass)}
+.h-time{font-family:'Outfit',sans-serif;font-weight:600;color:var(--text);font-size:11px}
+.h-wx{text-align:center;font-size:13px}
+.h-temp{font-weight:500;color:var(--text)}
+.h-feels{color:var(--text3);font-size:10px}
+.h-wind{font-weight:600}
+.h-gust{color:var(--text3);font-size:10px}
+.h-extra{color:var(--text3);font-size:10px;display:flex;align-items:center;gap:2px}
+.wind-g{color:var(--green)}.wind-m{color:var(--amber)}.wind-s{color:var(--red)}
+.warr{display:inline-block;width:10px;height:10px;vertical-align:middle}
+
+/* Score colors */
+.sc-n{background:rgba(148,163,184,.08);color:#94a3b8}
+.sc-p{background:rgba(217,119,6,.08);color:var(--amber)}
+.sc-o{background:rgba(234,88,12,.08);color:#ea580c}
+.sc-g{background:rgba(5,150,105,.08);color:var(--green)}
+.sc-gr{background:rgba(37,99,235,.08);color:var(--blue)}
+.sc-i{background:linear-gradient(135deg,rgba(37,99,235,.1),rgba(8,145,178,.08));color:var(--cyan)}
+.sc-st{background:rgba(220,38,38,.06);color:var(--red)}
+[data-theme="dark"] .sc-n{color:rgba(148,163,184,.6)}
+[data-theme="dark"] .sc-p{background:rgba(251,191,36,.08);color:#fbbf24}
+[data-theme="dark"] .sc-o{background:rgba(251,146,60,.1);color:#fb923c}
+[data-theme="dark"] .sc-g{background:rgba(52,211,153,.08);color:#34d399}
+[data-theme="dark"] .sc-gr{background:rgba(59,130,246,.1)}
+[data-theme="dark"] .sc-i{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(34,211,238,.08));color:#22d3ee}
+[data-theme="dark"] .sc-st{background:rgba(248,113,113,.08);color:#f87171}
+
+.ld{text-align:center;padding:3.5rem 0;color:var(--text3);font-size:13px}
+.spinner{width:26px;height:26px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto .75rem}
+@keyframes sp{to{transform:rotate(360deg)}}
+.err-box{text-align:center;padding:2rem 1rem;color:var(--text2);font-size:13px;line-height:1.6}
+.err-box .err-icon{font-size:28px;margin-bottom:8px}
+.err-box .err-msg{margin-bottom:12px}
+.retry-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:var(--r3);background:var(--surface2);color:var(--text);border:1px solid var(--border2);font:600 12px 'DM Sans',sans-serif;cursor:pointer;transition:all .2s}
+.retry-btn:active{transform:scale(.97)}
+
+/* WebView overlay */
+.wv-overlay{
+  display:none;position:fixed;inset:0;z-index:999;
+  background:var(--bg);
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 24px;text-align:center;
+}
+.wv-overlay.show{display:flex}
+.wv-icon{font-size:48px;margin-bottom:16px}
+.wv-title{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px}
+.wv-desc{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:24px;max-width:340px}
+.wv-desc b{font-weight:600;color:var(--text)}
+.wv-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:var(--r3);
+  background:var(--blue);color:#fff;border:none;
+  font:700 15px 'Outfit',sans-serif;cursor:pointer;
+  letter-spacing:.3px;transition:transform .15s;
+  text-decoration:none;
+}
+.wv-btn:active{transform:scale(.96)}
+.wv-or{color:var(--text3);font-size:12px;margin:16px 0}
+.wv-copy{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 20px;border-radius:var(--r3);
+  background:var(--surface);border:1px solid var(--border2);
+  color:var(--text);font:500 13px 'DM Sans',sans-serif;cursor:pointer;
+  transition:all .2s;
+}
+.wv-copy:active{transform:scale(.97)}
+.wv-skip{color:var(--text3);font-size:12px;margin-top:20px;cursor:pointer;text-decoration:underline;background:none;border:none;font-family:'DM Sans',sans-serif}
+.ft{padding:20px 0;text-align:center;font-size:9px;color:var(--text3);letter-spacing:.3px}
+</style>
+</head>
+<body>
+
+<!-- WebView blocker overlay -->
+<div class="wv-overlay" id="wv-overlay">
+  <div class="wv-icon"><div style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,#2563eb,#0891b2);display:flex;align-items:center;justify-content:center;margin:0 auto;font-family:Outfit,sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:1px">YKP</div></div>
+  <div class="wv-title">YKP Warszawa — Sailing Weather</div>
+  <div class="wv-desc">
+    Ta aplikacja wymaga <b>pełnej przeglądarki</b> do pobrania danych pogodowych.
+    Podgląd WhatsApp / Messenger / Drive nie obsługuje połączeń z API.
+  </div>
+  <a class="wv-btn" id="wv-open-btn" href="#" onclick="tryOpenBrowser(event)">
+    Otwórz w przeglądarce
+  </a>
+  <div class="wv-or">lub</div>
+  <button class="wv-copy" onclick="copyUrl()">
+    📋 Skopiuj link do schowka
+  </button>
+  <div id="wv-copied" style="color:var(--green);font-size:12px;margin-top:8px;opacity:0;transition:opacity .3s">Skopiowano!</div>
+  <button class="wv-skip" onclick="document.getElementById('wv-overlay').classList.remove('show')">
+    Spróbuj mimo to →
+  </button>
+</div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="tb-logo">
+      <img src="https://graph.facebook.com/ykpwarszawa/picture?type=large" alt="YKP"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-family:Outfit,sans-serif;font-size:9px;font-weight:800;color:#fff;letter-spacing:.5px">YKP</div>
+    </div>
+    <div class="tb-name">YKP Warszawa<span>Optimist Sailing Weather</span></div>
+    <div class="tb-actions">
+      <button onclick="toggleTheme()" id="theme-btn" title="Zmień motyw">🌙</button>
+      <a href="https://www.facebook.com/ykpwarszawa" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      <a href="https://www.instagram.com/ykpwarszawa/" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="browser-hint" id="browser-hint"><b>📱 Otwórz w przeglądarce</b><br>Podgląd WhatsApp blokuje dane pogodowe. Kliknij ⋮ → „Otwórz w przeglądarce".</div>
+
+<section class="loc-bar">
+  <div class="search-wrap">
+    <span class="s-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
+    <input class="search-input" id="si" placeholder="Szukaj dowolnego miejsca…" autocomplete="off">
+    <button class="s-clear" id="sc" onclick="clearS()">✕</button>
+    <div class="s-results" id="sr"></div>
+  </div>
+  <div class="cg"><div class="cg-title">Baza</div>
+    <div class="chips"><div class="chip on" data-lat="52.4253" data-lon="20.9978" data-name="YKP Warszawa — Port Pilawa, Zegrze" onclick="pick(this)"><span class="fl">🏠</span>Port Pilawa</div></div></div>
+  <div class="cg"><div class="cg-title">Optimist PL 2026</div>
+    <div class="chips">
+      <div class="chip" data-lat="53.7642" data-lon="17.4908" data-name="Charzykowy — Jez. Charzykowskie" onclick="pick(this)"><span class="fl">🇵🇱</span>Charzykowy</div>
+      <div class="chip" data-lat="54.0261" data-lon="14.7528" data-name="Dziwnów — Zatoka" onclick="pick(this)"><span class="fl">🇵🇱</span>Dziwnów</div>
+      <div class="chip" data-lat="54.5189" data-lon="18.5305" data-name="Gdynia — Zatoka Gdańska" onclick="pick(this)"><span class="fl">🇵🇱</span>Gdynia</div>
+      <div class="chip" data-lat="53.6039" data-lon="19.5681" data-name="Iława — Jez. Jeziorak" onclick="pick(this)"><span class="fl">🇵🇱</span>Iława</div>
+      <div class="chip" data-lat="52.4650" data-lon="16.7850" data-name="Kiekrz — Jez. Kierskie" onclick="pick(this)"><span class="fl">🇵🇱</span>Kiekrz</div>
+      <div class="chip" data-lat="54.1628" data-lon="15.2739" data-name="Mrzeżyno — Morze Bałtyckie" onclick="pick(this)"><span class="fl">🇵🇱</span>Mrzeżyno</div>
+      <div class="chip" data-lat="54.7162" data-lon="18.4093" data-name="Puck — Zatoka Pucka" onclick="pick(this)"><span class="fl">🇵🇱</span>Puck</div>
+      <div class="chip" data-lat="53.5340" data-lon="15.9150" data-name="Złocieniec — Jez. Siecino" onclick="pick(this)"><span class="fl">🇵🇱</span>Złocieniec</div>
+    </div></div>
+  <div class="cg"><div class="cg-title">Optimist Świat</div>
+    <div class="chips">
+      <div class="chip" data-lat="45.8857" data-lon="10.8428" data-name="Riva del Garda" onclick="pick(this)"><span class="fl">🇮🇹</span>Riva del Garda</div>
+      <div class="chip" data-lat="45.7326" data-lon="10.7375" data-name="Campione del Garda" onclick="pick(this)"><span class="fl">🇮🇹</span>Campione</div>
+      <div class="chip" data-lat="45.5105" data-lon="13.5917" data-name="Portorož" onclick="pick(this)"><span class="fl">🇸🇮</span>Portorož</div>
+      <div class="chip" data-lat="39.5696" data-lon="2.6502" data-name="Palma de Mallorca" onclick="pick(this)"><span class="fl">🇪🇸</span>Palma</div>
+      <div class="chip" data-lat="35.7796" data-lon="-5.8137" data-name="Tangier (MŚ 2026)" onclick="pick(this)"><span class="fl">🇲🇦</span>Tangier</div>
+      <div class="chip" data-lat="-38.0023" data-lon="-57.5575" data-name="Mar del Plata" onclick="pick(this)"><span class="fl">🇦🇷</span>Mar del Plata</div>
+    </div></div>
+</section>
+
+<section class="wx">
+  <div id="wld" class="ld"><div class="spinner"></div>Ładowanie danych pogodowych…</div>
+  <div id="wct" style="display:none">
+    <div id="hero-card" class="hero-card"></div>
+    <div class="section-label">Prognoza 7-dniowa</div>
+    <div id="days-list"></div>
+  </div>
+</section>
+</div>
+<footer class="ft">© 2026 Emil Dryzner · Open-Meteo API</footer>
+
+<script>
+// ═══ WEBVIEW DETECTION ═══
+(function(){
+  const ua = navigator.userAgent || '';
+  const isWebView = (
+    /\bwv\b/i.test(ua) ||                    // Android WebView
+    /FBAN|FBAV/i.test(ua) ||                  // Facebook
+    /Instagram/i.test(ua) ||                  // Instagram
+    /WhatsApp/i.test(ua) ||                   // WhatsApp
+    /Line\//i.test(ua) ||                     // Line
+    /Messenger/i.test(ua) ||                  // Messenger
+    /GSA\//i.test(ua) ||                      // Google Search App
+    (ua.includes('Android') && !ua.includes('Chrome')) ||
+    (ua.includes('iPhone') && !ua.includes('Safari') && !ua.includes('CriOS'))
+  );
+  if(isWebView){
+    document.getElementById('wv-overlay').classList.add('show');
+  }
+})();
+
+function tryOpenBrowser(e){
+  e.preventDefault();
+  const url = window.location.href;
+  const ua = navigator.userAgent || '';
+  
+  // Android: try intent
+  if(/android/i.test(ua)){
+    const intentUrl = 'intent://' + url.replace(/^https?:\/\//,'') 
+      + '#Intent;scheme=https;action=android.intent.action.VIEW;end';
+    window.location = intentUrl;
+    // Fallback after 2s
+    setTimeout(()=>{ window.open(url, '_system'); }, 2000);
+  }
+  // iOS: try x-safari
+  else if(/iPhone|iPad/i.test(ua)){
+    window.open(url, '_blank');
+  }
+  // Other: simple open
+  else {
+    window.open(url, '_blank');
+  }
+}
+
+function copyUrl(){
+  const url = window.location.href;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(()=>showCopied()).catch(()=>fallbackCopy(url));
+  } else {
+    fallbackCopy(url);
+  }
+}
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{document.execCommand('copy'); showCopied();}catch(e){}
+  document.body.removeChild(ta);
+}
+function showCopied(){
+  const el = document.getElementById('wv-copied');
+  el.style.opacity='1';
+  setTimeout(()=>{el.style.opacity='0'},2000);
+}
+
+// ═══ THEME ═══
+function toggleTheme(){
+  const d=document.documentElement;
+  const dark=d.getAttribute('data-theme')==='dark';
+  d.setAttribute('data-theme',dark?'':'dark');
+  document.getElementById('theme-btn').textContent=dark?'🌙':'☀️';
+  document.getElementById('tc').content=dark?'#ffffff':'#0a0f1a';
+  try{localStorage.setItem('theme',dark?'light':'dark')}catch(e){}
+  // Redraw ring if present
+  if(W) renderHero(lastName,lastLat,lastLon);
+}
+// Init theme
+try{if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('tc').content='#0a0f1a'}}catch(e){}
+
+let W=null,sT=null,lastLat=null,lastLon=null,lastName=null,loadTimer=null;
+const DS=['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
+const WI={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',56:'🌨️',57:'🌨️',61:'🌧️',63:'🌧️',65:'🌧️',66:'🌨️',67:'🌨️',71:'🌨️',73:'🌨️',75:'❄️',77:'❄️',80:'🌦️',81:'🌧️',82:'🌧️',85:'🌨️',86:'🌨️',95:'⛈️',96:'⛈️',99:'⛈️'};
+const WT={0:'Bezchmurnie',1:'Przew. czyste',2:'Częśc. zachm.',3:'Zachmurzenie',45:'Mgła',48:'Szadź',51:'Mżawka',53:'Mżawka',55:'Gęsta mżawka',61:'Lekki deszcz',63:'Deszcz',65:'Silny deszcz',71:'Lekki śnieg',73:'Śnieg',75:'Śnieg',80:'Przelotne',81:'Deszcz',82:'Ulewa',95:'Burza',96:'Burza+grad',99:'Silna burza'};
+
+const wD=d=>'N,NNE,NE,ENE,E,ESE,SE,SSE,S,SSW,SW,WSW,W,WNW,NW,NNW'.split(',')[Math.round(d/22.5)%16];
+const wC=s=>s<10?'wind-g':s<20?'wind-m':'wind-s';
+const wA=d=>`<svg class="warr" viewBox="0 0 24 24" style="transform:rotate(${d+180}deg)"><path d="M12 2l4 8h-3v12h-2V10H8z" fill="currentColor" opacity=".55"/></svg>`;
+const bft=k=>{if(k<1)return 0;if(k<4)return 1;if(k<7)return 2;if(k<11)return 3;if(k<17)return 4;if(k<22)return 5;if(k<28)return 6;if(k<34)return 7;return 8};
+
+function rS(a,g,rn,rp){
+  let s,l,c;
+  if(a<3){s=0;l='Brak wiatru';c='sc-n'}else if(a<5){s=10;l='Cisza';c='sc-n'}
+  else if(a<=6){s=25;l='Bardzo słabe';c='sc-p'}else if(a<=8){s=45;l='Słabe';c='sc-p'}
+  else if(a<=10){s=60;l='Dostateczne';c='sc-o'}else if(a<=13){s=80;l='Dobre';c='sc-g'}
+  else if(a<=16){s=92;l='Bardzo dobre';c='sc-gr'}else if(a<=20){s=35;l='Zbyt silny';c='sc-st'}
+  else{s=0;l='Nie rozgrywamy';c='sc-st'}
+  if(a>=12&&a<=15&&g<=22){s=100;l='Idealne!';c='sc-i'}
+  if(g>25){s=Math.min(s,15);l='Silne porywy!';c='sc-st'}else if(g>22&&s>50)s=Math.round(s*.7);
+  if(rn>5&&s>20)s=Math.round(s*.6);else if(rn>2&&s>30)s=Math.round(s*.8);
+  if(rp>70&&s>40)s=Math.round(s*.85);
+  s=Math.max(0,Math.min(100,s));
+  if(c!=='sc-st'&&c!=='sc-i'){if(s===0)c='sc-n';else if(s<=30)c='sc-p';else if(s<=55)c='sc-o';else if(s<=80)c='sc-g';else c='sc-gr'}
+  return{s,l,c};
+}
+
+function scoreClr(c){return{'sc-n':'#94a3b8','sc-p':'#d97706','sc-o':'#ea580c','sc-g':'#059669','sc-gr':'#2563eb','sc-i':'#0891b2','sc-st':'#dc2626'}[c]||'#94a3b8'}
+
+function drawRing(id,pct,cls){
+  const cv=document.getElementById(id);if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  const sz=cv.offsetWidth;
+  cv.width=sz*dpr;cv.height=sz*dpr;ctx.scale(dpr,dpr);
+  const cx=sz/2,cy=sz/2,r=sz/2-5,lw=4;
+  ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,Math.PI*1.5);
+  const style=getComputedStyle(document.documentElement);
+  ctx.strokeStyle=style.getPropertyValue('--ring-track').trim();
+  ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();
+  if(pct>0){
+    ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*pct/100);
+    ctx.strokeStyle=scoreClr(cls);ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();
+  }
+}
+
+// Search
+const si=document.getElementById('si'),sr=document.getElementById('sr'),scb=document.getElementById('sc');
+si.addEventListener('input',function(){const q=this.value.trim();scb.classList.toggle('show',q.length>0);if(q.length<2){sr.classList.remove('open');return}clearTimeout(sT);sT=setTimeout(()=>geo(q),350)});
+si.addEventListener('focus',()=>{if(sr.children.length&&si.value.trim().length>=2)sr.classList.add('open')});
+document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))sr.classList.remove('open')});
+function clearS(){si.value='';scb.classList.remove('show');sr.classList.remove('open');sr.innerHTML=''}
+async function geo(q){try{const ctrl=new AbortController();const tm=setTimeout(()=>ctrl.abort(),8000);
+const r=await(await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=pl&format=json`,{signal:ctrl.signal})).json();clearTimeout(tm);
+if(!r.results?.length){sr.innerHTML='<div class="sr-item"><span class="sr-det">Brak wyników</span></div>';sr.classList.add('open');return}
+sr.innerHTML='';r.results.forEach(p=>{const f=p.country_code?cF(p.country_code):'📍',a=[p.admin1,p.country].filter(Boolean).join(', ');
+const d=document.createElement('div');d.className='sr-item';d.innerHTML=`<span class="sr-fl">${f}</span><div><div class="sr-name">${p.name}</div><div class="sr-det">${a}</div></div>`;
+d.onclick=()=>{si.value=p.name;sr.classList.remove('open');document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));load(p.latitude,p.longitude,p.name+(a?' — '+a:''))};sr.appendChild(d)});sr.classList.add('open')}
+catch(e){if(e.name==='AbortError'){sr.innerHTML='<div class="sr-item"><span class="sr-det">Timeout</span></div>';sr.classList.add('open')}}}
+function cF(c){c=c.toUpperCase();return String.fromCodePoint(...[...c].map(x=>0x1F1E6+x.charCodeAt(0)-65))}
+function pick(el){document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');si.value='';scb.classList.remove('show');sr.classList.remove('open');load(+el.dataset.lat,+el.dataset.lon,el.dataset.name)}
+
+function showError(msg,retry){const ld=document.getElementById('wld');ld.style.display='block';document.getElementById('wct').style.display='none';
+ld.innerHTML=`<div class="err-box"><div class="err-icon">⚠️</div><div class="err-msg">${msg}</div>${retry?'<button class="retry-btn" onclick="retryLoad()">Spróbuj ponownie</button>':''}</div>`;
+document.getElementById('browser-hint').classList.add('show')}
+function retryLoad(){if(lastLat!=null)load(lastLat,lastLon,lastName)}
+
+async function load(lat,lon,name){
+  lastLat=lat;lastLon=lon;lastName=name;
+  const ld=document.getElementById('wld'),ct=document.getElementById('wct');
+  ld.style.display='block';ct.style.display='none';ld.innerHTML='<div class="spinner"></div>Ładowanie…';
+  document.getElementById('browser-hint').classList.remove('show');
+  const hp='temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation_probability,precipitation,weather_code,pressure_msl,cloud_cover';
+  const dp='weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,wind_speed_10m_max,wind_gusts_10m_max,precipitation_sum,precipitation_probability_max,sunrise,sunset';
+  const ctrl=new AbortController();loadTimer=setTimeout(()=>ctrl.abort(),12000);
+  try{const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=${hp}&daily=${dp}&timezone=auto&forecast_days=7&wind_speed_unit=kn`,{signal:ctrl.signal,mode:'cors'});
+  clearTimeout(loadTimer);if(!res.ok)throw new Error('HTTP '+res.status);
+  const json=await res.json();if(!json.hourly||!json.daily)throw new Error('Dane');
+  W=json;render(name,lat,lon);ld.style.display='none';ct.style.display='block';
+  }catch(e){clearTimeout(loadTimer);
+  if(e.name==='AbortError')showError('Timeout — sprawdź połączenie.',true);
+  else if(e.message.includes('fetch')||e.message.includes('etwork'))showError('Brak sieci. Otwórz w przeglądarce.',true);
+  else showError('Błąd: '+e.message,true);}
+}
+
+function render(n,lat,lon){renderHero(n,lat,lon);renderDays()}
+function nowIdx(){const h=W.hourly,ts=new Date().toISOString().slice(0,10);let i=h.time.findIndex(t=>t.startsWith(ts));if(i<0)i=0;return Math.min(i+new Date().getHours(),h.time.length-1)}
+
+function renderHero(name,lat,lon){
+  const h=W.hourly,i=nowIdx(),d=W.daily;
+  const t=h.temperature_2m[i],f=h.apparent_temperature[i],w=h.wind_speed_10m[i],
+    g=h.wind_gusts_10m[i],dir=h.wind_direction_10m[i],code=h.weather_code[i],
+    pres=h.pressure_msl[i],hum=h.relative_humidity_2m[i],cloud=h.cloud_cover[i],
+    prec=h.precipitation[i],pp=h.precipitation_probability[i];
+  const r=rS(w,g,prec,pp),b=bft(w);
+  const sR=d.sunrise[0]?.slice(11,16)||'',sS=d.sunset[0]?.slice(11,16)||'';
+  const rid='rc'+Date.now();
+
+  document.getElementById('hero-card').innerHTML=`
+    <div class="hero-main">
+      <div class="hero-left">
+        <div class="hero-loc">📍 ${name}</div>
+        <div class="hero-temp-row">
+          <span class="hero-wx-icon">${WI[code]||'🌤️'}</span>
+          <div class="hero-temp">${t.toFixed(0)}<span class="deg">°</span></div>
+        </div>
+        <div class="hero-sub">
+          <span>${WT[code]||''}</span>
+          <span>odcz. <b>${f.toFixed(0)}°</b></span>
+          <span class="${wC(w)}"><b>💨 ${w.toFixed(0)}kn</b> (${b}B)</span>
+          <span>por. ${g.toFixed(0)}kn ${wD(dir)}</span>
+        </div>
+      </div>
+      <div class="ring-wrap">
+        <div class="ring-box">
+          <canvas id="${rid}" width="136" height="136" style="width:68px;height:68px"></canvas>
+          <div class="ring-val">
+            <div class="ring-pct" style="color:${scoreClr(r.c)}">${r.s}%</div>
+            <div class="ring-lbl">⛵ Regaty</div>
+          </div>
+        </div>
+        <div class="ring-desc" style="color:${scoreClr(r.c)}">${r.l}</div>
+      </div>
+    </div>
+    <div class="stats-strip">
+      <div class="stat"><div class="stat-val">${pres?pres.toFixed(0):'—'}<span class="su"> hPa</span></div><div class="stat-lbl">Ciśnienie</div></div>
+      <div class="stat"><div class="stat-val">${hum}<span class="su">%</span></div><div class="stat-lbl">Wilgotność</div></div>
+      <div class="stat"><div class="stat-val">${cloud}<span class="su">%</span></div><div class="stat-lbl">Zachmurz.</div></div>
+      <div class="stat"><div class="stat-val">${sR} <span class="su">/ ${sS}</span></div><div class="stat-lbl">☀ / 🌙</div></div>
+    </div>`;
+  requestAnimationFrame(()=>drawRing(rid,r.s,r.c));
+}
+
+function renderDays(){
+  const d=W.daily,list=document.getElementById('days-list');list.innerHTML='';
+  for(let i=0;i<d.time.length;i++){
+    const dt=new Date(d.time[i]+'T12:00:00');
+    const avgW=d.wind_speed_10m_max[i]*.65,maxW=d.wind_speed_10m_max[i];
+    const r=rS(avgW,d.wind_gusts_10m_max[i],d.precipitation_sum[i],d.precipitation_probability_max[i]);
+    const feelsHi=d.apparent_temperature_max?d.apparent_temperature_max[i]:null;
+    const b=bft(maxW);
+    const row=document.createElement('div');row.className='day-row';
+    row.innerHTML=`
+      <div class="day-head" onclick="togD(this)">
+        <div class="dh-day">${i===0?'Dziś':DS[dt.getDay()]}<small>${dt.getDate()}.${String(dt.getMonth()+1).padStart(2,'0')}</small></div>
+        <div class="dh-wx">${WI[d.weather_code[i]]||'🌤️'}</div>
+        <div class="dh-info">
+          <span class="dh-temps">${d.temperature_2m_max[i].toFixed(0)}°<span>/${d.temperature_2m_min[i].toFixed(0)}°</span>${feelsHi!=null?' odcz.'+feelsHi.toFixed(0)+'°':''}</span>
+          <span class="dh-wind ${wC(maxW)}">💨${maxW.toFixed(0)}kn(${b}B)</span>
+          ${d.precipitation_sum[i]>0?`<span class="dh-rain">🌧${d.precipitation_sum[i].toFixed(1)}mm</span>`:''}
+        </div>
+        <div class="dh-score"><span class="pill ${r.c}">⛵${r.s}%</span></div>
+        <div class="dh-arr">▾</div>
+      </div>
+      <div class="day-detail"><div class="detail-inner" id="dd-${i}"></div></div>`;
+    list.appendChild(row);
+  }
+}
+
+function togD(head){
+  const row=head.parentElement,was=row.classList.contains('expanded');
+  const idx=[...row.parentElement.children].indexOf(row);
+  row.parentElement.querySelectorAll('.day-row').forEach(r=>r.classList.remove('expanded'));
+  if(!was){row.classList.add('expanded');fillH(idx)}
+}
+
+function fillH(di){
+  const el=document.getElementById('dd-'+di);if(el.innerHTML)return;
+  const h=W.hourly,ds=W.daily.time[di];
+  let html='<div class="detail-div"></div>';
+  for(let i=0;i<h.time.length;i++){
+    if(!h.time[i].startsWith(ds))continue;
+    const hr=h.time[i].slice(11,16),ws=h.wind_speed_10m[i],gu=h.wind_gusts_10m[i],
+      wd=h.wind_direction_10m[i],wc=h.weather_code[i],t=h.temperature_2m[i],
+      f=h.apparent_temperature[i],pr=h.precipitation[i],pp=h.precipitation_probability[i];
+    const r=rS(ws,gu,pr,pp),b=bft(ws);
+    html+=`<div class="h-row">
+      <div class="h-time">${hr}</div>
+      <div class="h-wx">${WI[wc]||''}</div>
+      <div class="h-temp">${t.toFixed(0)}°</div>
+      <div class="h-feels">odcz.${f.toFixed(0)}°</div>
+      <div class="h-wind ${wC(ws)}">${ws.toFixed(0)}kn(${b}B)</div>
+      <div class="h-gust">por.${gu.toFixed(0)}kn</div>
+      <div class="h-extra">${wD(wd)}${wA(wd)}${pr>0?' 🌧'+pr.toFixed(1)+'mm':''}</div>
+      <div><span class="pill pill-sm ${r.c}">${r.s}%</span></div>
+    </div>`;
+  }
+  el.innerHTML=html;
+}
+
+function init(){
+  // Set theme button icon
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.getElementById('theme-btn').textContent=isDark?'☀️':'🌙';
+  const d=document.querySelector('.chip.on');if(d)pick(d);
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init)}else{init()}
+setTimeout(()=>{if(document.getElementById('wld').style.display!=='none'&&!W){init()}},2000);
+</script>
+</body>
+</html>
