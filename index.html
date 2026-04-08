@@ -197,7 +197,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .dh-temps span{font-weight:400;color:var(--text3);font-size:10px}
 .dh-wind{white-space:nowrap;font-size:10.5px}
 .dh-rain{white-space:nowrap;font-size:10.5px;color:var(--text3)}
-.dh-score{flex-shrink:0}
+.dh-score{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.dh-windows{display:flex;gap:3px}
+.win-badge{font-family:'Outfit',sans-serif;font-weight:700;font-size:8.5px;padding:1px 5px;border-radius:100px;min-width:26px;text-align:center;display:inline-flex;align-items:center;justify-content:center;line-height:1.5}
+.win-legend{display:block;margin-top:3px;font-weight:400;letter-spacing:.5px;color:var(--text3);text-transform:none;font-size:9px}
 .pill{font-family:'Outfit',sans-serif;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px;font-size:10.5px}
 .pill-sm{font-size:9px;padding:2px 6px}
 .dh-arr{text-align:center;color:var(--text3);transition:transform .25s;font-size:10px}
@@ -361,7 +364,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
   <div id="wld" class="ld"><div class="spinner"></div>Ładowanie danych pogodowych…</div>
   <div id="wct" style="display:none">
     <div id="hero-card" class="hero-card"></div>
-    <div class="section-label">Prognoza 7-dniowa</div>
+    <div class="section-label">Prognoza 7-dniowa <span class="win-legend">Okna regatowe: 9–11 · 11–16 · 16–18  (waga 15% · 70% · 15%)</span></div>
     <div id="days-list"></div>
   </div>
 </section>
@@ -578,25 +581,91 @@ function renderHero(name,lat,lon){
   requestAnimationFrame(()=>drawRing(rid,r.s,r.c));
 }
 
+// Get racing-hour stats (9-18) and window indices for a given day
+function getDayRacingStats(dayStr){
+  const h=W.hourly;
+  const temps=[],feels=[],winds=[],gusts=[];
+  let precip=0,maxPP=0;
+  const w1=[],w2=[],w3=[];
+  for(let i=0;i<h.time.length;i++){
+    if(!h.time[i].startsWith(dayStr))continue;
+    const hr=parseInt(h.time[i].slice(11,13),10);
+    if(hr<9||hr>=18)continue;
+    temps.push(h.temperature_2m[i]);
+    feels.push(h.apparent_temperature[i]);
+    winds.push(h.wind_speed_10m[i]);
+    gusts.push(h.wind_gusts_10m[i]);
+    precip+=h.precipitation[i];
+    maxPP=Math.max(maxPP,h.precipitation_probability[i]||0);
+    if(hr<11)w1.push(i);
+    else if(hr<16)w2.push(i);
+    else w3.push(i);
+  }
+  if(!temps.length)return null;
+  return{
+    tMax:Math.max(...temps),tMin:Math.min(...temps),
+    fMax:Math.max(...feels),
+    wMax:Math.max(...winds),gMax:Math.max(...gusts),
+    precip,maxPP,w1,w2,w3
+  };
+}
+
+// Compute regatta score for a window of hourly indices
+function winScore(idxArr){
+  if(!idxArr||!idxArr.length)return null;
+  const h=W.hourly;
+  let sumW=0,maxG=0,sumP=0,maxPP=0;
+  for(const i of idxArr){
+    sumW+=h.wind_speed_10m[i];
+    maxG=Math.max(maxG,h.wind_gusts_10m[i]);
+    sumP+=h.precipitation[i];
+    maxPP=Math.max(maxPP,h.precipitation_probability[i]||0);
+  }
+  return rS(sumW/idxArr.length,maxG,sumP,maxPP);
+}
+
 function renderDays(){
   const d=W.daily,list=document.getElementById('days-list');list.innerHTML='';
   for(let i=0;i<d.time.length;i++){
     const dt=new Date(d.time[i]+'T12:00:00');
-    const avgW=d.wind_speed_10m_max[i]*.65,maxW=d.wind_speed_10m_max[i];
-    const r=rS(avgW,d.wind_gusts_10m_max[i],d.precipitation_sum[i],d.precipitation_probability_max[i]);
-    const feelsHi=d.apparent_temperature_max?d.apparent_temperature_max[i]:null;
-    const b=bft(maxW);
+    const stats=getDayRacingStats(d.time[i]);
+    let r,r1,r2,r3,maxW,tMax,tMin,fMax,precip,b;
+    if(stats){
+      r1=winScore(stats.w1);
+      r2=winScore(stats.w2);
+      r3=winScore(stats.w3);
+      let total=0,wsum=0;
+      if(r1){total+=r1.s*0.15;wsum+=0.15}
+      if(r2){total+=r2.s*0.70;wsum+=0.70}
+      if(r3){total+=r3.s*0.15;wsum+=0.15}
+      const overallS=wsum>0?Math.round(total/wsum):0;
+      const baseR=r2||r1||r3||{l:'—',c:'sc-n'};
+      r={s:overallS,l:baseR.l,c:baseR.c};
+      maxW=stats.wMax;tMax=stats.tMax;tMin=stats.tMin;fMax=stats.fMax;precip=stats.precip;b=bft(maxW);
+    } else {
+      r={s:0,l:'—',c:'sc-n'};r1=r2=r3=null;
+      maxW=0;tMax=d.temperature_2m_max[i];tMin=d.temperature_2m_min[i];
+      fMax=d.apparent_temperature_max?d.apparent_temperature_max[i]:null;
+      precip=d.precipitation_sum[i];b=0;
+    }
     const row=document.createElement('div');row.className='day-row';
     row.innerHTML=`
       <div class="day-head" onclick="togD(this)">
         <div class="dh-day">${i===0?'Dziś':DS[dt.getDay()]}<small>${dt.getDate()}.${String(dt.getMonth()+1).padStart(2,'0')}</small></div>
         <div class="dh-wx">${WI[d.weather_code[i]]||'🌤️'}</div>
         <div class="dh-info">
-          <span class="dh-temps">${d.temperature_2m_max[i].toFixed(0)}°<span>/${d.temperature_2m_min[i].toFixed(0)}°</span>${feelsHi!=null?' odcz.'+feelsHi.toFixed(0)+'°':''}</span>
+          <span class="dh-temps">${tMax.toFixed(0)}°<span>/${tMin.toFixed(0)}°</span>${fMax!=null?' odcz.'+fMax.toFixed(0)+'°':''}</span>
           <span class="dh-wind ${wC(maxW)}">💨${maxW.toFixed(0)}kn(${b}B)</span>
-          ${d.precipitation_sum[i]>0?`<span class="dh-rain">🌧${d.precipitation_sum[i].toFixed(1)}mm</span>`:''}
+          ${precip>0?`<span class="dh-rain">🌧${precip.toFixed(1)}mm</span>`:''}
         </div>
-        <div class="dh-score"><span class="pill ${r.c}">⛵${r.s}%</span></div>
+        <div class="dh-score">
+          <span class="pill ${r.c}">⛵${r.s}%</span>
+          <div class="dh-windows">
+            <span class="win-badge ${r1?r1.c:'sc-n'}" title="9–11">${r1?r1.s+'%':'—'}</span>
+            <span class="win-badge ${r2?r2.c:'sc-n'}" title="11–16">${r2?r2.s+'%':'—'}</span>
+            <span class="win-badge ${r3?r3.c:'sc-n'}" title="16–18">${r3?r3.s+'%':'—'}</span>
+          </div>
+        </div>
         <div class="dh-arr">▾</div>
       </div>
       <div class="day-detail"><div class="detail-inner" id="dd-${i}"></div></div>`;
@@ -617,6 +686,8 @@ function fillH(di){
   let html='<div class="detail-div"></div>';
   for(let i=0;i<h.time.length;i++){
     if(!h.time[i].startsWith(ds))continue;
+    const hourNum=parseInt(h.time[i].slice(11,13),10);
+    if(hourNum<9||hourNum>=18)continue;
     const hr=h.time[i].slice(11,16),ws=h.wind_speed_10m[i],gu=h.wind_gusts_10m[i],
       wd=h.wind_direction_10m[i],wc=h.weather_code[i],t=h.temperature_2m[i],
       f=h.apparent_temperature[i],pr=h.precipitation[i],pp=h.precipitation_probability[i];
