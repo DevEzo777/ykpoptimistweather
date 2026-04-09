@@ -199,8 +199,55 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .dh-rain{white-space:nowrap;font-size:10.5px;color:var(--text3)}
 .dh-score{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
 .dh-windows{display:flex;gap:3px}
-.win-badge{font-family:'Outfit',sans-serif;font-weight:700;font-size:8.5px;padding:1px 5px;border-radius:100px;min-width:26px;text-align:center;display:inline-flex;align-items:center;justify-content:center;line-height:1.5}
+.win-badge{
+  font-family:'Outfit',sans-serif;display:inline-flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:2px 6px;border-radius:7px;line-height:1.15;min-width:32px;
+}
+.win-badge .wb-l{font-size:7px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;opacity:.7}
+.win-badge .wb-v{font-size:10px;font-weight:700;margin-top:1px}
+.win-badge.win-main{padding:3px 8px;outline:1.5px solid currentColor;outline-offset:-1px}
+.win-badge.win-main .wb-v{font-size:11px;font-weight:800}
+.win-badge.win-main .wb-l{opacity:.9;font-weight:700}
 .win-legend{display:block;margin-top:3px;font-weight:400;letter-spacing:.5px;color:var(--text3);text-transform:none;font-size:9px}
+
+/* Hero racing windows */
+.hero-windows{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px 14px 12px;border-top:1px solid var(--border)}
+.hw-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:7px 4px;border-radius:9px;background:var(--glass);text-align:center;
+}
+.hw-item.hw-main{background:var(--glass2);border:1px solid var(--border2)}
+.hw-label{font-family:'Outfit',sans-serif;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);line-height:1.1}
+.hw-item.hw-main .hw-label{color:var(--text);font-weight:700}
+.hw-time{font-size:9px;color:var(--text3);line-height:1.1}
+.hw-pct{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;line-height:1.1;margin-top:2px}
+.hw-item.hw-main .hw-pct{font-size:18px;font-weight:800}
+
+/* Porada 10–16 */
+.hero-advice{padding:10px 14px 12px;border-top:1px solid var(--border)}
+.ha-head{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.ha-head::after{content:'';flex:1;height:1px;background:var(--border)}
+.ha-row{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:8px}
+.ha-item{display:flex;flex-direction:column;gap:2px;padding:7px 10px;border-radius:9px;background:var(--glass);min-width:0}
+.ha-lbl{font-family:'Outfit',sans-serif;font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);line-height:1.1}
+.ha-val{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:var(--text);line-height:1.2}
+.ha-item.ha-pri .ha-val{font-size:11.5px;font-weight:600;color:var(--text2);line-height:1.3}
+.ha-type-niestabilny{background:rgba(148,163,184,.12)}
+.ha-type-niestabilny .ha-val{color:#64748b}
+[data-theme="dark"] .ha-type-niestabilny .ha-val{color:#94a3b8}
+.ha-type-wymagajacy{background:rgba(220,38,38,.08)}
+.ha-type-wymagajacy .ha-val{color:var(--red)}
+.ha-type-szkwalowy{background:rgba(217,119,6,.1)}
+.ha-type-szkwalowy .ha-val{color:var(--amber)}
+.ha-type-taktyczny{background:rgba(8,145,178,.1)}
+.ha-type-taktyczny .ha-val{color:var(--cyan)}
+.ha-type-mocny{background:rgba(37,99,235,.1)}
+.ha-type-mocny .ha-val{color:var(--blue)}
+.ha-type-stabilny{background:rgba(5,150,105,.08)}
+.ha-type-stabilny .ha-val{color:var(--green)}
+.ha-empty{font-size:11px;color:var(--text3);text-align:center;padding:4px 0}
+
 .pill{font-family:'Outfit',sans-serif;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px;font-size:10.5px}
 .pill-sm{font-size:9px;padding:2px 6px}
 .dh-arr{text-align:center;color:var(--text3);transition:transform .25s;font-size:10px}
@@ -285,6 +332,72 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .wv-copy:active{transform:scale(.97)}
 .wv-skip{color:var(--text3);font-size:12px;margin-top:20px;cursor:pointer;text-decoration:underline;background:none;border:none;font-family:'DM Sans',sans-serif}
 .ft{padding:20px 0;text-align:center;font-size:9px;color:var(--text3);letter-spacing:.3px}
+
+/* ═══ KALENDARZ ═══ */
+.cal-section{padding:6px 0 0;margin-top:14px}
+.cal-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px;transition:background .3s,border-color .3s}
+.cal-toolbar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.cal-tabs{display:flex;gap:4px;flex:1;min-width:0}
+.cal-tab{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;padding:5px 11px;border-radius:100px;background:var(--glass);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .2s}
+.cal-tab:hover{color:var(--text);border-color:var(--border2)}
+.cal-tab.on{background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.25);color:var(--blue);font-weight:700}
+.cal-link{display:inline-flex;align-items:center;gap:4px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;padding:5px 11px;border-radius:100px;background:var(--glass);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:all .2s;white-space:nowrap}
+.cal-link:hover{color:var(--text);border-color:var(--border2)}
+
+/* Upcoming */
+.cal-upcoming{padding:12px 14px;border-bottom:1px solid var(--border)}
+.cal-up-empty,.cal-up-loading{color:var(--text3);font-size:12px;text-align:center;padding:10px 0}
+.cal-up-main{display:flex;align-items:flex-start;gap:10px}
+.cal-up-body{flex:1;min-width:0}
+.cal-up-label{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:3px}
+.cal-up-title{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);line-height:1.25;margin-bottom:3px}
+.cal-up-date{font-size:11px;color:var(--text2);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.cal-up-rest{margin-top:10px;padding-top:9px;border-top:1px solid var(--border)}
+.cal-up-rest-label{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:6px}
+.cal-up-item{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text2);padding:3px 0}
+.cup-it-title{flex:1;color:var(--text);font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cup-it-date{color:var(--text3);white-space:nowrap;font-size:10.5px}
+
+.cal-grp-tag{display:inline-flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:9px;font-weight:800;width:18px;height:18px;border-radius:5px;flex-shrink:0}
+.cal-grp-A{background:rgba(37,99,235,.12);color:var(--blue)}
+.cal-grp-B{background:rgba(217,119,6,.12);color:var(--amber)}
+.cal-grp-K{background:rgba(8,145,178,.12);color:var(--cyan)}
+.cal-grp-P{background:rgba(5,150,105,.12);color:var(--green)}
+.cal-grp-T{background:rgba(148,163,184,.15);color:#94a3b8}
+
+/* Month grid */
+.cal-month{padding:10px 12px 12px}
+.cm-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px}
+.cm-nav button{background:var(--glass);border:1px solid var(--border);color:var(--text2);width:30px;height:30px;border-radius:8px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit;flex-shrink:0}
+.cm-nav button:hover{color:var(--text);border-color:var(--border2)}
+.cm-nav button:active{transform:scale(.94)}
+.cm-title{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:var(--text);text-transform:capitalize;text-align:center;flex:1}
+.cm-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cm-dow{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);text-align:center;padding:4px 0}
+.cm-cell{position:relative;aspect-ratio:1;min-height:36px;border-radius:7px;background:var(--glass);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:4px 2px;font-size:10.5px;color:var(--text2);transition:background .15s}
+.cm-cell.cm-other{opacity:.25}
+.cm-cell.cm-today{background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.3)}
+.cm-cell.cm-has{cursor:pointer}
+.cm-cell.cm-has:hover{background:var(--glass2)}
+.cm-cell.cm-sel{background:rgba(37,99,235,.18);border:1px solid rgba(37,99,235,.4)}
+.cm-num{font-family:'Outfit',sans-serif;font-weight:600;color:var(--text);font-size:11px;line-height:1}
+.cm-today .cm-num{color:var(--blue)}
+.cm-dots{display:flex;gap:2px;margin-bottom:1px;flex-wrap:wrap;justify-content:center;max-width:100%}
+.cm-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.dot-A{background:var(--blue)}
+.dot-B{background:var(--amber)}
+.dot-K{background:var(--cyan)}
+.dot-P{background:var(--green)}
+.dot-T{background:#94a3b8}
+
+/* Day events panel */
+.cm-events-box{margin-top:10px;padding:10px 12px;background:var(--glass);border-radius:9px;border:1px solid var(--border)}
+.cm-events-title{font-family:'Outfit',sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:6px}
+.cm-event-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)}
+.cm-event-row:last-child{border-bottom:none}
+.cm-event-row .cer-body{flex:1;min-width:0}
+.cm-event-row .cer-title{color:var(--text);font-weight:500;font-size:12px;line-height:1.3}
+.cm-event-row .cer-meta{font-size:10.5px;color:var(--text3);margin-top:1px}
 </style>
 </head>
 <body>
@@ -364,8 +477,32 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
   <div id="wld" class="ld"><div class="spinner"></div>Ładowanie danych pogodowych…</div>
   <div id="wct" style="display:none">
     <div id="hero-card" class="hero-card"></div>
-    <div class="section-label">Prognoza 7-dniowa <span class="win-legend">Okna regatowe: 9–11 · 11–16 · 16–18  (waga 15% · 70% · 15%)</span></div>
+    <div class="section-label">Prognoza 7-dniowa <span class="win-legend">Okna regatowe: Poranek 9–11 · Główne 11–16 · Końcówka 16–18</span></div>
     <div id="days-list"></div>
+  </div>
+</section>
+
+<section class="cal-section">
+  <div class="section-label">Kalendarz Optimist 2026 <span class="win-legend">Treningi i regaty sekcji Optimist YKP Warszawa</span></div>
+  <div class="cal-card">
+    <div class="cal-toolbar">
+      <div class="cal-tabs">
+        <button class="cal-tab on" onclick="calSetGroup('all',this)">Wszystkie</button>
+        <button class="cal-tab" onclick="calSetGroup('A',this)">Gr. A</button>
+        <button class="cal-tab" onclick="calSetGroup('B',this)">Gr. B</button>
+      </div>
+      <a class="cal-link" href="https://docs.google.com/spreadsheets/d/1S-L6azdXG3nFatIIMVe5Y4ZhDQD3LZuk-KxxgzqkBrY/edit?usp=drive_link" target="_blank" rel="noopener">↗ Pełny kalendarz</a>
+    </div>
+    <div id="cal-upcoming" class="cal-upcoming"><div class="cal-up-loading">Ładowanie kalendarza…</div></div>
+    <div class="cal-month">
+      <div class="cm-nav">
+        <button onclick="calMonthMove(-1)" aria-label="Poprzedni miesiąc">‹</button>
+        <div id="cm-title" class="cm-title">—</div>
+        <button onclick="calMonthMove(1)" aria-label="Następny miesiąc">›</button>
+      </div>
+      <div class="cm-grid" id="cm-grid"></div>
+      <div id="cm-events-box"></div>
+    </div>
   </div>
 </section>
 </div>
@@ -536,15 +673,97 @@ async function load(lat,lon,name){
 function render(n,lat,lon){renderHero(n,lat,lon);renderDays()}
 function nowIdx(){const h=W.hourly,ts=new Date().toISOString().slice(0,10);let i=h.time.findIndex(t=>t.startsWith(ts));if(i<0)i=0;return Math.min(i+new Date().getHours(),h.time.length-1)}
 
+// ═══ PORADA 10–16 ═══
+// Zwraca {type,trim,priority,cssKey} lub null jeżeli brak danych z okna 10–16.
+// Używa knots (aplikacja pobiera wind_speed_unit=kn — bez konwersji).
+function computeAdvice(dayStr){
+  const h=W.hourly;
+  const winds=[],gusts=[],dirs=[];
+  let rainFlag=false;
+  for(let i=0;i<h.time.length;i++){
+    if(!h.time[i].startsWith(dayStr))continue;
+    const hr=parseInt(h.time[i].slice(11,13),10);
+    if(hr<10||hr>16)continue;
+    winds.push(h.wind_speed_10m[i]);
+    gusts.push(h.wind_gusts_10m[i]);
+    dirs.push(h.wind_direction_10m[i]);
+    if((h.precipitation[i]||0)>0)rainFlag=true;
+    const wc=h.weather_code[i];
+    if(wc>=51)rainFlag=true; // mżawka i gorzej
+  }
+  if(!winds.length)return null;
+
+  const avgWind=winds.reduce((a,b)=>a+b,0)/winds.length;
+  const avgGust=gusts.reduce((a,b)=>a+b,0)/gusts.length;
+  const gustSpread=avgGust-avgWind;
+
+  // Cyrkularny dirSpread: posortuj kąty, znajdź największą lukę, spread = 360 - max_gap
+  const sorted=[...dirs].map(d=>((d%360)+360)%360).sort((a,b)=>a-b);
+  let maxGap=0;
+  if(sorted.length>1){
+    for(let i=0;i<sorted.length;i++){
+      const next=(i===sorted.length-1)?sorted[0]+360:sorted[i+1];
+      const gap=next-sorted[i];
+      if(gap>maxGap)maxGap=gap;
+    }
+  } else { maxGap=360 }
+  const dirSpread=360-maxGap;
+
+  // Reguły w kolejności priorytetów
+  // 1. Niestabilny
+  if(rainFlag)return{type:'Niestabilny',trim:'Bazowo',priority:'Proste decyzje i dobra organizacja',cssKey:'niestabilny'};
+  // 2. Wymagający
+  if(avgWind>=18||(avgWind>=14&&gustSpread>=6))return{type:'Wymagający',trim:'Bardziej płasko',priority:'Kontrola, prosty start, mniej ryzyka',cssKey:'wymagajacy'};
+  // 3. Szkwałowy
+  if(gustSpread>=5)return{type:'Szkwałowy',trim:'Bazowo',priority:'Reaguj na porywy, nie zatrzymuj łódki',cssKey:'szkwalowy'};
+  // 4. Taktyczny
+  if(dirSpread>=25){
+    if(avgWind<8)return{type:'Taktyczny',trim:'Pełniej',priority:'Zmiany i czysty wiatr',cssKey:'taktyczny'};
+    if(avgWind<14)return{type:'Taktyczny',trim:'Bazowo',priority:'Obserwuj zmiany i pilnuj pozycji',cssKey:'taktyczny'};
+  }
+  // 5. Mocny
+  if(avgWind>=14)return{type:'Mocny',trim:'Płasko',priority:'Kontrola i równa prędkość',cssKey:'mocny'};
+  // 6. Stabilny — lekki
+  if(avgWind<8)return{type:'Stabilny',trim:'Pełniej',priority:'Płynność i prędkość',cssKey:'stabilny'};
+  // 7. Stabilny — bazowy
+  return{type:'Stabilny',trim:'Bazowo',priority:'Prędkość i powtarzalność',cssKey:'stabilny'};
+}
+
 function renderHero(name,lat,lon){
   const h=W.hourly,i=nowIdx(),d=W.daily;
   const t=h.temperature_2m[i],f=h.apparent_temperature[i],w=h.wind_speed_10m[i],
     g=h.wind_gusts_10m[i],dir=h.wind_direction_10m[i],code=h.weather_code[i],
     pres=h.pressure_msl[i],hum=h.relative_humidity_2m[i],cloud=h.cloud_cover[i],
     prec=h.precipitation[i],pp=h.precipitation_probability[i];
-  const r=rS(w,g,prec,pp),b=bft(w);
+  const b=bft(w);
   const sR=d.sunrise[0]?.slice(11,16)||'',sS=d.sunset[0]?.slice(11,16)||'';
   const rid='rc'+Date.now();
+  // Today's racing windows
+  const todayStats=getDayRacingStats(d.time[0]);
+  const tw1=todayStats?winScore(todayStats.w1):null;
+  const tw2=todayStats?winScore(todayStats.w2):null;
+  const tw3=todayStats?winScore(todayStats.w3):null;
+  // Big ring: weighted average of windows (same logic as 7-day list)
+  let r;
+  if(todayStats&&(tw1||tw2||tw3)){
+    let total=0,wsum=0;
+    if(tw1){total+=tw1.s*0.15;wsum+=0.15}
+    if(tw2){total+=tw2.s*0.70;wsum+=0.70}
+    if(tw3){total+=tw3.s*0.15;wsum+=0.15}
+    const overallS=wsum>0?Math.round(total/wsum):0;
+    const baseR=tw2||tw1||tw3||{l:'—',c:'sc-n'};
+    r={s:overallS,l:baseR.l,c:baseR.c};
+  } else {
+    // Fallback: no racing-hour data → use current hour
+    r=rS(w,g,prec,pp);
+  }
+  const advice=computeAdvice(d.time[0]);
+  const hwHTML=(lbl,time,res,main)=>`
+    <div class="hw-item${main?' hw-main':''}">
+      <div class="hw-label">${lbl}</div>
+      <div class="hw-time">${time}</div>
+      <div class="hw-pct" style="color:${res?scoreClr(res.c):'var(--text3)'}">${res?res.s+'%':'—'}</div>
+    </div>`;
 
   document.getElementById('hero-card').innerHTML=`
     <div class="hero-main">
@@ -577,6 +796,19 @@ function renderHero(name,lat,lon){
       <div class="stat"><div class="stat-val">${hum}<span class="su">%</span></div><div class="stat-lbl">Wilgotność</div></div>
       <div class="stat"><div class="stat-val">${cloud}<span class="su">%</span></div><div class="stat-lbl">Zachmurz.</div></div>
       <div class="stat"><div class="stat-val">${sR} <span class="su">/ ${sS}</span></div><div class="stat-lbl">☀ / 🌙</div></div>
+    </div>
+    <div class="hero-windows">
+      ${hwHTML('Poranek','9–11',tw1,false)}
+      ${hwHTML('Główne','11–16',tw2,true)}
+      ${hwHTML('Końcówka','16–18',tw3,false)}
+    </div>
+    <div class="hero-advice">
+      <div class="ha-head">⛵ Porada 10–16</div>
+      ${advice?`<div class="ha-row">
+        <div class="ha-item ha-type-${advice.cssKey}"><div class="ha-lbl">Typ dnia</div><div class="ha-val">${advice.type}</div></div>
+        <div class="ha-item"><div class="ha-lbl">Trym</div><div class="ha-val">${advice.trim}</div></div>
+        <div class="ha-item ha-pri"><div class="ha-lbl">Priorytet</div><div class="ha-val">${advice.priority}</div></div>
+      </div>`:'<div class="ha-empty">Brak danych dla okna 10–16</div>'}
     </div>`;
   requestAnimationFrame(()=>drawRing(rid,r.s,r.c));
 }
@@ -611,17 +843,25 @@ function getDayRacingStats(dayStr){
 }
 
 // Compute regatta score for a window of hourly indices
+// Compute window score by averaging per-hour scores.
+// Rationale: averaging raw wind first and then scoring causes bucket-boundary
+// jumps (e.g. avg 5.99kn → 25%, avg 6.01kn → 45%). Averaging scores is stable.
 function winScore(idxArr){
   if(!idxArr||!idxArr.length)return null;
   const h=W.hourly;
-  let sumW=0,maxG=0,sumP=0,maxPP=0;
+  const scores=[];const results=[];
   for(const i of idxArr){
-    sumW+=h.wind_speed_10m[i];
-    maxG=Math.max(maxG,h.wind_gusts_10m[i]);
-    sumP+=h.precipitation[i];
-    maxPP=Math.max(maxPP,h.precipitation_probability[i]||0);
+    const r=rS(h.wind_speed_10m[i],h.wind_gusts_10m[i],h.precipitation[i]||0,h.precipitation_probability[i]||0);
+    scores.push(r.s);results.push(r);
   }
-  return rS(sumW/idxArr.length,maxG,sumP,maxPP);
+  const avg=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+  // Label/css: pick the per-hour result closest to the averaged value
+  let best=results[0],minDiff=Math.abs(results[0].s-avg);
+  for(const r of results){
+    const d=Math.abs(r.s-avg);
+    if(d<minDiff){minDiff=d;best=r}
+  }
+  return{s:avg,l:best.l,c:best.c};
 }
 
 function renderDays(){
@@ -661,9 +901,9 @@ function renderDays(){
         <div class="dh-score">
           <span class="pill ${r.c}">⛵${r.s}%</span>
           <div class="dh-windows">
-            <span class="win-badge ${r1?r1.c:'sc-n'}" title="9–11">${r1?r1.s+'%':'—'}</span>
-            <span class="win-badge ${r2?r2.c:'sc-n'}" title="11–16">${r2?r2.s+'%':'—'}</span>
-            <span class="win-badge ${r3?r3.c:'sc-n'}" title="16–18">${r3?r3.s+'%':'—'}</span>
+            <span class="win-badge ${r1?r1.c:'sc-n'}" title="Poranek 9–11"><span class="wb-l">Por</span><span class="wb-v">${r1?r1.s+'%':'—'}</span></span>
+            <span class="win-badge win-main ${r2?r2.c:'sc-n'}" title="Główne 11–16"><span class="wb-l">Głów</span><span class="wb-v">${r2?r2.s+'%':'—'}</span></span>
+            <span class="win-badge ${r3?r3.c:'sc-n'}" title="Końcówka 16–18"><span class="wb-l">Koń</span><span class="wb-v">${r3?r3.s+'%':'—'}</span></span>
           </div>
         </div>
         <div class="dh-arr">▾</div>
@@ -714,6 +954,341 @@ function init(){
 }
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init)}else{init()}
 setTimeout(()=>{if(document.getElementById('wld').style.display!=='none'&&!W){init()}},2000);
+
+// ═══════════════════════════════════════════════════════════
+// ═══ KALENDARZ TRENINGÓW (Google Sheets) ═══
+// ═══════════════════════════════════════════════════════════
+const CAL_SHEET_ID='1S-L6azdXG3nFatIIMVe5Y4ZhDQD3LZuk-KxxgzqkBrY';
+const CAL_SHEET_URLS=[
+  // Preferred: explicit "Kalendarz" sheet via gviz (supports sheet name)
+  `https://docs.google.com/spreadsheets/d/${CAL_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Kalendarz`,
+  // Fallback: default first sheet via export API
+  `https://docs.google.com/spreadsheets/d/${CAL_SHEET_ID}/export?format=csv`
+];
+const CAL_MONTHS={'styczeń':1,'luty':2,'marzec':3,'kwiecień':4,'maj':5,'czerwiec':6,'lipiec':7,'sierpień':8,'wrzesień':9,'październik':10,'listopad':11,'grudzień':12};
+const CAL_MONTH_NAMES=['styczeń','luty','marzec','kwiecień','maj','czerwiec','lipiec','sierpień','wrzesień','październik','listopad','grudzień'];
+const CAL_MONTH_GEN=['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+const CAL_DOW_MAP={'pon':1,'wt':2,'śr':3,'czw':4,'pt':5,'sob':6,'ndz':0};
+const CAL_DOW_LABELS=['Pn','Wt','Śr','Cz','Pt','Sb','Nd'];
+
+let CAL_EVENTS=[],CAL_GROUP='all',CAL_VIEW_DATE=new Date(),CAL_SELECTED_DAY=null;
+
+// CSV parser handling quoted fields, escaped quotes, multiline cells
+function calParseCSV(text){
+  const rows=[];let row=[],cell='',q=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i];
+    if(q){
+      if(ch==='"'){if(text[i+1]==='"'){cell+='"';i++}else q=false}
+      else cell+=ch;
+    } else {
+      if(ch==='"')q=true;
+      else if(ch===','){row.push(cell);cell=''}
+      else if(ch==='\n'){row.push(cell);rows.push(row);row=[];cell=''}
+      else if(ch!=='\r')cell+=ch;
+    }
+  }
+  if(cell||row.length){row.push(cell);rows.push(row)}
+  return rows;
+}
+
+function calNormGroup(label){
+  if(!label)return null;
+  const raw=label.toLowerCase().trim();
+  if(!raw)return null;
+  // Strip whitespace and dots for tolerant matching: "gr. A" → "gra"
+  const stripped=raw.replace(/[\s\.]+/g,'');
+  // Order matters: check more specific prefixes first
+  if(stripped.startsWith('grpoczat'))return'P';
+  if(raw.startsWith('kadra'))return'K';
+  if(stripped.startsWith('wydtrener')||raw.includes('trenersk'))return'T';
+  if(stripped.startsWith('gra')||raw.includes('grupa a'))return'A';
+  if(stripped.startsWith('grb')||raw.includes('grupa b'))return'B';
+  return null;
+}
+
+function calIsMarker(s){
+  const t=(s||'').trim().toLowerCase();
+  if(!t)return true;
+  if(t==='t'||t==='do'||t==='|'||t==='x')return true;
+  if(/^[-=>→←|·.]+$/.test(t))return true;
+  if(/^->>+$/.test(t)||/^=>>+$/.test(t)||/^-->>$/.test(t))return true;
+  return false;
+}
+
+function calDetectYear(monthName,firstDow){
+  const mNum=CAL_MONTHS[monthName];if(!mNum)return null;
+  const target=CAL_DOW_MAP[firstDow];if(target===undefined)return null;
+  for(const y of [2025,2026,2027,2024,2028]){
+    if(new Date(y,mNum-1,1).getDay()===target)return y;
+  }
+  return null;
+}
+
+function calParseEvents(rows){
+  const events=[];let i=0;
+  while(i<rows.length){
+    const row=rows[i];
+    if(!row||!row[0]||!row[0].trim()){i++;continue}
+    const monthName=row[0].toLowerCase().trim();
+    const monthNum=CAL_MONTHS[monthName];
+    if(!monthNum){i++;continue}
+    const dowRow=rows[i+1];
+    if(!dowRow){i++;continue}
+    const firstDow=(dowRow[2]||'').toLowerCase().trim();
+    const year=calDetectYear(monthName,firstDow);
+    if(!year){i+=2;continue}
+    const numDays=new Date(year,monthNum,0).getDate();
+    let parentGroup=null;
+    let j=i+2;
+    while(j<rows.length){
+      const groupRow=rows[j];
+      if(!groupRow){break}
+      const labelRaw=(groupRow[0]||'').trim();
+      const labelLow=labelRaw.toLowerCase();
+      if(!labelRaw){
+        // empty col 0 — check if entire row is empty (= block separator)
+        if(!groupRow.some(c=>c&&c.trim()))break;
+        j++;continue;
+      }
+      if(CAL_MONTHS[labelLow])break; // next month
+      const grpCode=calNormGroup(labelRaw);
+      if(grpCode){
+        // Track parent A/B for Kadra WOZŻ attribution
+        if(grpCode==='A'||grpCode==='B')parentGroup=grpCode;
+        let effectiveGroup=grpCode;
+        if(grpCode==='K'&&parentGroup)effectiveGroup=parentGroup;
+        // Walk cells day-by-day
+        let curEvt=null;
+        for(let day=1;day<=numDays;day++){
+          const colIdx=day+1;
+          const cell=(groupRow[colIdx]||'').trim();
+          if(cell){
+            if(curEvt){
+              curEvt.endDay=day;
+              if(!calIsMarker(cell)&&(calIsMarker(curEvt.title)||cell.length>curEvt.title.length)){
+                curEvt.title=cell;
+              }
+            } else {
+              curEvt={startDay:day,endDay:day,title:cell};
+            }
+          } else {
+            if(curEvt){
+              const t=curEvt.title.trim();
+              if(t&&!calIsMarker(t)){
+                events.push({start:new Date(year,monthNum-1,curEvt.startDay),end:new Date(year,monthNum-1,curEvt.endDay),title:t,group:effectiveGroup});
+              }
+              curEvt=null;
+            }
+          }
+        }
+        if(curEvt){
+          const t=curEvt.title.trim();
+          if(t&&!calIsMarker(t)){
+            events.push({start:new Date(year,monthNum-1,curEvt.startDay),end:new Date(year,monthNum-1,curEvt.endDay),title:t,group:effectiveGroup});
+          }
+        }
+      }
+      j++;
+    }
+    i=j+1;
+  }
+  return events;
+}
+
+async function calLoad(){
+  const upEl=document.getElementById('cal-upcoming');
+  const titleEl=document.getElementById('cm-title');
+  let bestEvents=[];
+  let lastErr=null;
+  for(const url of CAL_SHEET_URLS){
+    try{
+      const ctrl=new AbortController();
+      const tm=setTimeout(()=>ctrl.abort(),10000);
+      const res=await fetch(url,{signal:ctrl.signal});
+      clearTimeout(tm);
+      if(!res.ok){lastErr=new Error('HTTP '+res.status);console.warn('[Kalendarz] URL failed:',url,res.status);continue}
+      const text=await res.text();
+      const rows=calParseCSV(text);
+      const events=calParseEvents(rows);
+      console.log('[Kalendarz] URL',url.split('/').slice(-2).join('/'),'→',rows.length,'wierszy,',events.length,'wydarzeń');
+      if(events.length>bestEvents.length)bestEvents=events;
+      if(bestEvents.length>0)break;
+    }catch(e){lastErr=e;console.warn('[Kalendarz] fetch error:',e.message);continue}
+  }
+  if(!bestEvents.length){
+    console.warn('[Kalendarz] brak wydarzeń po wszystkich próbach. Ostatni błąd:',lastErr);
+    upEl.innerHTML='<div class="cal-up-empty">Podgląd wydarzeń niedostępny — otwórz pełny kalendarz</div>';
+    document.getElementById('cm-grid').innerHTML='';
+    if(titleEl)titleEl.textContent='';
+    return;
+  }
+  CAL_EVENTS=bestEvents;
+  // Debug summary — appears in DevTools console
+  const byGroup=CAL_EVENTS.reduce((acc,e)=>{acc[e.group]=(acc[e.group]||0)+1;return acc},{});
+  console.log('[Kalendarz] ✓ wczytano',CAL_EVENTS.length,'wydarzeń, podział grup:',byGroup);
+  // Sample first 5 events of each group for diagnostics
+  const samples={};
+  for(const e of CAL_EVENTS){
+    if(!samples[e.group])samples[e.group]=[];
+    if(samples[e.group].length<3)samples[e.group].push(`${e.title} (${e.start.toISOString().slice(0,10)})`);
+  }
+  console.log('[Kalendarz] przykłady:',samples);
+  // Initialize view to current month (or first month with future events)
+  const now=new Date();now.setHours(0,0,0,0);
+  const upcoming=CAL_EVENTS.filter(e=>e.end>=now).sort((a,b)=>a.start-b.start);
+  if(upcoming.length){
+    CAL_VIEW_DATE=new Date(upcoming[0].start);
+  } else {
+    CAL_VIEW_DATE=new Date();
+  }
+  CAL_VIEW_DATE.setDate(1);
+  calRender();
+}
+
+function calFiltered(){
+  if(CAL_GROUP==='all')return CAL_EVENTS;
+  const filtered=CAL_EVENTS.filter(e=>e.group===CAL_GROUP);
+  if(filtered.length===0&&CAL_EVENTS.length>0){
+    const groupsPresent=[...new Set(CAL_EVENTS.map(e=>e.group))];
+    console.warn('[Kalendarz] filtr',CAL_GROUP,'zwrócił 0 wydarzeń; wydarzenia są z grup:',groupsPresent,'- sprawdź czy etykiety w arkuszu są rozpoznawane');
+  }
+  return filtered;
+}
+
+function calFmtRange(start,end){
+  const sD=start.getDate(),eD=end.getDate();
+  const sM=start.getMonth(),eM=end.getMonth();
+  if(sM===eM){
+    if(sD===eD)return`${sD} ${CAL_MONTH_GEN[sM]}`;
+    return`${sD}–${eD} ${CAL_MONTH_GEN[sM]}`;
+  }
+  return`${sD} ${CAL_MONTH_GEN[sM]} – ${eD} ${CAL_MONTH_GEN[eM]}`;
+}
+
+function calEsc(s){return(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c])}
+
+function calRenderUpcoming(){
+  const now=new Date();now.setHours(0,0,0,0);
+  const events=calFiltered().filter(e=>e.end>=now).sort((a,b)=>a.start-b.start);
+  const el=document.getElementById('cal-upcoming');
+  if(!events.length){el.innerHTML='<div class="cal-up-empty">Brak nadchodzących wydarzeń</div>';return}
+  const main=events[0];
+  const rest=events.slice(1,4);
+  let html=`<div class="cal-up-main">
+    <div class="cal-up-body">
+      <div class="cal-up-label">Najbliższe wydarzenie</div>
+      <div class="cal-up-title">${calEsc(main.title)}</div>
+      <div class="cal-up-date"><span class="cal-grp-tag cal-grp-${main.group}">${main.group}</span>${calFmtRange(main.start,main.end)}</div>
+    </div>
+  </div>`;
+  if(rest.length){
+    html+=`<div class="cal-up-rest"><div class="cal-up-rest-label">Następne wydarzenia</div>`;
+    for(const e of rest){
+      html+=`<div class="cal-up-item">
+        <span class="cal-grp-tag cal-grp-${e.group}">${e.group}</span>
+        <span class="cup-it-title">${calEsc(e.title)}</span>
+        <span class="cup-it-date">${calFmtRange(e.start,e.end)}</span>
+      </div>`;
+    }
+    html+=`</div>`;
+  }
+  el.innerHTML=html;
+}
+
+function calRenderMonth(){
+  const grid=document.getElementById('cm-grid');
+  const titleEl=document.getElementById('cm-title');
+  const y=CAL_VIEW_DATE.getFullYear(),m=CAL_VIEW_DATE.getMonth();
+  titleEl.textContent=`${CAL_MONTH_NAMES[m].charAt(0).toUpperCase()+CAL_MONTH_NAMES[m].slice(1)} ${y}`;
+
+  const first=new Date(y,m,1);
+  const firstDow=(first.getDay()+6)%7; // Mon=0
+  const numDays=new Date(y,m+1,0).getDate();
+  const today=new Date();today.setHours(0,0,0,0);
+
+  // Build day → events map (filtered)
+  const events=calFiltered();
+  const dayEvents={};
+  for(const e of events){
+    const it=new Date(e.start);
+    while(it<=e.end){
+      if(it.getFullYear()===y&&it.getMonth()===m){
+        const d=it.getDate();
+        if(!dayEvents[d])dayEvents[d]=[];
+        dayEvents[d].push(e);
+      }
+      it.setDate(it.getDate()+1);
+    }
+  }
+
+  let html='';
+  for(const dn of CAL_DOW_LABELS)html+=`<div class="cm-dow">${dn}</div>`;
+  for(let i=0;i<firstDow;i++)html+='<div class="cm-cell cm-other"></div>';
+  for(let d=1;d<=numDays;d++){
+    const isToday=today.getFullYear()===y&&today.getMonth()===m&&today.getDate()===d;
+    const isSel=CAL_SELECTED_DAY===d;
+    const evts=dayEvents[d]||[];
+    const groups=[...new Set(evts.map(e=>e.group))];
+    const cls=['cm-cell'];
+    if(isToday)cls.push('cm-today');
+    if(isSel)cls.push('cm-sel');
+    if(evts.length)cls.push('cm-has');
+    const dotsHtml=groups.slice(0,5).map(g=>`<span class="cm-dot dot-${g}"></span>`).join('');
+    html+=`<div class="${cls.join(' ')}"${evts.length?` onclick="calShowDay(${d})"`:''}>
+      <div class="cm-num">${d}</div>
+      ${dotsHtml?`<div class="cm-dots">${dotsHtml}</div>`:''}
+    </div>`;
+  }
+  grid.innerHTML=html;
+
+  // Render selected day events panel
+  const evtsBox=document.getElementById('cm-events-box');
+  if(CAL_SELECTED_DAY&&dayEvents[CAL_SELECTED_DAY]){
+    calRenderDayPanel(CAL_SELECTED_DAY,dayEvents[CAL_SELECTED_DAY]);
+  } else {
+    evtsBox.innerHTML='';
+  }
+}
+
+function calShowDay(day){
+  CAL_SELECTED_DAY=(CAL_SELECTED_DAY===day)?null:day;
+  calRenderMonth();
+}
+
+function calRenderDayPanel(day,events){
+  const el=document.getElementById('cm-events-box');
+  const m=CAL_VIEW_DATE.getMonth(),y=CAL_VIEW_DATE.getFullYear();
+  el.innerHTML=`<div class="cm-events-box">
+    <div class="cm-events-title">${day} ${CAL_MONTH_GEN[m]} ${y} · ${events.length} ${events.length===1?'wydarzenie':'wydarzenia'}</div>
+    ${events.map(e=>`<div class="cm-event-row">
+      <span class="cal-grp-tag cal-grp-${e.group}">${e.group}</span>
+      <div class="cer-body">
+        <div class="cer-title">${calEsc(e.title)}</div>
+        <div class="cer-meta">${calFmtRange(e.start,e.end)}</div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function calMonthMove(delta){
+  CAL_VIEW_DATE.setMonth(CAL_VIEW_DATE.getMonth()+delta);
+  CAL_SELECTED_DAY=null;
+  calRender();
+}
+
+function calSetGroup(grp,btn){
+  CAL_GROUP=grp;
+  document.querySelectorAll('.cal-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  CAL_SELECTED_DAY=null;
+  calRender();
+}
+
+function calRender(){calRenderUpcoming();calRenderMonth()}
+
+// Load calendar independently of weather (small delay to not block initial paint)
+setTimeout(()=>{calLoad()},300);
 </script>
 </body>
 </html>
