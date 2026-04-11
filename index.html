@@ -679,6 +679,36 @@ async function load(lat,lon,name){
 }
 
 function render(n,lat,lon){renderHero(n,lat,lon);renderDays();loadExtras(lat,lon,n)}
+
+// IMGW: mapowanie polskich presetów → teryt województwa (2 cyfry)
+const IMGW_REGION={
+  'port pilawa':'14',   // mazowieckie (Zegrze) — uwaga: Pilawa Zegrze to mazowieckie
+  'zegrze':'14','warszawa':'14','nieporęt':'14',
+  'puck':'22','gdynia':'22','gdańsk':'22',  // pomorskie
+  'dziwnów':'32','mrzeżyno':'32','kołobrzeg':'32',  // zachodniopomorskie
+  'iława':'28','jeziorak':'28',  // warmińsko-mazurskie
+  'charzykowy':'22','złocieniec':'32','kiekrz':'30'  // pom / zachpom / wielkop
+};
+function imgwRegionFor(name){
+  if(!name)return null;
+  const n=name.toLowerCase();
+  for(const k in IMGW_REGION)if(n.includes(k))return IMGW_REGION[k];
+  return null;
+}
+function imgwParseDate(s){try{const d=new Date(s.replace(' ','T'));return isNaN(d)?null:d}catch(e){return null}}
+function imgwPickBest(records,now){
+  const active=[];
+  for(const r of records){
+    const from=imgwParseDate(r.obowiazuje_od||r.valid_from||'');
+    const to=imgwParseDate(r.obowiazuje_do||r.valid_to||'');
+    if(!from||!to)continue;
+    if(now>=from&&now<=to)active.push(r);
+  }
+  if(!active.length)return null;
+  active.sort((a,b)=>(parseInt(b.stopien||b.level||0)-parseInt(a.stopien||a.level||0))||(imgwParseDate(a.obowiazuje_do||a.valid_to)-imgwParseDate(b.obowiazuje_do||b.valid_to)));
+  return active[0];
+}
+
 // ═══ ULEPSZENIA: cross-check ICON, marine, ostrzeżenia ═══
 const COASTAL_PORTS=[{n:'gdynia',la:54.5,lo:18.5},{n:'puck',la:54.7,lo:18.4},{n:'dziwn',la:54.0,lo:14.7},{n:'mrze',la:54.16,lo:15.27},{n:'pilawa',la:54.36,lo:19.66}];
 function isCoastal(name,lat,lon){const n=(name||'').toLowerCase();if(COASTAL_PORTS.some(p=>n.includes(p.n)))return true;if(lat>=54.0&&lon>=14&&lon<=20)return true;return false}
@@ -698,10 +728,16 @@ async function loadExtras(lat,lon,name){
   } else tasks.push(Promise.resolve(null));
   // 3. Warnings (PL only, MeteoAlarm via Open-Meteo)
   if(isPL(lat,lon)){
-    tasks.push(fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=weather_code&hourly=weather_code&forecast_days=1&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null));
+    const imgwRegion=imgwRegionFor(name);
+    if(imgwRegion){
+      tasks.push(fetch('https://danepubliczne.imgw.pl/api/data/warningsmeteo').then(r=>r.ok?r.json():null).catch(()=>null));
+    } else tasks.push(Promise.resolve(null));
+    // Fallback forecast-based storm detector
+    tasks.push(fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=weather_code&forecast_days=1&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null));
   } else tasks.push(Promise.resolve(null));
 
-  const [icon,marine,warn]=await Promise.allSettled(tasks).then(rs=>rs.map(r=>r.value));
+  const [icon,marine,imgw,fbWarn]=await Promise.allSettled(tasks).then(rs=>rs.map(r=>r.value));
+  const imgwRegion2=imgwRegionFor(name);
   const chips=[];
   // Confidence: compare ICON vs main for window 11-16 today
   if(icon&&icon.hourly){
@@ -738,11 +774,30 @@ async function loadExtras(lat,lon,name){
       }
     }catch(e){}
   }
-  // Warnings: weather_code >= 95 = thunderstorm
-  if(warn&&warn.hourly&&warn.hourly.weather_code){
+  // IMGW official warnings (primary)
+  let imgwShown=false;
+  if(imgw&&Array.isArray(imgw)&&imgwRegion2){
     try{
-      const danger=warn.hourly.weather_code.some(c=>c>=95);
-      if(danger)chips.push(`<span class="ex-chip ex-warn">⚠️ Burza w prognozie</span>`);
+      const regionRecords=imgw.filter(r=>{
+        const t=(r.teryt||r.TERYT||'').toString();
+        return t.startsWith(imgwRegion2);
+      });
+      const best=imgwPickBest(regionRecords,new Date());
+      if(best){
+        const evt=(best.nazwa_zdarzenia||best.event||'Ostrzeżenie').toString();
+        const lvl=parseInt(best.stopien||best.level||0)||'?';
+        const to=imgwParseDate(best.obowiazuje_do||best.valid_to);
+        const toStr=to?' do '+to.toLocaleString('pl-PL',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}):'';
+        chips.push(`<span class="ex-chip ex-warn" title="Źródło: IMGW">⚠️ IMGW: ${evt}, stopień ${lvl}${toStr}</span>`);
+        imgwShown=true;
+      }
+    }catch(e){}
+  }
+  // Fallback forecast-based storm detector (only if IMGW gave nothing)
+  if(!imgwShown&&fbWarn&&fbWarn.hourly&&fbWarn.hourly.weather_code){
+    try{
+      const danger=fbWarn.hourly.weather_code.some(c=>c>=95);
+      if(danger)chips.push(`<span class="ex-chip ex-warn" title="Prognoza Open-Meteo, nieoficjalne">⚠️ Burza w prognozie</span>`);
     }catch(e){}
   }
   if(!chips.length)return;
