@@ -331,6 +331,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 }
 .wv-copy:active{transform:scale(.97)}
 .wv-skip{color:var(--text3);font-size:12px;margin-top:20px;cursor:pointer;text-decoration:underline;background:none;border:none;font-family:'DM Sans',sans-serif}
+
+.extras-bar{display:flex;flex-wrap:wrap;gap:6px;padding:8px 14px;border-top:1px solid var(--border);font-size:10.5px}
+.ex-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:100px;background:var(--glass);color:var(--text2);font-family:DM Sans,sans-serif;font-weight:500}
+.ex-chip b{color:var(--text);font-weight:700}
+.ex-conf-high{background:rgba(5,150,105,.1);color:var(--green)}
+.ex-conf-mid{background:rgba(217,119,6,.1);color:var(--amber)}
+.ex-conf-low{background:rgba(220,38,38,.1);color:var(--red)}
+.ex-warn{background:rgba(220,38,38,.12);color:var(--red);font-weight:600}
 .ft{padding:20px 0;text-align:center;font-size:9px;color:var(--text3);letter-spacing:.3px}
 
 /* ═══ KALENDARZ ═══ */
@@ -670,7 +678,78 @@ async function load(lat,lon,name){
   else showError('Błąd: '+e.message,true);}
 }
 
-function render(n,lat,lon){renderHero(n,lat,lon);renderDays()}
+function render(n,lat,lon){renderHero(n,lat,lon);renderDays();loadExtras(lat,lon,n)}
+// ═══ ULEPSZENIA: cross-check ICON, marine, ostrzeżenia ═══
+const COASTAL_PORTS=[{n:'gdynia',la:54.5,lo:18.5},{n:'puck',la:54.7,lo:18.4},{n:'dziwn',la:54.0,lo:14.7},{n:'mrze',la:54.16,lo:15.27},{n:'pilawa',la:54.36,lo:19.66}];
+function isCoastal(name,lat,lon){const n=(name||'').toLowerCase();if(COASTAL_PORTS.some(p=>n.includes(p.n)))return true;if(lat>=54.0&&lon>=14&&lon<=20)return true;return false}
+function isPL(lat,lon){return lat>=49&&lat<=55&&lon>=14&&lon<=24.5}
+
+async function loadExtras(lat,lon,name){
+  try{document.getElementById('extras-bar')?.remove()}catch(e){}
+  if(!W||!W.hourly)return;
+  const tasks=[];
+  // 1. ICON cross-check (only PL)
+  if(isPL(lat,lon)){
+    tasks.push(fetch(`https://api.open-meteo.com/v1/dwd-icon?latitude=${lat}&longitude=${lon}&hourly=wind_speed_10m&wind_speed_unit=kn&forecast_days=2&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null));
+  } else tasks.push(Promise.resolve(null));
+  // 2. Marine (only coastal)
+  if(isCoastal(name,lat,lon)){
+    tasks.push(fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&hourly=wave_height,wave_period&forecast_days=1&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null));
+  } else tasks.push(Promise.resolve(null));
+  // 3. Warnings (PL only, MeteoAlarm via Open-Meteo)
+  if(isPL(lat,lon)){
+    tasks.push(fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=weather_code&hourly=weather_code&forecast_days=1&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null));
+  } else tasks.push(Promise.resolve(null));
+
+  const [icon,marine,warn]=await Promise.allSettled(tasks).then(rs=>rs.map(r=>r.value));
+  const chips=[];
+  // Confidence: compare ICON vs main for window 11-16 today
+  if(icon&&icon.hourly){
+    try{
+      const ds=W.daily.time[0];const main=[],alt=[];
+      for(let i=0;i<W.hourly.time.length;i++){
+        if(!W.hourly.time[i].startsWith(ds))continue;
+        const hr=parseInt(W.hourly.time[i].slice(11,13),10);
+        if(hr>=11&&hr<16)main.push(W.hourly.wind_speed_10m[i]);
+      }
+      for(let i=0;i<icon.hourly.time.length;i++){
+        if(!icon.hourly.time[i].startsWith(ds))continue;
+        const hr=parseInt(icon.hourly.time[i].slice(11,13),10);
+        if(hr>=11&&hr<16)alt.push(icon.hourly.wind_speed_10m[i]);
+      }
+      if(main.length&&alt.length){
+        const am=main.reduce((a,b)=>a+b,0)/main.length;
+        const aa=alt.reduce((a,b)=>a+b,0)/alt.length;
+        const diff=Math.abs(am-aa);
+        let cls='ex-conf-high',lbl='wysoka zgodność';
+        if(diff>4){cls='ex-conf-low';lbl='niska zgodność'}
+        else if(diff>2){cls='ex-conf-mid';lbl='średnia zgodność'}
+        chips.push(`<span class="ex-chip ${cls}">📊 Pewność 11–16: <b>${lbl}</b> (Δ${diff.toFixed(1)}kn)</span>`);
+      }
+    }catch(e){}
+  }
+  // Marine
+  if(marine&&marine.hourly&&marine.hourly.wave_height){
+    try{
+      const wh=marine.hourly.wave_height.filter(v=>v!=null);
+      if(wh.length){
+        const max=Math.max(...wh),avg=wh.reduce((a,b)=>a+b,0)/wh.length;
+        chips.push(`<span class="ex-chip">🌊 Fala: <b>${avg.toFixed(1)}m</b> (max ${max.toFixed(1)}m)</span>`);
+      }
+    }catch(e){}
+  }
+  // Warnings: weather_code >= 95 = thunderstorm
+  if(warn&&warn.hourly&&warn.hourly.weather_code){
+    try{
+      const danger=warn.hourly.weather_code.some(c=>c>=95);
+      if(danger)chips.push(`<span class="ex-chip ex-warn">⚠️ Burza w prognozie</span>`);
+    }catch(e){}
+  }
+  if(!chips.length)return;
+  const bar=document.createElement('div');bar.id='extras-bar';bar.className='extras-bar';bar.innerHTML=chips.join('');
+  const hero=document.getElementById('hero-card');if(hero)hero.appendChild(bar);
+}
+
 function nowIdx(){const h=W.hourly,ts=new Date().toISOString().slice(0,10);let i=h.time.findIndex(t=>t.startsWith(ts));if(i<0)i=0;return Math.min(i+new Date().getHours(),h.time.length-1)}
 
 // ═══ PORADA 10–16 ═══
@@ -971,7 +1050,7 @@ const CAL_MONTH_GEN=['stycznia','lutego','marca','kwietnia','maja','czerwca','li
 const CAL_DOW_MAP={'pon':1,'wt':2,'śr':3,'czw':4,'pt':5,'sob':6,'ndz':0};
 const CAL_DOW_LABELS=['Pn','Wt','Śr','Cz','Pt','Sb','Nd'];
 
-let CAL_EVENTS=[],CAL_GROUP='all',CAL_VIEW_DATE=new Date(),CAL_SELECTED_DAY=null;
+let CAL_AB_A=[],CAL_AB_B=[];let CAL_EVENTS=[],CAL_GROUP='all',CAL_VIEW_DATE=new Date(),CAL_SELECTED_DAY=null;
 
 // CSV parser handling quoted fields, escaped quotes, multiline cells
 function calParseCSV(text){
@@ -1035,6 +1114,7 @@ function calParseEvents(rows){
     if(!monthNum){i++;continue}
     const dowRow=rows[i+1];
     if(!dowRow){i++;continue}
+    // dowRow has "dzień tyg." in col 1, weekdays from col 2
     const firstDow=(dowRow[2]||'').toLowerCase().trim();
     const year=calDetectYear(monthName,firstDow);
     if(!year){i+=2;continue}
@@ -1043,62 +1123,85 @@ function calParseEvents(rows){
     let j=i+2;
     while(j<rows.length){
       const groupRow=rows[j];
-      if(!groupRow){break}
-      const labelRaw=(groupRow[0]||'').trim();
-      const labelLow=labelRaw.toLowerCase();
-      if(!labelRaw){
-        // empty col 0 — check if entire row is empty (= block separator)
-        if(!groupRow.some(c=>c&&c.trim()))break;
-        j++;continue;
-      }
-      if(CAL_MONTHS[labelLow])break; // next month
+      if(!groupRow){j++;continue}
+      // Check col 0 for next month name (block terminator)
+      const col0=(groupRow[0]||'').trim().toLowerCase();
+      if(CAL_MONTHS[col0])break;
+      // Group label is in col 1
+      const labelRaw=(groupRow[1]||'').trim();
+      if(!labelRaw){j++;continue}
       const grpCode=calNormGroup(labelRaw);
-      if(grpCode){
-        // Track parent A/B for Kadra WOZŻ attribution
-        if(grpCode==='A'||grpCode==='B')parentGroup=grpCode;
-        let effectiveGroup=grpCode;
-        if(grpCode==='K'&&parentGroup)effectiveGroup=parentGroup;
-        // Walk cells day-by-day
-        let curEvt=null;
-        for(let day=1;day<=numDays;day++){
-          const colIdx=day+1;
-          const cell=(groupRow[colIdx]||'').trim();
-          if(cell){
-            if(curEvt){
-              curEvt.endDay=day;
-              if(!calIsMarker(cell)&&(calIsMarker(curEvt.title)||cell.length>curEvt.title.length)){
-                curEvt.title=cell;
-              }
-            } else {
-              curEvt={startDay:day,endDay:day,title:cell};
+      if(!grpCode){j++;continue} // skip "dzień tyg.", legend rows, unknowns
+      // Track parent A/B for Kadra WOZŻ attribution
+      if(grpCode==='A'||grpCode==='B')parentGroup=grpCode;
+      let effectiveGroup=grpCode;
+      if(grpCode==='K'&&parentGroup)effectiveGroup=parentGroup;
+      // Walk cells day-by-day (day N is in col N+1: col 2 = day 1)
+      let curEvt=null;
+      for(let day=1;day<=numDays;day++){
+        const colIdx=day+1;
+        const cell=(groupRow[colIdx]||'').trim();
+        if(cell){
+          if(curEvt){
+            curEvt.endDay=day;
+            if(!calIsMarker(cell)&&(calIsMarker(curEvt.title)||cell.length>curEvt.title.length)){
+              curEvt.title=cell;
             }
           } else {
-            if(curEvt){
-              const t=curEvt.title.trim();
-              if(t&&!calIsMarker(t)){
-                events.push({start:new Date(year,monthNum-1,curEvt.startDay),end:new Date(year,monthNum-1,curEvt.endDay),title:t,group:effectiveGroup});
-              }
-              curEvt=null;
+            curEvt={startDay:day,endDay:day,title:cell};
+          }
+        } else {
+          if(curEvt){
+            const t=curEvt.title.trim();
+            if(t&&!calIsMarker(t)){
+              events.push({start:new Date(year,monthNum-1,curEvt.startDay),end:new Date(year,monthNum-1,curEvt.endDay),title:t,group:effectiveGroup});
             }
+            curEvt=null;
           }
         }
-        if(curEvt){
-          const t=curEvt.title.trim();
-          if(t&&!calIsMarker(t)){
-            events.push({start:new Date(year,monthNum-1,curEvt.startDay),end:new Date(year,monthNum-1,curEvt.endDay),title:t,group:effectiveGroup});
-          }
+      }
+      if(curEvt){
+        const t=curEvt.title.trim();
+        if(t&&!calIsMarker(t)){
+          events.push({start:new Date(year,monthNum-1,curEvt.startDay),end:new Date(year,monthNum-1,curEvt.endDay),title:t,group:effectiveGroup});
         }
       }
       j++;
     }
-    i=j+1;
+    i=j;
   }
   return events;
 }
 
+
+const CAL_AB_DATA=[{"d": "2026-04-11", "aT": "Trening", "aL": "Puck", "aU": null, "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-04-12", "aT": "Trening", "aL": "Puck", "aU": null, "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-04-17", "aT": "Trening", "aL": "Puck", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-04-18", "aT": "Trening", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": null}, {"d": "2026-04-19", "aT": "Trening", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": null}, {"d": "2026-04-24", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-04-25", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-04-26", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-04-27", "aT": "Regaty", "aL": "Puck", "aU": "I eliminacja ME i Mś", "bT": null, "bL": null, "bU": null}, {"d": "2026-04-28", "aT": "Regaty", "aL": "Puck", "aU": "I eliminacja ME i Mś", "bT": null, "bL": null, "bU": null}, {"d": "2026-04-29", "aT": "Regaty", "aL": "Puck", "aU": "I eliminacja ME i Mś", "bT": null, "bL": null, "bU": null}, {"d": "2026-04-30", "aT": "Regaty", "aL": "Puck", "aU": "I eliminacja ME i Mś", "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-05-01", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": "Regaty", "bL": "Puck", "bU": null}, {"d": "2026-05-02", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": "Regaty", "bL": "Puck", "bU": null}, {"d": "2026-05-03", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": "Regaty", "bL": "Puck", "bU": null}, {"d": "2026-05-04", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-05", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-06", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-09", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": null}, {"d": "2026-05-10", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": null}, {"d": "2026-05-13", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-14", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-15", "aT": "Regaty", "aL": "Gdynia", "aU": "I el OOM + II el Mś, ME", "bT": null, "bL": null, "bU": null}, {"d": "2026-05-16", "aT": "Regaty", "aL": "Gdynia", "aU": "I el OOM + II el Mś, ME", "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-05-17", "aT": "Regaty", "aL": "Gdynia", "aU": "I el OOM + II el Mś, ME", "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-05-18", "aT": "Regaty", "aL": "Gdynia", "aU": "I el OOM + II el Mś, ME", "bT": null, "bL": null, "bU": null}, {"d": "2026-05-26", "aT": "Zgrupowanie", "aL": "Dziwnów", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-27", "aT": "Zgrupowanie", "aL": "Dziwnów", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-28", "aT": "Regaty", "aL": "Dziwnów", "aU": "II el OOM + III el. Mś, ME", "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-05-29", "aT": "Regaty", "aL": "Dziwnów", "aU": "II el OOM + III el. Mś, ME", "bT": "Regaty", "bL": "Iława", "bU": "II el. MPM"}, {"d": "2026-05-30", "aT": "Regaty", "aL": "Dziwnów", "aU": "II el OOM + III el. Mś, ME", "bT": "Regaty", "bL": "Iława", "bU": "II el. MPM"}, {"d": "2026-05-31", "aT": "Regaty", "aL": "Dziwnów", "aU": "II el OOM + III el. Mś, ME", "bT": "Regaty", "bL": "Iława", "bU": "II el. MPM"}, {"d": "2026-06-04", "aT": "Zgrupowanie", "aL": "Nieporęt", "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-06-05", "aT": "Zgrupowanie", "aL": "Nieporęt", "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-06-06", "aT": "Zgrupowanie", "aL": "Nieporęt", "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-06-07", "aT": "Zgrupowanie", "aL": "Nieporęt", "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-06-11", "aT": null, "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-06-12", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Giżycko", "bU": "III el. MPM"}, {"d": "2026-06-13", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Giżycko", "bU": "III el. MPM"}, {"d": "2026-06-14", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Giżycko", "bU": "III el. MPM"}, {"d": "2026-06-20", "aT": "?", "aL": "Zegrze", "aU": null, "bT": "?", "bL": "Zegrze", "bU": null}, {"d": "2026-06-21", "aT": "?", "aL": "Zegrze", "aU": null, "bT": "?", "bL": "Zegrze", "bU": null}, {"d": "2026-06-27", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-06-28", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-06-29", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-06-30", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-01", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-02", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-03", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-04", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-05", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-06", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Gdynia", "bU": "Kinder Joy"}, {"d": "2026-07-07", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Gdynia", "bU": "Kinder Joy"}, {"d": "2026-07-08", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Gdynia", "bU": "Kinder Joy"}, {"d": "2026-07-09", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-10", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-11", "aT": "Transport", "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-07-15", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-16", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-17", "aT": "?", "aL": "Puck", "aU": "kadry do ME i Mś", "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-18", "aT": "?", "aL": "Puck", "aU": "kadry do ME i Mś", "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-19", "aT": "?", "aL": "Puck", "aU": "kadry do ME i Mś", "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-20", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": "IV el. MPM"}, {"d": "2026-07-21", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": "IV el. MPM"}, {"d": "2026-07-22", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": "IV el. MPM"}, {"d": "2026-07-25", "aT": null, "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-07-26", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-27", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-28", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-29", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-30", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-31", "aT": "Regaty", "aL": "Kiekrz", "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-01", "aT": "Regaty", "aL": "Kiekrz", "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-02", "aT": "Regaty", "aL": "Kiekrz", "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-03", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-08-04", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-05", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-06", "aT": "Regaty", "aL": "Mrzeżyno", "aU": "III el. OOM", "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-07", "aT": "Regaty", "aL": "Mrzeżyno", "aU": "III el. OOM", "bT": "Regaty", "bL": "Złocieniec", "bU": "U12"}, {"d": "2026-08-08", "aT": "Regaty", "aL": "Mrzeżyno", "aU": "III el. OOM", "bT": "Regaty", "bL": "Złocieniec", "bU": "U12"}, {"d": "2026-08-09", "aT": "Regaty", "aL": "Mrzeżyno", "aU": "III el. OOM", "bT": "Regaty", "bL": "Złocieniec", "bU": "U12"}, {"d": "2026-08-10", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-08-11", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-12", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-13", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-14", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-15", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-16", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-17", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-18", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-19", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-08-20", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-21", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-22", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-23", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Zgrupowanie", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-24", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-25", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-26", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": "MPM"}, {"d": "2026-08-27", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": "MPM"}, {"d": "2026-08-28", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": "MPM"}, {"d": "2026-08-29", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": "MPM"}, {"d": "2026-08-30", "aT": null, "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-09-05", "aT": "Regaty", "aL": "Zegrze", "aU": "Mistrzostwa Warszawy", "bT": "Regaty", "bL": "Zegrze", "bU": "Mistrzostwa Warszawy"}, {"d": "2026-09-06", "aT": "Regaty", "aL": "Zegrze", "aU": "Mistrzostwa Warszawy", "bT": "Regaty", "bL": "Zegrze", "bU": "Mistrzostwa Warszawy"}, {"d": "2026-09-12", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-09-13", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-09-18", "aT": "?", "aL": "Dziwnów", "aU": "MM PSKO", "bT": "Regaty", "bL": "?", "bU": "MM PSKO"}, {"d": "2026-09-19", "aT": "?", "aL": "Dziwnów", "aU": "MM PSKO", "bT": "Regaty", "bL": "?", "bU": "MM PSKO"}, {"d": "2026-09-20", "aT": "?", "aL": "Dziwnów", "aU": "MM PSKO", "bT": "Regaty", "bL": "?", "bU": "MM PSKO"}, {"d": "2026-09-25", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Nieporęt", "bU": "MMM"}, {"d": "2026-09-26", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Nieporęt", "bU": "MMM"}, {"d": "2026-09-27", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Nieporęt", "bU": "MMM"}, {"d": "2026-10-02", "aT": null, "aL": null, "aU": null, "bT": "?", "bL": "Dzierżno", "bU": "VIII  Cup"}, {"d": "2026-10-03", "aT": null, "aL": null, "aU": null, "bT": "?", "bL": "Dzierżno", "bU": "VIII  Cup"}, {"d": "2026-10-04", "aT": null, "aL": null, "aU": null, "bT": "?", "bL": "Dzierżno", "bU": "VIII  Cup"}, {"d": "2026-10-10", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-10-11", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-10-17", "aT": "Regaty", "aL": null, "aU": "Puchar Rektora UW", "bT": "Regaty", "bL": null, "bU": "Puchar Rektora UW"}, {"d": "2026-10-18", "aT": "Regaty", "aL": null, "aU": "Puchar Rektora UW", "bT": "Regaty", "bL": null, "bU": "Puchar Rektora UW"}, {"d": "2026-10-24", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-10-25", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-10-31", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}];
+function calBuildABEvents(grp){
+  const tK=grp.toLowerCase()+'T',lK=grp.toLowerCase()+'L',uK=grp.toLowerCase()+'U';
+  const out=[];
+  for(const r of CAL_AB_DATA){
+    const t=r[tK];if(!t)continue;
+    const [y,m,d]=r.d.split('-').map(Number);
+    const dt=new Date(y,m-1,d);
+    const cleanT=(t==='?')?'Do weryfikacji':t;
+    const l=r[lK];const cleanL=(l&&l!=='?')?l:(l==='?'?'lokalizacja do potwierdzenia':null);
+    let title=cleanT;if(cleanL)title+=' — '+cleanL;
+    out.push({start:dt,end:new Date(dt),title:title,group:grp,notes:r[uK]||null});
+  }
+  return out;
+}
+
 async function calLoad(){
+  CAL_AB_A=calBuildABEvents("A");CAL_AB_B=calBuildABEvents("B");
   const upEl=document.getElementById('cal-upcoming');
   const titleEl=document.getElementById('cm-title');
+  // Detect local file — Google Sheets blocks fetch from file:// (origin null)
+  if(location.protocol==='file:'||location.origin==='null'){
+    console.warn('[Kalendarz] uruchomiono z lokalnego pliku — Google Sheets odrzuca żądania z origin=null. Otwórz stronę z https://devezo777.github.io/ykpoptimistweather/');
+    upEl.innerHTML='<div class="cal-up-empty">⚠️ Kalendarz wymaga otwarcia strony z <b>https://devezo777.github.io/ykpoptimistweather/</b> — nie działa z lokalnego pliku</div>';
+    document.getElementById('cm-grid').innerHTML='';
+    if(titleEl)titleEl.textContent='';
+    return;
+  }
   let bestEvents=[];
   let lastErr=null;
   for(const url of CAL_SHEET_URLS){
@@ -1110,6 +1213,11 @@ async function calLoad(){
       if(!res.ok){lastErr=new Error('HTTP '+res.status);console.warn('[Kalendarz] URL failed:',url,res.status);continue}
       const text=await res.text();
       const rows=calParseCSV(text);
+      // DIAGNOSTIC: dump first 25 rows to understand CSV structure
+      console.log('[Kalendarz] === PIERWSZE 25 WIERSZY CSV ===');
+      for(let k=0;k<Math.min(25,rows.length);k++){
+        console.log(`  r${k}[${rows[k].length} kol]:`,JSON.stringify(rows[k].slice(0,12)));
+      }
       const events=calParseEvents(rows);
       console.log('[Kalendarz] URL',url.split('/').slice(-2).join('/'),'→',rows.length,'wierszy,',events.length,'wydarzeń');
       if(events.length>bestEvents.length)bestEvents=events;
@@ -1147,7 +1255,7 @@ async function calLoad(){
 }
 
 function calFiltered(){
-  if(CAL_GROUP==='all')return CAL_EVENTS;
+  if(CAL_GROUP==='A')return CAL_AB_A;if(CAL_GROUP==='B')return CAL_AB_B;if(CAL_GROUP==='all')return CAL_EVENTS;
   const filtered=CAL_EVENTS.filter(e=>e.group===CAL_GROUP);
   if(filtered.length===0&&CAL_EVENTS.length>0){
     const groupsPresent=[...new Set(CAL_EVENTS.map(e=>e.group))];
