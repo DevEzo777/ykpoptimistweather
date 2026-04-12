@@ -77,8 +77,76 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .topbar-inner{max-width:680px;margin:0 auto;padding:0 20px;display:flex;align-items:center;height:48px;gap:10px}
 .tb-logo{width:26px;height:26px;border-radius:7px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center}
 .tb-logo img{width:100%;height:100%;object-fit:cover;border-radius:7px}
-.tb-name{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;flex:1;color:var(--bar-text);letter-spacing:.2px}
-.tb-name span{font-weight:300;color:var(--bar-text2);margin-left:5px}
+.tb-name{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;flex:1;color:var(--bar-text);letter-spacing:.1px;line-height:1.25}
+.tb-name span{font-weight:300;color:var(--bar-text2);display:block;font-size:10px;letter-spacing:.2px}
+
+/* ═══ INFO BUTTON ═══ */
+.tb-info{color:var(--bar-text3);background:none;border:none;cursor:pointer;padding:6px;border-radius:7px;font-size:14px;display:flex;transition:all .2s;flex-shrink:0}
+.tb-info:hover{color:var(--bar-text);background:rgba(255,255,255,.08)}
+
+/* ═══ MODAL ═══ */
+.modal-backdrop{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  align-items:flex-end;justify-content:center;padding:0;
+}
+.modal-backdrop.open{display:flex}
+@media(min-width:480px){.modal-backdrop{align-items:center;padding:20px}}
+.modal-sheet{
+  background:var(--surface);border-radius:20px 20px 0 0;
+  padding:20px 20px 32px;width:100%;max-width:480px;
+  box-shadow:0 -4px 40px rgba(0,0,0,.18);
+  animation:slideUp .22s cubic-bezier(.4,0,.2,1);
+}
+@media(min-width:480px){.modal-sheet{border-radius:18px;padding:24px;animation:fadeIn .18s ease}}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:0 auto 16px;display:block}
+@media(min-width:480px){.modal-handle{display:none}}
+.modal-title{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px}
+.modal-body{font-size:13px;color:var(--text2);line-height:1.65}
+.modal-body p{margin-bottom:10px}
+.modal-body p:last-child{margin-bottom:0}
+.modal-body ul{margin:6px 0 10px 14px}
+.modal-body li{margin-bottom:3px}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  background:var(--glass2);border:none;border-radius:8px;
+  width:28px;height:28px;cursor:pointer;color:var(--text2);
+  font-size:14px;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.modal-close:hover{background:var(--surface3);color:var(--text)}
+.modal-sheet{position:relative}
+
+/* ═══ TOOLTIP ═══ */
+.tip-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:none;border:none;cursor:pointer;padding:2px 3px;
+  color:var(--text3);font-size:12px;vertical-align:middle;
+  border-radius:4px;transition:color .15s;flex-shrink:0;
+  -webkit-user-select:none;user-select:none;
+  text-transform:none;letter-spacing:normal;
+}
+.tip-btn:hover{color:var(--text2)}
+.tip-wrap{position:relative;display:inline-flex;align-items:center}
+.tip-box{
+  display:none;position:absolute;z-index:90;
+  background:var(--bar-bg);color:var(--bar-text);
+  font-size:11.5px;line-height:1.5;
+  border-radius:10px;padding:10px 12px;
+  width:230px;box-shadow:0 8px 28px rgba(0,0,0,.22);
+  pointer-events:none;
+  text-transform:none;letter-spacing:normal;font-weight:400;
+  font-family:'DM Sans',sans-serif;
+}
+[data-theme="dark"] .tip-box{box-shadow:0 8px 28px rgba(0,0,0,.5)}
+.tip-box.open{display:block}
+/* position variants */
+.tip-box.tip-below{top:calc(100% + 6px);left:50%;transform:translateX(-50%)}
+.tip-box.tip-above{bottom:calc(100% + 6px);left:50%;transform:translateX(-50%)}
+/* clamp on narrow screens */
+@media(max-width:360px){.tip-box{width:190px}}
 .tb-actions{display:flex;gap:4px;flex-shrink:0;align-items:center}
 .tb-actions a,.tb-actions button{color:var(--bar-text3);transition:all .2s;display:flex;padding:6px;border-radius:7px;background:none;border:none;cursor:pointer;font-size:14px}
 .tb-actions a:hover,.tb-actions a:active,.tb-actions button:hover{color:var(--bar-text);background:rgba(255,255,255,.08)}
@@ -241,7 +309,25 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .hw-pct{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;line-height:1.1;margin-top:2px}
 .hw-item.hw-main .hw-pct{font-size:18px;font-weight:800}
 
-/* Porada 10–16 */
+/* Porada card — wyrównana, z pionowym paskiem koloru typu dnia */
+.advice-card{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
+.aux-card{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
+.advice-inner{
+  border-radius:10px;padding:10px 12px;
+  border-left:3px solid transparent;
+  background:var(--glass);
+}
+/* kolory paska i tła wg typu dnia */
+.adv-niestabilny{border-left-color:#94a3b8;background:rgba(148,163,184,.07)}
+.adv-szkwalowy  {border-left-color:#d97706;background:rgba(217,119,6,.07)}
+.adv-taktyczny  {border-left-color:#0891b2;background:rgba(8,145,178,.07)}
+.adv-mocny      {border-left-color:#2563eb;background:rgba(37,99,235,.07)}
+.adv-stabilny   {border-left-color:#059669;background:rgba(5,150,105,.06)}
+[data-theme="dark"] .adv-niestabilny{background:rgba(148,163,184,.06)}
+[data-theme="dark"] .adv-szkwalowy  {background:rgba(217,119,6,.09)}
+[data-theme="dark"] .adv-taktyczny  {background:rgba(8,145,178,.09)}
+[data-theme="dark"] .adv-mocny      {background:rgba(37,99,235,.09)}
+[data-theme="dark"] .adv-stabilny   {background:rgba(5,150,105,.08)}
 .hero-advice{padding:10px 14px 12px;border-top:1px solid var(--border)}
 .ha-head{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .ha-head::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -420,8 +506,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 /* === Added layout tabs === */
 .subnav{position:sticky;top:48px;z-index:45;padding:10px 0 12px;background:linear-gradient(to bottom,var(--bg) 0%,var(--bg) 72%,transparent 100%)}
 .tab-switch{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--surface);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.04)}
-.tab-btn{appearance:none;border:none;background:transparent;color:var(--text2);font:600 12px 'DM Sans',sans-serif;padding:9px 14px;border-radius:999px;cursor:pointer;transition:all .2s}
+.tab-btn{appearance:none;border:none;background:transparent;color:var(--text2);font:600 12px 'DM Sans',sans-serif;padding:9px 14px;border-radius:999px;cursor:pointer;transition:all .18s}
 .tab-btn.on{background:rgba(37,99,235,.1);color:var(--blue)}
+@media(hover:hover){
+  .tab-btn:not(.on):hover{background:var(--glass2);color:var(--text);transform:translateY(-1px)}
+}
 .tab-pane{display:none}
 .tab-pane.active{display:block}
 .page-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin:6px 0 12px}
@@ -469,7 +558,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .wai-time{font-size:8.5px;color:var(--text3);opacity:.65;margin-top:1px}
 .wai-score{font-family:'Outfit',sans-serif;font-size:13px;font-weight:800;line-height:1;flex-shrink:0}
 .wai.wai-main .wai-score{font-size:16px}
-.windows-card,.advice-card,.aux-card{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
+.windows-card{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
 .windows-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
 .win-box{background:var(--glass);border:1px solid var(--border);border-radius:11px;padding:9px 6px;text-align:center}
 .win-box.main{background:var(--glass2);border-color:var(--border2);box-shadow:inset 0 0 0 1px rgba(37,99,235,.06)}
@@ -562,14 +651,36 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-family:Outfit,sans-serif;font-size:9px;font-weight:800;color:#fff;letter-spacing:.5px">YKP</div>
     </div>
-    <div class="tb-name">YKP Warszawa<span>Optimist Sailing Weather</span></div>
+    <div class="tb-name">YKP Warszawa<span>Optimist Regatta Dashboard</span></div>
     <div class="tb-actions">
+      <button class="tb-info" onclick="openModal()" title="O aplikacji">ℹ️</button>
       <button onclick="toggleTheme()" id="theme-btn" title="Zmień motyw">🌙</button>
       <a href="https://www.facebook.com/ykpwarszawa" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
       <a href="https://www.instagram.com/ykpwarszawa/" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
     </div>
   </div>
 </header>
+
+<!-- Modal: O aplikacji -->
+<div class="modal-backdrop" id="app-modal" onclick="closeModalOnBack(event)">
+  <div class="modal-sheet">
+    <span class="modal-handle"></span>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">O aplikacji</div>
+    <div class="modal-body">
+      <p><strong>YKP Warszawa | Optimist Regatta Dashboard</strong> pomaga szybko ocenić warunki regatowe i treningowe w klasie Optimist oraz sprawdzić plan wydarzeń sekcji.</p>
+      <p>Ocena dnia powstaje z trzech okien czasowych:</p>
+      <ul>
+        <li>poranek 9–11</li>
+        <li>główne okno 11–16</li>
+        <li>końcówka 16–18</li>
+      </ul>
+      <p>Największy wpływ na wynik ma środkowe okno, bo najlepiej odpowiada typowym godzinom regatowym.</p>
+      <p><strong>Porada 10–16</strong> to krótkie podsumowanie warunków w najważniejszej części dnia. Pokazuje charakter dnia, sugerowany trym i główny priorytet na wodzie.</p>
+      <p><strong>Źródła danych:</strong> Prognoza pochodzi z Open-Meteo. Aplikacja może też pokazywać dodatkowe informacje: fala, zgodność prognoz i ostrzeżenia pogodowe.</p>
+    </div>
+  </div>
+</div>
 
 
 <div class="wrap">
@@ -626,7 +737,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
   <section class="wx">
     <div id="wld" class="ld"><div class="spinner"></div>Ładowanie danych pogodowych…</div>
     <div id="wct" style="display:none">
-      <div class="section-label" style="margin-top:8px">Dziś</div>
+      <div class="section-label" style="margin-top:8px;display:flex;align-items:center;gap:5px">
+        Dziś
+        <span class="tip-wrap">
+          <button class="tip-btn" onclick="toggleTip('tip-day',event)" aria-label="Wyjaśnienie oceny dnia">ℹ️</button>
+          <span class="tip-box tip-below" id="tip-day">Ocena dnia pokazuje, jak korzystne są warunki do regat i treningu Optimista. Wynik łączy trzy okna dnia, z największą wagą dla godzin 11–16.</span>
+        </span>
+      </div>
       <div id="hero-card" class="hero-card"></div>
       <div class="wx-week-head">
         <div class="section-label">Kolejne dni</div>
@@ -697,6 +814,23 @@ function fallbackCopy(text){
   document.body.removeChild(ta);
 }
 function showCopied(){const el=document.getElementById('wv-copied');el.style.opacity='1';setTimeout(()=>el.style.opacity='0',2000)}
+
+// ═══ MODAL ═══
+function openModal(){document.getElementById('app-modal').classList.add('open')}
+function closeModal(){document.getElementById('app-modal').classList.remove('open')}
+function closeModalOnBack(e){if(e.target===document.getElementById('app-modal'))closeModal()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})
+
+// ═══ TOOLTIPS ═══
+function toggleTip(id,e){
+  e.stopPropagation();
+  const box=document.getElementById(id);
+  const wasOpen=box.classList.contains('open');
+  // close all tips first
+  document.querySelectorAll('.tip-box.open').forEach(t=>t.classList.remove('open'));
+  if(!wasOpen)box.classList.add('open');
+}
+document.addEventListener('click',()=>document.querySelectorAll('.tip-box.open').forEach(t=>t.classList.remove('open')));
 
 // ═══ THEME ═══
 function toggleTheme(){
@@ -932,8 +1066,8 @@ function renderHero(name,lat,lon){
         ${metricCard('Temperatura',`${t.toFixed(0)}°`)}
       </div>
       <div class="advice-card hero-advice">
-        <div class="ha-head">⛵ Porada 10–16</div>
-        ${advice?`<div class="ha-row"><div class="ha-item ha-type-${advice.cssKey}"><div class="ha-lbl">Charakter dnia</div><div class="ha-val">${advice.type}</div></div><div class="ha-item"><div class="ha-lbl">Trym</div><div class="ha-val">${advice.trim}</div></div><div class="ha-item ha-pri"><div class="ha-lbl">Priorytet</div><div class="ha-val">${advice.priority}</div></div></div>`:'<div class="ha-empty">Brak danych dla okna 10–16</div>'}
+        <div class="ha-head">⛵ Porada 10–16 <span class="tip-wrap" style="margin-left:4px"><button class="tip-btn" onclick="toggleTip('tip-adv',event)" aria-label="Wyjaśnienie porady">ℹ️</button><span class="tip-box tip-above" id="tip-adv">To szybkie podsumowanie warunków w głównym oknie regatowym. Porada bazuje na wietrze, porywach, zmianach kierunku i opadzie.</span></span></div>
+        ${advice?`<div class="advice-inner adv-${advice.cssKey}"><div class="ha-row"><div class="ha-item"><div class="ha-lbl">Charakter dnia</div><div class="ha-val ha-type-${advice.cssKey}">${advice.type}</div></div><div class="ha-item"><div class="ha-lbl">Trym</div><div class="ha-val">${advice.trim}</div></div><div class="ha-item ha-pri"><div class="ha-lbl">Priorytet</div><div class="ha-val">${advice.priority}</div></div></div></div>`:'<div class="ha-empty">Brak danych dla okna 10–16</div>'}
       </div>
       <div class="aux-card">
         <div class="ha-head">ℹ️ Dodatkowe warunki</div>
