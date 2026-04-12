@@ -115,23 +115,23 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 /* ═══ CHIPS ═══ */
 .cg{margin-bottom:10px}
 .cg-head{
-  display:flex;align-items:center;justify-content:space-between;
-  cursor:pointer;padding:3px 2px;margin-bottom:5px;
+  display:flex;align-items:center;gap:6px;
+  cursor:pointer;padding:4px 2px;margin-bottom:5px;
   -webkit-user-select:none;user-select:none;
 }
-.cg-head:hover .cg-title{color:var(--text2)}
-.cg-title{
-  font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;
-  text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);
-  transition:color .15s;
-}
+.cg-head:hover .cg-title{color:var(--text)}
 .cg-chevron{
-  font-size:10px;color:var(--text3);
+  font-size:11px;color:var(--text2);flex-shrink:0;
   transition:transform .22s cubic-bezier(.4,0,.2,1);
   line-height:1;display:flex;align-items:center;
 }
 .cg.collapsed .cg-chevron{transform:rotate(-90deg)}
 .cg.collapsed .chips{display:none}
+.cg-title{
+  font-family:'Outfit',sans-serif;font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);
+  transition:color .15s;
+}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
 .chip{
   display:inline-flex;align-items:center;gap:4px;
@@ -442,6 +442,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .hero-loc{font-size:12px;color:var(--text3);margin-bottom:8px}
 .hero-condition{display:flex;align-items:center;gap:8px;color:var(--text2);font-size:12px;margin-bottom:12px;flex-wrap:wrap}
 .hero-summary{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.hero-ring-wrap{position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hero-ring-wrap canvas{display:block}
+.hero-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 .hero-bigpct{font-family:'Outfit',sans-serif;font-size:34px;font-weight:800;line-height:1;color:var(--text)}
 .hero-status{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;line-height:1.1;color:var(--text)}
 .hero-reasons{font-size:12px;color:var(--text2);margin-top:2px;text-align:right;max-width:180px}
@@ -572,8 +575,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
     </div>
     <div class="cg" id="cg-pl">
       <div class="cg-head" onclick="toggleCg('cg-pl')">
-        <div class="cg-title">Polska</div>
         <span class="cg-chevron">▾</span>
+        <div class="cg-title">Polska</div>
       </div>
       <div class="chips">
         <div class="chip on" data-lat="52.4253" data-lon="20.9978" data-name="YKP Warszawa — Port Pilawa, Zegrze" onclick="pick(this)"><span class="fl">🏠</span>Port Pilawa</div>
@@ -589,8 +592,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
     </div>
     <div class="cg collapsed" id="cg-world">
       <div class="cg-head" onclick="toggleCg('cg-world')">
-        <div class="cg-title">Świat</div>
         <span class="cg-chevron">▾</span>
+        <div class="cg-title">Świat</div>
       </div>
       <div class="chips">
         <div class="chip" data-lat="45.8857" data-lon="10.8428" data-name="Riva del Garda" onclick="pick(this)"><span class="fl">🇮🇹</span>Riva del Garda</div>
@@ -606,6 +609,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
   <section class="wx">
     <div id="wld" class="ld"><div class="spinner"></div>Ładowanie danych pogodowych…</div>
     <div id="wct" style="display:none">
+      <div class="section-label" style="margin-top:8px">Dziś</div>
       <div id="hero-card" class="hero-card"></div>
       <div class="wx-week-head">
         <div class="section-label">Kolejne dni</div>
@@ -752,9 +756,9 @@ function rS(a,g,rn,rp){
 }
 function drawRing(id,pct,cls){
   const cv=document.getElementById(id); if(!cv) return;
-  const ctx=cv.getContext('2d'); const dpr=window.devicePixelRatio||1; const sz=cv.offsetWidth||68;
+  const ctx=cv.getContext('2d'); const dpr=window.devicePixelRatio||1; const sz=cv.offsetWidth||100;
   cv.width=sz*dpr; cv.height=sz*dpr; ctx.scale(dpr,dpr);
-  const cx=sz/2,cy=sz/2,r=sz/2-5,lw=4;
+  const cx=sz/2,cy=sz/2,r=sz/2-6,lw=5;
   ctx.beginPath(); ctx.arc(cx,cy,r,-Math.PI/2,Math.PI*1.5); ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--ring-track').trim(); ctx.lineWidth=lw; ctx.lineCap='round'; ctx.stroke();
   if(pct>0){ ctx.beginPath(); ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*pct/100); ctx.strokeStyle=scoreClr(cls); ctx.lineWidth=lw; ctx.lineCap='round'; ctx.stroke(); }
 }
@@ -874,6 +878,7 @@ function renderHero(name,lat,lon){
   const tw1=todayStats?winScore(todayStats.w1):null, tw2=todayStats?winScore(todayStats.w2):null, tw3=todayStats?winScore(todayStats.w3):null;
   let score=0; if(todayStats&&(tw1||tw2||tw3)){ let total=0,wsum=0; if(tw1){total+=tw1.s*0.15;wsum+=0.15} if(tw2){total+=tw2.s*0.70;wsum+=0.70} if(tw3){total+=tw3.s*0.15;wsum+=0.15} score=wsum?Math.round(total/wsum):0; } else { score=rS(w,g,h.precipitation[i]||0,h.precipitation_probability[i]||0).s; }
   const status=statusFromScore(score);
+  const ringId='hr'+Date.now();
   document.getElementById('hero-card').innerHTML=`
     <div class="hero-main">
       <div class="hero-top">
@@ -882,9 +887,14 @@ function renderHero(name,lat,lon){
           <div class="hero-condition"><span class="hero-wx-icon">${WI[code]||'🌤️'}</span><span>${WT[code]||''}</span><span>odcz. <b>${f.toFixed(0)}°</b></span></div>
         </div>
         <div class="hero-summary">
-          <div class="hero-bigpct" style="color:${scoreClr(status)}">${score}%</div>
-          <div class="hero-status" style="color:${scoreClr(status)}">${status}</div>
-          <div class="hero-reasons">${reasons.length?reasons.join(' · '):'—'}</div>
+          <div class="hero-ring-wrap">
+            <canvas id="${ringId}" width="200" height="200" style="width:100px;height:100px"></canvas>
+            <div class="hero-ring-inner">
+              <div class="hero-bigpct" style="color:${scoreClr(status)};font-size:30px;line-height:1">${score}%</div>
+              <div class="hero-status" style="color:${scoreClr(status)};font-size:11px;font-weight:700;text-align:center;line-height:1.2;max-width:80px">${status}</div>
+            </div>
+          </div>
+          <div class="hero-reasons" style="margin-top:4px">${reasons.length?reasons.join(' · '):'—'}</div>
         </div>
       </div>
       <div class="hero-metrics">
@@ -915,6 +925,7 @@ function renderHero(name,lat,lon){
         </div>
       </div>
     </div>`;
+  requestAnimationFrame(()=>drawRing(ringId,score,classFromScore(score)));
 }
 function getDayRacingStats(dayStr){
   const h=W.hourly; const temps=[],feels=[],winds=[],gusts=[],dirs=[]; let precip=0,maxPP=0; const w1=[],w2=[],w3=[];
