@@ -452,6 +452,23 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .metric-card{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:9px 10px}
 .metric-label{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-bottom:3px}
 .metric-value{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text)}
+.hero-score-block{display:flex;align-items:center;gap:14px;padding:10px 0 12px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.win-arc-list{flex:1;display:flex;flex-direction:column;gap:7px;min-width:0}
+.wai{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;padding:5px 8px;border-radius:8px;
+  background:var(--glass);
+}
+.wai.wai-main{
+  background:var(--glass2);border:1px solid var(--border);
+  padding-left:13px;
+}
+.wai-left{flex:1;min-width:0}
+.wai-name{font-family:'Outfit',sans-serif;font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);line-height:1.2}
+.wai.wai-main .wai-name{color:var(--text2)}
+.wai-time{font-size:8.5px;color:var(--text3);opacity:.65;margin-top:1px}
+.wai-score{font-family:'Outfit',sans-serif;font-size:13px;font-weight:800;line-height:1;flex-shrink:0}
+.wai.wai-main .wai-score{font-size:16px}
 .windows-card,.advice-card,.aux-card{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
 .windows-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
 .win-box{background:var(--glass);border:1px solid var(--border);border-radius:11px;padding:9px 6px;text-align:center}
@@ -879,37 +896,40 @@ function renderHero(name,lat,lon){
   let score=0; if(todayStats&&(tw1||tw2||tw3)){ let total=0,wsum=0; if(tw1){total+=tw1.s*0.15;wsum+=0.15} if(tw2){total+=tw2.s*0.70;wsum+=0.70} if(tw3){total+=tw3.s*0.15;wsum+=0.15} score=wsum?Math.round(total/wsum):0; } else { score=rS(w,g,h.precipitation[i]||0,h.precipitation_probability[i]||0).s; }
   const status=statusFromScore(score);
   const ringId='hr'+Date.now();
+  const waiRow=(name,time,res,isMain)=>{
+    const sc=res?scoreClr(res.c):'var(--text3)';
+    const arc=isMain?'':name==='Poranek'?'style="padding-left:8px"':'style="padding-left:11px"';
+    return`<div class="wai${isMain?' wai-main':''}" ${arc}>
+      <div class="wai-left">
+        <div class="wai-name">${name}</div>
+        <div class="wai-time">${time}</div>
+      </div>
+      <div class="wai-score" style="color:${sc}">${res?res.s+'%':'—'}</div>
+    </div>`;
+  };
   document.getElementById('hero-card').innerHTML=`
     <div class="hero-main">
-      <div class="hero-top">
-        <div class="hero-left">
-          <div class="hero-loc">📍 ${name}</div>
-          <div class="hero-condition"><span class="hero-wx-icon">${WI[code]||'🌤️'}</span><span>${WT[code]||''}</span><span>odcz. <b>${f.toFixed(0)}°</b></span></div>
+      <div class="hero-loc">📍 ${name}</div>
+      <div class="hero-score-block">
+        <div class="win-arc-list">
+          ${waiRow('Poranek','9–11',tw1,false)}
+          ${waiRow('Główne','11–16',tw2,true)}
+          ${waiRow('Końcówka','16–18',tw3,false)}
         </div>
-        <div class="hero-summary">
-          <div class="hero-ring-wrap">
-            <canvas id="${ringId}" width="200" height="200" style="width:100px;height:100px"></canvas>
-            <div class="hero-ring-inner">
-              <div class="hero-bigpct" style="color:${scoreClr(status)};font-size:30px;line-height:1">${score}%</div>
-              <div class="hero-status" style="color:${scoreClr(status)};font-size:11px;font-weight:700;text-align:center;line-height:1.2;max-width:80px">${status}</div>
-            </div>
+        <div class="hero-ring-wrap">
+          <canvas id="${ringId}" width="200" height="200" style="width:100px;height:100px"></canvas>
+          <div class="hero-ring-inner">
+            <div class="hero-bigpct" style="color:${scoreClr(status)};font-size:30px;line-height:1">${score}%</div>
+            <div class="hero-status" style="color:${scoreClr(status)};font-size:11px;font-weight:700;text-align:center;line-height:1.2;max-width:80px">${status}</div>
           </div>
-          <div class="hero-reasons" style="margin-top:4px">${reasons.length?reasons.join(' · '):'—'}</div>
         </div>
       </div>
+      <div class="hero-condition" style="margin-bottom:10px"><span class="hero-wx-icon">${WI[code]||'🌤️'}</span><span>${WT[code]||''}</span><span>odcz. <b>${f.toFixed(0)}°</b></span>${reasons.length?`<span style="color:var(--text3);font-size:11px">${reasons.join(' · ')}</span>`:''}</div>
       <div class="hero-metrics">
         ${metricCard('Wiatr',`${w.toFixed(0)} kn (${bft(w)}B)`)}
         ${metricCard('Porywy',`${g.toFixed(0)} kn`)}
         ${metricCard('Kierunek',`${wD(dir)}`)}
         ${metricCard('Temperatura',`${t.toFixed(0)}°`)}
-      </div>
-      <div class="windows-card">
-        <div class="ha-head">⛵ Okna dnia</div>
-        <div class="windows-grid">
-          ${windowCard('Poranek','9–11',tw1,false)}
-          ${windowCard('Główne okno','11–16',tw2,true)}
-          ${windowCard('Końcówka','16–18',tw3,false)}
-        </div>
       </div>
       <div class="advice-card hero-advice">
         <div class="ha-head">⛵ Porada 10–16</div>
