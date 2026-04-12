@@ -77,8 +77,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .topbar-inner{max-width:680px;margin:0 auto;padding:0 20px;display:flex;align-items:center;height:48px;gap:10px}
 .tb-logo{width:26px;height:26px;border-radius:7px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center}
 .tb-logo img{width:100%;height:100%;object-fit:cover;border-radius:7px}
-.tb-name{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;flex:1;color:var(--bar-text);letter-spacing:.1px;line-height:1.25}
-.tb-name span{font-weight:300;color:var(--bar-text2);display:block;font-size:10px;letter-spacing:.2px}
+.tb-name{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;flex:1;color:var(--bar-text);letter-spacing:.1px;line-height:1.2;min-width:0}
+.tb-name span{font-weight:400;color:var(--bar-text2);display:block;font-size:10px;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* ═══ INFO BUTTON ═══ */
 .tb-info{color:var(--bar-text3);background:none;border:none;cursor:pointer;padding:6px;border-radius:7px;font-size:14px;display:flex;transition:all .2s;flex-shrink:0}
@@ -309,45 +309,37 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .hw-pct{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;line-height:1.1;margin-top:2px}
 .hw-item.hw-main .hw-pct{font-size:18px;font-weight:800}
 
-/* Porada card — wyrównana, z pionowym paskiem koloru typu dnia */
+/* Porada card — jedna spójna karta, bez podwójnego boxowania */
 .advice-card{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
 .aux-card{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
 .advice-inner{
   border-radius:10px;padding:10px 12px;
-  border-left:3px solid transparent;
   background:var(--glass);
 }
-/* kolory paska i tła wg typu dnia */
-.adv-niestabilny{border-left-color:#94a3b8;background:rgba(148,163,184,.07)}
-.adv-szkwalowy  {border-left-color:#d97706;background:rgba(217,119,6,.07)}
-.adv-taktyczny  {border-left-color:#0891b2;background:rgba(8,145,178,.07)}
-.adv-mocny      {border-left-color:#2563eb;background:rgba(37,99,235,.07)}
-.adv-stabilny   {border-left-color:#059669;background:rgba(5,150,105,.06)}
-[data-theme="dark"] .adv-niestabilny{background:rgba(148,163,184,.06)}
+/* bardzo subtelne tło zależne od typu dnia — bez lewego paska */
+.adv-niestabilny{background:rgba(148,163,184,.06)}
+.adv-szkwalowy  {background:rgba(217,119,6,.06)}
+.adv-taktyczny  {background:rgba(8,145,178,.06)}
+.adv-mocny      {background:rgba(37,99,235,.06)}
+.adv-stabilny   {background:rgba(5,150,105,.05)}
+[data-theme="dark"] .adv-niestabilny{background:rgba(148,163,184,.07)}
 [data-theme="dark"] .adv-szkwalowy  {background:rgba(217,119,6,.09)}
-[data-theme="dark"] .adv-taktyczny  {background:rgba(8,145,178,.09)}
-[data-theme="dark"] .adv-mocny      {background:rgba(37,99,235,.09)}
-[data-theme="dark"] .adv-stabilny   {background:rgba(5,150,105,.08)}
+[data-theme="dark"] .adv-taktyczny  {background:rgba(8,145,178,.08)}
+[data-theme="dark"] .adv-mocny      {background:rgba(37,99,235,.08)}
+[data-theme="dark"] .adv-stabilny   {background:rgba(5,150,105,.07)}
 .hero-advice{padding:10px 14px 12px;border-top:1px solid var(--border)}
 .ha-head{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .ha-head::after{content:'';flex:1;height:1px;background:var(--border)}
 .ha-row{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:8px}
-.ha-item{display:flex;flex-direction:column;gap:2px;padding:7px 10px;border-radius:9px;background:var(--glass);min-width:0}
+.ha-item{display:flex;flex-direction:column;gap:2px;padding:6px 8px;border-radius:8px;min-width:0}
 .ha-lbl{font-family:'Outfit',sans-serif;font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);line-height:1.1}
 .ha-val{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:var(--text);line-height:1.2}
 .ha-item.ha-pri .ha-val{font-size:11.5px;font-weight:600;color:var(--text2);line-height:1.3}
-.ha-type-niestabilny{background:rgba(148,163,184,.12)}
 .ha-type-niestabilny .ha-val{color:#64748b}
 [data-theme="dark"] .ha-type-niestabilny .ha-val{color:#94a3b8}
-.ha-type-wymagajacy{background:rgba(220,38,38,.08)}
-.ha-type-wymagajacy .ha-val{color:var(--red)}
-.ha-type-szkwalowy{background:rgba(217,119,6,.1)}
 .ha-type-szkwalowy .ha-val{color:var(--amber)}
-.ha-type-taktyczny{background:rgba(8,145,178,.1)}
 .ha-type-taktyczny .ha-val{color:var(--cyan)}
-.ha-type-mocny{background:rgba(37,99,235,.1)}
 .ha-type-mocny .ha-val{color:var(--blue)}
-.ha-type-stabilny{background:rgba(5,150,105,.08)}
 .ha-type-stabilny .ha-val{color:var(--green)}
 .ha-empty{font-size:11px;color:var(--text3);text-align:center;padding:4px 0}
 
@@ -676,8 +668,17 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
         <li>końcówka 16–18</li>
       </ul>
       <p>Największy wpływ na wynik ma środkowe okno, bo najlepiej odpowiada typowym godzinom regatowym.</p>
+      <p>Procent dnia nie jest prostą średnią z wiatru. Każda godzina jest oceniana osobno na podstawie siły wiatru, porywów i opadu, a potem wyniki są składane w ocenę okien i całego dnia. Dzięki temu wynik zmienia się płynnie i lepiej oddaje realne warunki regatowe.</p>
       <p><strong>Porada 10–16</strong> to krótkie podsumowanie warunków w najważniejszej części dnia. Pokazuje charakter dnia, sugerowany trym i główny priorytet na wodzie.</p>
-      <p><strong>Źródła danych:</strong> Prognoza pochodzi z Open-Meteo. Aplikacja może też pokazywać dodatkowe informacje: fala, zgodność prognoz i ostrzeżenia pogodowe.</p>
+      <p><strong>Źródła danych:</strong></p>
+      <ul>
+        <li>Open-Meteo Forecast</li>
+        <li>Open-Meteo Geocoding</li>
+        <li>DWD ICON (porównanie zgodności prognozy)</li>
+        <li>Open-Meteo Marine (fala na akwenach morskich)</li>
+        <li>IMGW warnings</li>
+        <li>Google Sheets / klubowy kalendarz wydarzeń</li>
+      </ul>
     </div>
   </div>
 </div>
@@ -741,7 +742,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
         Dziś
         <span class="tip-wrap">
           <button class="tip-btn" onclick="toggleTip('tip-day',event)" aria-label="Wyjaśnienie oceny dnia">ℹ️</button>
-          <span class="tip-box tip-below" id="tip-day">Ocena dnia pokazuje, jak korzystne są warunki do regat i treningu Optimista. Wynik łączy trzy okna dnia, z największą wagą dla godzin 11–16.</span>
+          <span class="tip-box tip-below" id="tip-day">Ocena dnia pokazuje, jak korzystne są warunki do regat i treningu Optimista. Wynik składa się z trzech okien dnia, z największą wagą dla godzin 11–16, i jest liczony z danych godzinowych, a nie z jednej prostej średniej.</span>
         </span>
       </div>
       <div id="hero-card" class="hero-card"></div>
@@ -1070,7 +1071,7 @@ function renderHero(name,lat,lon){
         ${advice?`<div class="advice-inner adv-${advice.cssKey}"><div class="ha-row"><div class="ha-item"><div class="ha-lbl">Charakter dnia</div><div class="ha-val ha-type-${advice.cssKey}">${advice.type}</div></div><div class="ha-item"><div class="ha-lbl">Trym</div><div class="ha-val">${advice.trim}</div></div><div class="ha-item ha-pri"><div class="ha-lbl">Priorytet</div><div class="ha-val">${advice.priority}</div></div></div></div>`:'<div class="ha-empty">Brak danych dla okna 10–16</div>'}
       </div>
       <div class="aux-card">
-        <div class="ha-head">ℹ️ Dodatkowe warunki</div>
+        <div class="ha-head">Dodatkowe warunki</div>
         <div class="aux-grid">
           <div class="aux-item"><div class="metric-label">Ciśnienie</div><div class="metric-value">${pres?pres.toFixed(0):'—'} <span class="su">hPa</span></div></div>
           <div class="aux-item"><div class="metric-label">Wilgotność</div><div class="metric-value">${hum}<span class="su">%</span></div></div>
