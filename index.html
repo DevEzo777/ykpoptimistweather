@@ -114,7 +114,24 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 
 /* ═══ CHIPS ═══ */
 .cg{margin-bottom:10px}
-.cg-title{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:5px;padding-left:2px}
+.cg-head{
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;padding:3px 2px;margin-bottom:5px;
+  -webkit-user-select:none;user-select:none;
+}
+.cg-head:hover .cg-title{color:var(--text2)}
+.cg-title{
+  font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;
+  text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);
+  transition:color .15s;
+}
+.cg-chevron{
+  font-size:10px;color:var(--text3);
+  transition:transform .22s cubic-bezier(.4,0,.2,1);
+  line-height:1;display:flex;align-items:center;
+}
+.cg.collapsed .cg-chevron{transform:rotate(-90deg)}
+.cg.collapsed .chips{display:none}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
 .chip{
   display:inline-flex;align-items:center;gap:4px;
@@ -331,153 +348,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 }
 .wv-copy:active{transform:scale(.97)}
 .wv-skip{color:var(--text3);font-size:12px;margin-top:20px;cursor:pointer;text-decoration:underline;background:none;border:none;font-family:'DM Sans',sans-serif}
-
-.extras-bar{display:flex;flex-wrap:wrap;gap:6px;padding:8px 14px;border-top:1px solid var(--border);font-size:10.5px}
-.ex-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:100px;background:var(--glass);color:var(--text2);font-family:DM Sans,sans-serif;font-weight:500}
-.ex-chip b{color:var(--text);font-weight:700}
-.ex-conf-high{background:rgba(5,150,105,.1);color:var(--green)}
-.ex-conf-mid{background:rgba(217,119,6,.1);color:var(--amber)}
-.ex-conf-low{background:rgba(220,38,38,.1);color:var(--red)}
-.ex-warn{background:rgba(220,38,38,.12);color:var(--red);font-weight:600}
 .ft{padding:20px 0;text-align:center;font-size:9px;color:var(--text3);letter-spacing:.3px}
-
-/* ═══ TAB BAR ═══ */
-.tab-bar{
-  background:var(--bar-bg);border-bottom:1px solid var(--bar-border);
-  position:sticky;top:48px;z-index:40;
-}
-[data-theme="dark"] .tab-bar{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-.tab-bar-inner{max-width:680px;margin:0 auto;padding:0 16px;display:flex;gap:0}
-.tab-btn{
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
-  padding:10px 18px;border:none;background:none;
-  color:var(--bar-text2);cursor:pointer;transition:all .2s;
-  border-bottom:2px solid transparent;margin-bottom:-1px;
-  -webkit-user-select:none;user-select:none;
-}
-.tab-btn:hover{color:var(--bar-text)}
-.tab-btn.on{color:var(--bar-text);font-weight:600;border-bottom-color:var(--blue)}
-.tab-pane{display:none}
-.tab-pane.active{display:block}
-
-/* ═══ CHIPS GROUP TOGGLE ═══ */
-.cg-toggle{
-  display:flex;align-items:center;justify-content:space-between;cursor:pointer;
-  -webkit-user-select:none;user-select:none;
-}
-.cg-toggle-arrow{font-size:9px;color:var(--text3);transition:transform .2s}
-.cg.collapsed .cg-toggle-arrow{transform:rotate(-90deg)}
-.cg.collapsed .chips{display:none}
-
-/* ═══ HERO MAIN BLOCK (new vertical score layout) ═══ */
-.hero-loc-bar{
-  display:flex;align-items:center;gap:6px;
-  padding:12px 16px 0;font-size:11px;color:var(--text3);
-}
-.hero-loc-bar strong{color:var(--text2);font-weight:500}
-.hero-main-block{
-  display:flex;flex-direction:column;align-items:center;
-  padding:14px 16px 10px;text-align:center;
-}
-.hmb-pct{
-  font-family:'Outfit',sans-serif;font-size:52px;font-weight:700;
-  line-height:1;letter-spacing:-2px;
-}
-.hmb-status{
-  font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;
-  letter-spacing:.2px;margin-top:4px;
-}
-.hmb-reasons{
-  font-size:11px;color:var(--text3);margin-top:4px;
-  display:flex;gap:6px;flex-wrap:wrap;justify-content:center;
-}
-.hmb-reasons span{display:inline-flex;align-items:center;gap:2px}
-
-/* ═══ HERO CONDITIONS 2x2 ═══ */
-.hero-conditions{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:6px;padding:0 12px 10px;
-  border-bottom:1px solid var(--border);
-}
-.hc-item{
-  background:var(--glass);border-radius:9px;
-  padding:8px 12px;display:flex;flex-direction:column;gap:2px;
-}
-.hc-lbl{font-family:'Outfit',sans-serif;font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3)}
-.hc-val{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:4px}
-.hc-sub{font-size:10px;font-weight:400;color:var(--text3);font-family:'DM Sans',sans-serif}
-
-/* ═══ CALENDAR IMPROVEMENTS ═══ */
-.cal-heading{
-  font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;
-  color:var(--text);padding:14px 0 6px;
-}
-.cal-seg{
-  display:flex;background:var(--surface2);border-radius:var(--r3);
-  padding:2px;gap:2px;margin-bottom:10px;
-}
-.cal-seg-btn{
-  flex:1;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
-  padding:6px 8px;border-radius:calc(var(--r3) - 2px);
-  border:none;background:none;color:var(--text2);cursor:pointer;transition:all .18s;
-  -webkit-user-select:none;user-select:none;
-}
-.cal-seg-btn.on{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-
-/* Next events collapsible */
-.cal-next-toggle{
-  display:flex;align-items:center;gap:6px;
-  padding:8px 0 4px;cursor:pointer;
-  font-size:11.5px;font-weight:600;color:var(--text2);
-  -webkit-user-select:none;user-select:none;transition:color .15s;
-  background:none;border:none;font-family:'DM Sans',sans-serif;width:100%;
-}
-.cal-next-toggle:hover{color:var(--text)}
-.cal-next-toggle .cnt-arrow{transition:transform .2s;color:var(--text3);font-size:9px}
-.cal-next-toggle.open .cnt-arrow{transform:rotate(180deg)}
-.cal-next-list{
-  max-height:0;overflow:hidden;
-  transition:max-height .35s cubic-bezier(.4,0,.2,1);
-}
-.cal-next-list.open{max-height:500px}
-.cal-next-item{
-  display:flex;align-items:flex-start;gap:8px;
-  padding:6px 0;border-top:1px solid var(--border);
-  font-size:11.5px;
-}
-.cni-icon{font-size:14px;flex-shrink:0;margin-top:1px}
-.cni-body{flex:1;min-width:0}
-.cni-title{color:var(--text);font-weight:500;line-height:1.3}
-.cni-meta{font-size:10px;color:var(--text3);margin-top:1px;display:flex;align-items:center;gap:5px}
-
-/* Upcoming event card - improved */
-.cal-up-main{background:var(--glass);border-radius:var(--r2);padding:12px;margin-bottom:0}
-.cal-up-type-icon{font-size:20px;flex-shrink:0}
-.cal-up-title-text{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text);line-height:1.25;margin-bottom:2px}
-.cal-up-subtitle{font-size:11px;color:var(--text2);margin-bottom:4px}
-
-/* Calendar legend */
-.cal-legend{display:flex;gap:10px;padding:6px 0 0;flex-wrap:wrap}
-.cal-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text3)}
-.cal-leg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-
-/* Day panel improvements */
-.cm-day-empty{
-  text-align:center;padding:20px 0;
-  font-size:13px;color:var(--text3);
-}
-.cm-day-empty .cde-icon{font-size:26px;margin-bottom:6px}
-.cm-events-box{margin-top:10px;padding:10px 12px;background:var(--glass);border-radius:9px;border:1px solid var(--border)}
-.cm-events-title{font-family:'Outfit',sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-bottom:8px}
-.cm-grp-card{border-radius:8px;padding:9px 10px;margin-bottom:7px;border:1px solid var(--border)}
-.cm-grp-card:last-child{margin-bottom:0}
-.cm-grp-card-A{border-left:3px solid var(--blue);background:rgba(37,99,235,.03)}
-.cm-grp-card-B{border-left:3px solid var(--amber);background:rgba(217,119,6,.03)}
-.cgc-head{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.cgc-type-icon{font-size:13px}
-.cgc-title{font-weight:600;font-size:12px;color:var(--text)}
-.cgc-loc{font-size:10.5px;color:var(--text2);display:flex;align-items:center;gap:3px;margin-top:2px}
-.cgc-notes{font-size:10px;color:var(--text3);margin-top:3px;font-style:italic}
 
 /* ═══ KALENDARZ ═══ */
 .cal-section{padding:6px 0 0;margin-top:14px}
@@ -544,10 +415,105 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
 .cm-event-row .cer-body{flex:1;min-width:0}
 .cm-event-row .cer-title{color:var(--text);font-weight:500;font-size:12px;line-height:1.3}
 .cm-event-row .cer-meta{font-size:10.5px;color:var(--text3);margin-top:1px}
+
+
+/* === Added layout tabs === */
+.subnav{position:sticky;top:48px;z-index:45;padding:10px 0 12px;background:linear-gradient(to bottom,var(--bg) 0%,var(--bg) 72%,transparent 100%)}
+.tab-switch{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--surface);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.04)}
+.tab-btn{appearance:none;border:none;background:transparent;color:var(--text2);font:600 12px 'DM Sans',sans-serif;padding:9px 14px;border-radius:999px;cursor:pointer;transition:all .2s}
+.tab-btn.on{background:rgba(37,99,235,.1);color:var(--blue)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+.page-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin:6px 0 12px}
+.cg.collapsed .cg-title{margin-bottom:0}
+.wx-week-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.wx-week-head .section-label{margin-bottom:0}
+/* ═══ EXTRAS BAR ═══ */
+.extras-bar{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px 12px;font-size:10.5px}
+.ex-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:100px;background:var(--glass);color:var(--text2);font-weight:500}
+.ex-chip b{color:var(--text);font-weight:700}
+.ex-conf-mid{background:rgba(217,119,6,.1);color:var(--amber)}
+.ex-conf-low{background:rgba(220,38,38,.1);color:var(--red)}
+.ex-warn{background:rgba(220,38,38,.12);color:var(--red);font-weight:600}
+.hero-card{padding:14px 14px 12px}
+.hero-main{display:block;padding:0;gap:0}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.hero-left{min-width:0}
+.hero-loc{font-size:12px;color:var(--text3);margin-bottom:8px}
+.hero-condition{display:flex;align-items:center;gap:8px;color:var(--text2);font-size:12px;margin-bottom:12px;flex-wrap:wrap}
+.hero-summary{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.hero-bigpct{font-family:'Outfit',sans-serif;font-size:34px;font-weight:800;line-height:1;color:var(--text)}
+.hero-status{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;line-height:1.1;color:var(--text)}
+.hero-reasons{font-size:12px;color:var(--text2);margin-top:2px;text-align:right;max-width:180px}
+.hero-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.metric-card{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:9px 10px}
+.metric-label{font-family:'Outfit',sans-serif;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);margin-bottom:3px}
+.metric-value{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text)}
+.windows-card,.advice-card,.aux-card{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
+.windows-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
+.win-box{background:var(--glass);border:1px solid var(--border);border-radius:11px;padding:9px 6px;text-align:center}
+.win-box.main{background:var(--glass2);border-color:var(--border2);box-shadow:inset 0 0 0 1px rgba(37,99,235,.06)}
+.win-name{font-family:'Outfit',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2)}
+.win-time{font-size:10px;color:var(--text3);margin-top:2px}
+.win-score{font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;margin-top:5px}
+.aux-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.aux-item{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:8px 6px;text-align:center}
+.aux-item .metric-label{margin-bottom:2px}
+.aux-item .metric-value{font-size:13px}
+.day-row:first-child{border-color:var(--border2)}
+.day-head{grid-template-columns:50px 24px 1fr auto 18px}
+.day-row.expanded{box-shadow:0 10px 26px rgba(0,0,0,.03)}
+.cal-title-wrap{margin-bottom:10px}
+.cal-upcoming{padding:0 12px 12px;border-bottom:1px solid var(--border)}
+.cal-hero-card{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:14px}
+.event-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.event-icon{font-size:16px;line-height:1}
+.event-type{font-size:11px;color:var(--text2);font-weight:600}
+.event-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;line-height:1.22;color:var(--text);margin-bottom:6px}
+.event-meta{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.event-note{font-size:12px;color:var(--text2);margin-top:8px;line-height:1.45}
+.event-actions{margin-top:10px}
+.cal-more-toggle{background:none;border:none;color:var(--blue);font:700 12px 'DM Sans',sans-serif;cursor:pointer;padding:0}
+.cal-up-rest{display:none}
+.cal-up-rest.open{display:block}
+.cal-up-item{padding:8px 0;border-bottom:1px solid var(--border)}
+.cal-up-item:last-child{border-bottom:none}
+.cal-link{margin-left:auto}
+.cm-grid{gap:4px}
+.cm-cell{min-height:42px;padding:6px 2px;border:1px solid transparent;cursor:pointer}
+.cm-cell.cm-sel{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.28)}
+.cm-cell:hover{background:var(--glass2)}
+.cm-legend{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--text2)}
+.cm-legend-item{display:inline-flex;align-items:center;gap:6px}
+.cm-events-box{margin-top:12px;padding:12px;background:var(--glass);border-radius:12px;border:1px solid var(--border)}
+.cm-events-title{font-size:11px}
+.empty-day{display:flex;align-items:center;gap:10px;padding:4px 0;color:var(--text2)}
+.empty-day-emoji{font-size:20px}
+.day-card{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.day-card:last-child{border-bottom:none}
+.day-card-icon{font-size:18px;line-height:1.1;margin-top:2px}
+.day-card-body{flex:1;min-width:0}
+.day-card-title{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);line-height:1.25}
+.day-card-meta{font-size:11px;color:var(--text2);margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.day-card-note{font-size:11.5px;color:var(--text2);margin-top:6px;line-height:1.4}
+.day-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;font-family:'Outfit',sans-serif;font-size:10px;font-weight:800;flex-shrink:0}
+.day-badge.A{background:rgba(37,99,235,.12);color:var(--blue)}
+.day-badge.B{background:rgba(217,119,6,.12);color:var(--amber)}
+@media(max-width:430px){
+  .tb-name span{display:none}
+  .topbar-inner{padding:0 14px}
+  .wrap{padding:0 14px}
+  .hero-bigpct{font-size:30px}
+  .hero-status{font-size:15px}
+  .hero-reasons{text-align:left;max-width:none}
+  .hero-top{flex-direction:column;align-items:flex-start}
+  .hero-summary{align-items:flex-start}
+  .aux-grid{grid-template-columns:repeat(2,1fr)}
+}
+
 </style>
 </head>
 <body>
-
 <!-- WebView blocker overlay -->
 <div class="wv-overlay" id="wv-overlay">
   <div class="wv-icon"><div style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,#2563eb,#0891b2);display:flex;align-items:center;justify-content:center;margin:0 auto;font-family:Outfit,sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:1px">YKP</div></div>
@@ -585,1148 +551,457 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-we
   </div>
 </header>
 
-<div class="tab-bar" id="main-tab-bar">
-  <div class="tab-bar-inner">
-    <button class="tab-btn on" id="tbtn-weather" onclick="switchTab('weather')">Pogoda</button>
-    <button class="tab-btn" id="tbtn-calendar" onclick="switchTab('calendar')">Kalendarz</button>
-  </div>
-</div>
 
 <div class="wrap">
 <div class="browser-hint" id="browser-hint"><b>📱 Otwórz w przeglądarce</b><br>Podgląd WhatsApp blokuje dane pogodowe. Kliknij ⋮ → „Otwórz w przeglądarce".</div>
 
-<div id="tab-weather" class="tab-pane active">
-<section class="loc-bar">
-  <div class="search-wrap">
-    <span class="s-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
-    <input class="search-input" id="si" placeholder="Wpisz miejscowość" autocomplete="off">
-    <button class="s-clear" id="sc" onclick="clearS()">✕</button>
-    <div class="s-results" id="sr"></div>
+<div class="subnav">
+  <div class="tab-switch" id="main-tab-switch">
+    <button class="tab-btn on" data-tab="weather" onclick="setMainTab('weather',this)">Pogoda</button>
+    <button class="tab-btn" data-tab="calendar" onclick="setMainTab('calendar',this)">Kalendarz</button>
   </div>
-  <div class="cg"><div class="cg-title">Baza</div>
-    <div class="chips"><div class="chip on" data-lat="52.4253" data-lon="20.9978" data-name="YKP Warszawa — Port Pilawa, Zegrze" onclick="pick(this)"><span class="fl">🏠</span>Port Pilawa</div></div></div>
-  <div class="cg"><div class="cg-title">Optimist PL 2026</div>
-    <div class="chips">
-      <div class="chip" data-lat="53.7642" data-lon="17.4908" data-name="Charzykowy — Jez. Charzykowskie" onclick="pick(this)"><span class="fl">🇵🇱</span>Charzykowy</div>
-      <div class="chip" data-lat="54.0261" data-lon="14.7528" data-name="Dziwnów — Zatoka" onclick="pick(this)"><span class="fl">🇵🇱</span>Dziwnów</div>
-      <div class="chip" data-lat="54.5189" data-lon="18.5305" data-name="Gdynia — Zatoka Gdańska" onclick="pick(this)"><span class="fl">🇵🇱</span>Gdynia</div>
-      <div class="chip" data-lat="53.6039" data-lon="19.5681" data-name="Iława — Jez. Jeziorak" onclick="pick(this)"><span class="fl">🇵🇱</span>Iława</div>
-      <div class="chip" data-lat="52.4650" data-lon="16.7850" data-name="Kiekrz — Jez. Kierskie" onclick="pick(this)"><span class="fl">🇵🇱</span>Kiekrz</div>
-      <div class="chip" data-lat="54.1628" data-lon="15.2739" data-name="Mrzeżyno — Morze Bałtyckie" onclick="pick(this)"><span class="fl">🇵🇱</span>Mrzeżyno</div>
-      <div class="chip" data-lat="54.7162" data-lon="18.4093" data-name="Puck — Zatoka Pucka" onclick="pick(this)"><span class="fl">🇵🇱</span>Puck</div>
-      <div class="chip" data-lat="53.5340" data-lon="15.9150" data-name="Złocieniec — Jez. Siecino" onclick="pick(this)"><span class="fl">🇵🇱</span>Złocieniec</div>
-    </div></div>
-  <div class="cg collapsed" id="cg-world">
-    <div class="cg-title cg-toggle" onclick="toggleChipGroup('cg-world')">
-      Optimist Świat
-      <span class="cg-toggle-arrow">▾</span>
+</div>
+
+<section id="tab-weather" class="tab-pane active">
+  <section class="loc-bar" id="weather-locbar">
+    <div class="search-wrap">
+      <span class="s-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
+      <input class="search-input" id="si" placeholder="Wpisz miejscowość" autocomplete="off">
+      <button class="s-clear" id="sc" onclick="clearS()">✕</button>
+      <div class="s-results" id="sr"></div>
     </div>
-    <div class="chips">
-      <div class="chip" data-lat="45.8857" data-lon="10.8428" data-name="Riva del Garda" onclick="pick(this)"><span class="fl">🇮🇹</span>Riva del Garda</div>
-      <div class="chip" data-lat="45.7326" data-lon="10.7375" data-name="Campione del Garda" onclick="pick(this)"><span class="fl">🇮🇹</span>Campione</div>
-      <div class="chip" data-lat="45.5105" data-lon="13.5917" data-name="Portorož" onclick="pick(this)"><span class="fl">🇸🇮</span>Portorož</div>
-      <div class="chip" data-lat="39.5696" data-lon="2.6502" data-name="Palma de Mallorca" onclick="pick(this)"><span class="fl">🇪🇸</span>Palma</div>
-      <div class="chip" data-lat="35.7796" data-lon="-5.8137" data-name="Tangier (MŚ 2026)" onclick="pick(this)"><span class="fl">🇲🇦</span>Tangier</div>
-      <div class="chip" data-lat="-38.0023" data-lon="-57.5575" data-name="Mar del Plata" onclick="pick(this)"><span class="fl">🇦🇷</span>Mar del Plata</div>
-    </div></div>
+    <div class="cg" id="cg-pl">
+      <div class="cg-head" onclick="toggleCg('cg-pl')">
+        <div class="cg-title">Polska</div>
+        <span class="cg-chevron">▾</span>
+      </div>
+      <div class="chips">
+        <div class="chip on" data-lat="52.4253" data-lon="20.9978" data-name="YKP Warszawa — Port Pilawa, Zegrze" onclick="pick(this)"><span class="fl">🏠</span>Port Pilawa</div>
+        <div class="chip" data-lat="53.7642" data-lon="17.4908" data-name="Charzykowy — Jez. Charzykowskie" onclick="pick(this)"><span class="fl">🇵🇱</span>Charzykowy</div>
+        <div class="chip" data-lat="54.0261" data-lon="14.7528" data-name="Dziwnów — Zatoka" onclick="pick(this)"><span class="fl">🇵🇱</span>Dziwnów</div>
+        <div class="chip" data-lat="54.5189" data-lon="18.5305" data-name="Gdynia — Zatoka Gdańska" onclick="pick(this)"><span class="fl">🇵🇱</span>Gdynia</div>
+        <div class="chip" data-lat="53.6039" data-lon="19.5681" data-name="Iława — Jez. Jeziorak" onclick="pick(this)"><span class="fl">🇵🇱</span>Iława</div>
+        <div class="chip" data-lat="52.4650" data-lon="16.7850" data-name="Kiekrz — Jez. Kierskie" onclick="pick(this)"><span class="fl">🇵🇱</span>Kiekrz</div>
+        <div class="chip" data-lat="54.1628" data-lon="15.2739" data-name="Mrzeżyno — Morze Bałtyckie" onclick="pick(this)"><span class="fl">🇵🇱</span>Mrzeżyno</div>
+        <div class="chip" data-lat="54.7162" data-lon="18.4093" data-name="Puck — Zatoka Pucka" onclick="pick(this)"><span class="fl">🇵🇱</span>Puck</div>
+        <div class="chip" data-lat="53.5340" data-lon="15.9150" data-name="Złocieniec — Jez. Siecino" onclick="pick(this)"><span class="fl">🇵🇱</span>Złocieniec</div>
+      </div>
+    </div>
+    <div class="cg collapsed" id="cg-world">
+      <div class="cg-head" onclick="toggleCg('cg-world')">
+        <div class="cg-title">Świat</div>
+        <span class="cg-chevron">▾</span>
+      </div>
+      <div class="chips">
+        <div class="chip" data-lat="45.8857" data-lon="10.8428" data-name="Riva del Garda" onclick="pick(this)"><span class="fl">🇮🇹</span>Riva del Garda</div>
+        <div class="chip" data-lat="45.7326" data-lon="10.7375" data-name="Campione del Garda" onclick="pick(this)"><span class="fl">🇮🇹</span>Campione</div>
+        <div class="chip" data-lat="45.5105" data-lon="13.5917" data-name="Portorož" onclick="pick(this)"><span class="fl">🇸🇮</span>Portorož</div>
+        <div class="chip" data-lat="39.5696" data-lon="2.6502" data-name="Palma de Mallorca" onclick="pick(this)"><span class="fl">🇪🇸</span>Palma</div>
+        <div class="chip" data-lat="35.7796" data-lon="-5.8137" data-name="Tangier (MŚ 2026)" onclick="pick(this)"><span class="fl">🇲🇦</span>Tangier</div>
+        <div class="chip" data-lat="-38.0023" data-lon="-57.5575" data-name="Mar del Plata" onclick="pick(this)"><span class="fl">🇦🇷</span>Mar del Plata</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wx">
+    <div id="wld" class="ld"><div class="spinner"></div>Ładowanie danych pogodowych…</div>
+    <div id="wct" style="display:none">
+      <div id="hero-card" class="hero-card"></div>
+      <div class="wx-week-head">
+        <div class="section-label">Kolejne dni</div>
+        <span class="win-legend">Dzisiejszy dzień rozwinięty domyślnie</span>
+      </div>
+      <div id="days-list"></div>
+    </div>
+  </section>
 </section>
 
-<section class="wx">
-  <div id="wld" class="ld"><div class="spinner"></div>Ładowanie danych pogodowych…</div>
-  <div id="wct" style="display:none">
-    <div id="hero-card" class="hero-card"></div>
-    <div class="section-label">Prognoza 7-dniowa <span class="win-legend">Okna regatowe: Poranek 9–11 · Główne 11–16 · Końcówka 16–18</span></div>
-    <div id="days-list"></div>
-  </div>
-</section>
-</div><!-- /tab-weather -->
-
-<div id="tab-calendar" class="tab-pane">
-<section class="cal-section">
-  <div class="cal-heading">Kalendarz sezonu 2026</div>
-  <div class="cal-seg" id="cal-seg">
-    <button class="cal-seg-btn on" onclick="calSetGroup('all',this)">Wszystkie</button>
-    <button class="cal-seg-btn" onclick="calSetGroup('A',this)">Gr. A</button>
-    <button class="cal-seg-btn" onclick="calSetGroup('B',this)">Gr. B</button>
-  </div>
-  <div class="cal-card">
-    <div class="cal-toolbar">
-      <a class="cal-link" href="https://docs.google.com/spreadsheets/d/1S-L6azdXG3nFatIIMVe5Y4ZhDQD3LZuk-KxxgzqkBrY/edit?usp=drive_link" target="_blank" rel="noopener">↗ Pełny kalendarz</a>
+<section id="tab-calendar" class="tab-pane">
+  <section class="cal-section">
+    <div class="cal-title-wrap">
+      <div class="page-title">Kalendarz sezonu 2026</div>
     </div>
-    <div id="cal-upcoming" class="cal-upcoming"><div class="cal-up-loading">Ładowanie kalendarza…</div></div>
-    <div class="cal-month">
-      <div class="cm-nav">
-        <button onclick="calMonthMove(-1)" aria-label="Poprzedni miesiąc">‹</button>
-        <div id="cm-title" class="cm-title">—</div>
-        <button onclick="calMonthMove(1)" aria-label="Następny miesiąc">›</button>
+    <div class="cal-card">
+      <div class="cal-toolbar">
+        <div class="cal-tabs">
+          <button class="cal-tab on" onclick="calSetGroup('all',this)">Wszystkie</button>
+          <button class="cal-tab" onclick="calSetGroup('A',this)">Gr. A</button>
+          <button class="cal-tab" onclick="calSetGroup('B',this)">Gr. B</button>
+        </div>
+        <a class="cal-link" href="https://docs.google.com/spreadsheets/d/1S-L6azdXG3nFatIIMVe5Y4ZhDQD3LZuk-KxxgzqkBrY/edit?usp=drive_link" target="_blank" rel="noopener">↗ Pełny kalendarz</a>
       </div>
-      <div class="cm-grid" id="cm-grid"></div>
-      <div class="cal-legend">
-        <div class="cal-leg-item"><div class="cal-leg-dot dot-A"></div>Gr. A</div>
-        <div class="cal-leg-item"><div class="cal-leg-dot dot-B"></div>Gr. B</div>
+      <div id="cal-upcoming" class="cal-upcoming"></div>
+      <div class="cal-month">
+        <div class="cm-nav">
+          <button onclick="calMonthMove(-1)" aria-label="Poprzedni miesiąc">‹</button>
+          <div id="cm-title" class="cm-title">—</div>
+          <button onclick="calMonthMove(1)" aria-label="Następny miesiąc">›</button>
+        </div>
+        <div class="cm-grid" id="cm-grid"></div>
+        <div class="cm-legend">
+          <span class="cm-legend-item"><span class="cm-dot dot-A"></span> Gr. A</span>
+          <span class="cm-legend-item"><span class="cm-dot dot-B"></span> Gr. B</span>
+        </div>
+        <div id="cm-events-box"></div>
       </div>
-      <div id="cm-events-box"></div>
     </div>
-  </div>
+  </section>
 </section>
-</div><!-- /tab-calendar -->
-</div><!-- /wrap -->
+</div>
 <footer class="ft">© 2026 Emil Dryzner · Open-Meteo API</footer>
 
 <script>
 // ═══ WEBVIEW DETECTION ═══
 (function(){
   const ua = navigator.userAgent || '';
-  const isWebView = (
-    /\bwv\b/i.test(ua) ||                    // Android WebView
-    /FBAN|FBAV/i.test(ua) ||                  // Facebook
-    /Instagram/i.test(ua) ||                  // Instagram
-    /WhatsApp/i.test(ua) ||                   // WhatsApp
-    /Line\//i.test(ua) ||                     // Line
-    /Messenger/i.test(ua) ||                  // Messenger
-    /GSA\//i.test(ua) ||                      // Google Search App
-    (ua.includes('Android') && !ua.includes('Chrome')) ||
-    (ua.includes('iPhone') && !ua.includes('Safari') && !ua.includes('CriOS'))
-  );
-  if(isWebView){
-    document.getElementById('wv-overlay').classList.add('show');
-  }
+  const isWebView = (/\bwv\b/i.test(ua)||/FBAN|FBAV/i.test(ua)||/Instagram/i.test(ua)||/WhatsApp/i.test(ua)||/Line\//i.test(ua)||/Messenger/i.test(ua)||/GSA\//i.test(ua)||(ua.includes('Android')&&!ua.includes('Chrome'))||(ua.includes('iPhone')&&!ua.includes('Safari')&&!ua.includes('CriOS')));
+  if(isWebView) document.getElementById('wv-overlay').classList.add('show');
 })();
-
 function tryOpenBrowser(e){
   e.preventDefault();
-  const url = window.location.href;
-  const ua = navigator.userAgent || '';
-  
-  // Android: try intent
+  const url=window.location.href,ua=navigator.userAgent||'';
   if(/android/i.test(ua)){
-    const intentUrl = 'intent://' + url.replace(/^https?:\/\//,'') 
-      + '#Intent;scheme=https;action=android.intent.action.VIEW;end';
-    window.location = intentUrl;
-    // Fallback after 2s
-    setTimeout(()=>{ window.open(url, '_system'); }, 2000);
-  }
-  // iOS: try x-safari
-  else if(/iPhone|iPad/i.test(ua)){
-    window.open(url, '_blank');
-  }
-  // Other: simple open
-  else {
-    window.open(url, '_blank');
-  }
+    const intentUrl='intent://'+url.replace(/^https?:\/\//,'')+'#Intent;scheme=https;action=android.intent.action.VIEW;end';
+    window.location=intentUrl; setTimeout(()=>{window.open(url,'_system')},2000);
+  } else { window.open(url,'_blank'); }
 }
-
 function copyUrl(){
-  const url = window.location.href;
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(url).then(()=>showCopied()).catch(()=>fallbackCopy(url));
-  } else {
-    fallbackCopy(url);
-  }
+  const url=window.location.href;
+  if(navigator.clipboard?.writeText)navigator.clipboard.writeText(url).then(showCopied).catch(()=>fallbackCopy(url));
+  else fallbackCopy(url);
 }
 function fallbackCopy(text){
-  const ta = document.createElement('textarea');
-  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
-  document.body.appendChild(ta); ta.select();
-  try{document.execCommand('copy'); showCopied();}catch(e){}
+  const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+  try{document.execCommand('copy');showCopied();}catch(e){}
   document.body.removeChild(ta);
 }
-function showCopied(){
-  const el = document.getElementById('wv-copied');
-  el.style.opacity='1';
-  setTimeout(()=>{el.style.opacity='0'},2000);
-}
-
-// ═══ TABS ═══
-function switchTab(tab){
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
-  document.getElementById('tab-'+tab).classList.add('active');
-  document.getElementById('tbtn-'+tab).classList.add('on');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function toggleChipGroup(id){
-  document.getElementById(id).classList.toggle('collapsed');
-}
+function showCopied(){const el=document.getElementById('wv-copied');el.style.opacity='1';setTimeout(()=>el.style.opacity='0',2000)}
 
 // ═══ THEME ═══
 function toggleTheme(){
-  const d=document.documentElement;
-  const dark=d.getAttribute('data-theme')==='dark';
+  const d=document.documentElement; const dark=d.getAttribute('data-theme')==='dark';
   d.setAttribute('data-theme',dark?'':'dark');
   document.getElementById('theme-btn').textContent=dark?'🌙':'☀️';
   document.getElementById('tc').content=dark?'#ffffff':'#0a0f1a';
   try{localStorage.setItem('theme',dark?'light':'dark')}catch(e){}
-  // Redraw ring if present
-  if(W) renderHero(lastName,lastLat,lastLon);
+  if(W) render(lastName,lastLat,lastLon,false);
+  calRender();
 }
-// Init theme
-try{if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('tc').content='#0a0f1a'}}catch(e){}
+try{if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('tc').content='#0a0f1a';}}catch(e){}
 
-let W=null,sT=null,lastLat=null,lastLon=null,lastName=null,loadTimer=null;
+let W=null,sT=null,lastLat=null,lastLon=null,lastName=null,loadTimer=null,ACTIVE_TAB='weather',weatherExpandedDay=0;
 const DS=['Nd','Pn','Wt','Śr','Cz','Pt','Sb'];
 const WI={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',56:'🌨️',57:'🌨️',61:'🌧️',63:'🌧️',65:'🌧️',66:'🌨️',67:'🌨️',71:'🌨️',73:'🌨️',75:'❄️',77:'❄️',80:'🌦️',81:'🌧️',82:'🌧️',85:'🌨️',86:'🌨️',95:'⛈️',96:'⛈️',99:'⛈️'};
 const WT={0:'Bezchmurnie',1:'Przew. czyste',2:'Częśc. zachm.',3:'Zachmurzenie',45:'Mgła',48:'Szadź',51:'Mżawka',53:'Mżawka',55:'Gęsta mżawka',61:'Lekki deszcz',63:'Deszcz',65:'Silny deszcz',71:'Lekki śnieg',73:'Śnieg',75:'Śnieg',80:'Przelotne',81:'Deszcz',82:'Ulewa',95:'Burza',96:'Burza+grad',99:'Silna burza'};
-
+// Spójne progi i kolory scoringu regatowego
+// 0%=szary | 1–14%=czerwony | 15–31%=bursztyn | 32–54%=pomarańcz | 55–77%=zieleń | 78–94%=niebieski | 95–100%=cyan
+function statusFromScore(s){
+  if(s>=95)return 'Idealne';
+  if(s>=78)return 'Bardzo dobre';
+  if(s>=55)return 'Dobre';
+  if(s>=32)return 'Średnie';
+  if(s>=15)return 'Słabe';
+  if(s>=1)return 'Bardzo słabe';
+  return 'Brak wiatru';
+}
+function classFromScore(s){
+  if(s>=95)return 'sc-i';
+  if(s>=78)return 'sc-gr';
+  if(s>=55)return 'sc-g';
+  if(s>=32)return 'sc-o';
+  if(s>=15)return 'sc-p';
+  if(s>=1)return 'sc-st';
+  return 'sc-n';
+}
+function scoreClr(clsOrStatus){
+  const map={
+    'Idealne':'#0891b2','sc-i':'#0891b2',
+    'Bardzo dobre':'#2563eb','sc-gr':'#2563eb',
+    'Dobre':'#059669','sc-g':'#059669',
+    'Średnie':'#ea580c','sc-o':'#ea580c',
+    'Słabe':'#d97706','sc-p':'#d97706',
+    'Bardzo słabe':'#dc2626','sc-st':'#dc2626',
+    'Brak wiatru':'#94a3b8','sc-n':'#94a3b8'
+  };
+  return map[clsOrStatus]||'#94a3b8';
+}
+const EVENT_ICONS={'Regaty':'⛵','Trening':'🧭','Zgrupowanie':'🏕️','Transport':'🚐','Do weryfikacji':'❔'};
+const WARNING_TERYT={'port pilawa':'1408','zegrze':'1408','gdynia':'2262','puck':'2211','iława':'2807','charzykowy':'2202','złocieniec':'3203','mrzeżyno':'3205','dziwnów':'3207'};
+const COASTAL_KEYS=['gdynia','puck','dziwnów','mrzeżyno','tangier','palma','mar del plata'];
 const wD=d=>'N,NNE,NE,ENE,E,ESE,SE,SSE,S,SSW,SW,WSW,W,WNW,NW,NNW'.split(',')[Math.round(d/22.5)%16];
-const wC=s=>s<10?'wind-g':s<20?'wind-m':'wind-s';
-const wA=d=>`<svg class="warr" viewBox="0 0 24 24" style="transform:rotate(${d+180}deg)"><path d="M12 2l4 8h-3v12h-2V10H8z" fill="currentColor" opacity=".55"/></svg>`;
-const bft=k=>{if(k<1)return 0;if(k<4)return 1;if(k<7)return 2;if(k<11)return 3;if(k<17)return 4;if(k<22)return 5;if(k<28)return 6;if(k<34)return 7;return 8};
-
+const bft=k=>{if(k<1)return 0;if(k<4)return 1;if(k<7)return 2;if(k<11)return 3;if(k<17)return 4;if(k<22)return 5;if(k<28)return 6;if(k<34)return 7;return 8;};
+const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+const lerp=(a,b,t)=>a+(b-a)*t;
+function segInterpolate(x,pts){
+  if(x<=pts[0][0])return pts[0][1];
+  for(let i=0;i<pts.length-1;i++){
+    const [x1,y1]=pts[i],[x2,y2]=pts[i+1];
+    if(x<=x2){const t=(x-x1)/(x2-x1||1);return lerp(y1,y2,t);}
+  }
+  return pts[pts.length-1][1];
+}
 function rS(a,g,rn,rp){
-  // Smooth wind→score mapping via linear interpolation between reference points
-  // Reference: 0-2kn=no sail; 12-15kn=ideal(100%); >21kn=no sail
+  // 18-punktowa interpolacja: płynne przejścia bez skoków przy granicach
   const pts=[[0,0],[2,0],[3,8],[5,20],[7,38],[9,58],[11,78],[12,88],[13,96],[14,100],[15,100],[16,92],[17,74],[18,50],[19,28],[20,12],[21,3],[22,0]];
-  let s=0;
-  if(a>=22){s=0}
-  else{
-    for(let i=0;i<pts.length-1;i++){
-      if(a>=pts[i][0]&&a<=pts[i+1][0]){
-        const t=(a-pts[i][0])/(pts[i+1][0]-pts[i][0]);
-        s=Math.round(pts[i][1]+t*(pts[i+1][1]-pts[i][1]));
-        break;
-      }
-    }
-  }
-  // Gust penalty (unchanged)
-  if(g>25){s=Math.min(s,15)}else if(g>22&&s>50)s=Math.round(s*.7);
-  // Rain penalty (unchanged)
-  if(rn>5&&s>20)s=Math.round(s*.6);else if(rn>2&&s>30)s=Math.round(s*.8);
-  if(rp>70&&s>40)s=Math.round(s*.85);
-  s=Math.max(0,Math.min(100,s));
-  // New label mapping
-  let l,c;
-  if(s>=95){l='Idealne';c='sc-i'}
-  else if(s>=78){l='Bardzo dobre';c='sc-gr'}
-  else if(s>=55){l='Dobre';c='sc-g'}
-  else if(s>=32){l='Średnie';c='sc-o'}
-  else if(s>=10){l='Słabe';c='sc-p'}
-  else if(s>0){l='Bardzo słabe';c='sc-n'}
-  else{l='Brak wiatru';c='sc-n'}
-  return{s,l,c};
+  let s=segInterpolate(a,pts);
+  if(g>25)s=Math.min(s,15); else if(g>22&&s>50)s*=0.7;
+  if(rn>5&&s>20)s*=0.6; else if(rn>2&&s>30)s*=0.8;
+  if(rp>70&&s>40)s*=0.85;
+  s=Math.round(clamp(s,0,100));
+  return {s,status:statusFromScore(s),c:classFromScore(s)};
 }
-
-function scoreClr(c){return{'sc-n':'#94a3b8','sc-p':'#d97706','sc-o':'#ea580c','sc-g':'#059669','sc-gr':'#2563eb','sc-i':'#0891b2','sc-st':'#dc2626'}[c]||'#94a3b8'}
-
 function drawRing(id,pct,cls){
-  const cv=document.getElementById(id);if(!cv)return;
-  const ctx=cv.getContext('2d');
-  const dpr=window.devicePixelRatio||1;
-  const sz=cv.offsetWidth;
-  cv.width=sz*dpr;cv.height=sz*dpr;ctx.scale(dpr,dpr);
+  const cv=document.getElementById(id); if(!cv) return;
+  const ctx=cv.getContext('2d'); const dpr=window.devicePixelRatio||1; const sz=cv.offsetWidth||68;
+  cv.width=sz*dpr; cv.height=sz*dpr; ctx.scale(dpr,dpr);
   const cx=sz/2,cy=sz/2,r=sz/2-5,lw=4;
-  ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,Math.PI*1.5);
-  const style=getComputedStyle(document.documentElement);
-  ctx.strokeStyle=style.getPropertyValue('--ring-track').trim();
-  ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();
-  if(pct>0){
-    ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*pct/100);
-    ctx.strokeStyle=scoreClr(cls);ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();
-  }
+  ctx.beginPath(); ctx.arc(cx,cy,r,-Math.PI/2,Math.PI*1.5); ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--ring-track').trim(); ctx.lineWidth=lw; ctx.lineCap='round'; ctx.stroke();
+  if(pct>0){ ctx.beginPath(); ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*pct/100); ctx.strokeStyle=scoreClr(cls); ctx.lineWidth=lw; ctx.lineCap='round'; ctx.stroke(); }
+}
+function scrollToTopOfActive(){window.scrollTo({top:0,behavior:'smooth'})}
+function scrollToHero(){const hero=document.getElementById('hero-card'); if(hero) hero.scrollIntoView({behavior:'smooth',block:'start'});}
+function setMainTab(tab,btn){
+  ACTIVE_TAB=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
+  (btn||document.querySelector(`.tab-btn[data-tab="${tab}"]`))?.classList.add('on');
+  document.getElementById('tab-weather').classList.toggle('active',tab==='weather');
+  document.getElementById('tab-calendar').classList.toggle('active',tab==='calendar');
+  scrollToTopOfActive();
+  if(tab==='calendar') calRender();
+}
+function toggleCg(id){
+  document.getElementById(id).classList.toggle('collapsed');
 }
 
-// Search
 const si=document.getElementById('si'),sr=document.getElementById('sr'),scb=document.getElementById('sc');
 si.addEventListener('input',function(){const q=this.value.trim();scb.classList.toggle('show',q.length>0);if(q.length<2){sr.classList.remove('open');return}clearTimeout(sT);sT=setTimeout(()=>geo(q),350)});
 si.addEventListener('focus',()=>{if(sr.children.length&&si.value.trim().length>=2)sr.classList.add('open')});
 document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))sr.classList.remove('open')});
 function clearS(){si.value='';scb.classList.remove('show');sr.classList.remove('open');sr.innerHTML=''}
 async function geo(q){try{const ctrl=new AbortController();const tm=setTimeout(()=>ctrl.abort(),8000);
-const r=await(await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=pl&format=json`,{signal:ctrl.signal})).json();clearTimeout(tm);
+const r=await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=pl&format=json`,{signal:ctrl.signal})).json();clearTimeout(tm);
 if(!r.results?.length){sr.innerHTML='<div class="sr-item"><span class="sr-det">Brak wyników</span></div>';sr.classList.add('open');return}
 sr.innerHTML='';r.results.forEach(p=>{const f=p.country_code?cF(p.country_code):'📍',a=[p.admin1,p.country].filter(Boolean).join(', ');
 const d=document.createElement('div');d.className='sr-item';d.innerHTML=`<span class="sr-fl">${f}</span><div><div class="sr-name">${p.name}</div><div class="sr-det">${a}</div></div>`;
-d.onclick=()=>{si.value=p.name;sr.classList.remove('open');document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));load(p.latitude,p.longitude,p.name+(a?' — '+a:''))};sr.appendChild(d)});sr.classList.add('open')}
+d.onclick=()=>{si.value=p.name;sr.classList.remove('open');document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));load(p.latitude,p.longitude,p.name+(a?' — '+a:''),true)};sr.appendChild(d)});sr.classList.add('open')}
 catch(e){if(e.name==='AbortError'){sr.innerHTML='<div class="sr-item"><span class="sr-det">Timeout</span></div>';sr.classList.add('open')}}}
 function cF(c){c=c.toUpperCase();return String.fromCodePoint(...[...c].map(x=>0x1F1E6+x.charCodeAt(0)-65))}
-function pick(el){document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');si.value='';scb.classList.remove('show');sr.classList.remove('open');load(+el.dataset.lat,+el.dataset.lon,el.dataset.name).then(()=>{setTimeout(()=>{const hero=document.getElementById('hero-card');if(hero)hero.scrollIntoView({behavior:'smooth',block:'start'})},100)})}
-
-function showError(msg,retry){const ld=document.getElementById('wld');ld.style.display='block';document.getElementById('wct').style.display='none';
-ld.innerHTML=`<div class="err-box"><div class="err-icon">⚠️</div><div class="err-msg">${msg}</div>${retry?'<button class="retry-btn" onclick="retryLoad()">Spróbuj ponownie</button>':''}</div>`;
-document.getElementById('browser-hint').classList.add('show')}
-function retryLoad(){if(lastLat!=null)load(lastLat,lastLon,lastName)}
-
-async function load(lat,lon,name){
+function pick(el){document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');si.value='';scb.classList.remove('show');sr.classList.remove('open');load(+el.dataset.lat,+el.dataset.lon,el.dataset.name,true)}
+function showError(msg,retry){const ld=document.getElementById('wld');ld.style.display='block';document.getElementById('wct').style.display='none';ld.innerHTML=`<div class="err-box"><div class="err-icon">⚠️</div><div class="err-msg">${msg}</div>${retry?'<button class="retry-btn" onclick="retryLoad()">Spróbuj ponownie</button>':''}</div>`;document.getElementById('browser-hint').classList.add('show')}
+function retryLoad(){if(lastLat!=null)load(lastLat,lastLon,lastName,true)}
+async function load(lat,lon,name,scrollAfter=false){
   lastLat=lat;lastLon=lon;lastName=name;
   const ld=document.getElementById('wld'),ct=document.getElementById('wct');
   ld.style.display='block';ct.style.display='none';ld.innerHTML='<div class="spinner"></div>Ładowanie…';
   document.getElementById('browser-hint').classList.remove('show');
+  weatherExpandedDay=0;
   const hp='temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation_probability,precipitation,weather_code,pressure_msl,cloud_cover';
   const dp='weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,wind_speed_10m_max,wind_gusts_10m_max,precipitation_sum,precipitation_probability_max,sunrise,sunset';
-  const ctrl=new AbortController();loadTimer=setTimeout(()=>ctrl.abort(),12000);
+  const ctrl=new AbortController(); loadTimer=setTimeout(()=>ctrl.abort(),12000);
   try{const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=${hp}&daily=${dp}&timezone=auto&forecast_days=7&wind_speed_unit=kn`,{signal:ctrl.signal,mode:'cors'});
-  clearTimeout(loadTimer);if(!res.ok)throw new Error('HTTP '+res.status);
-  const json=await res.json();if(!json.hourly||!json.daily)throw new Error('Dane');
-  W=json;render(name,lat,lon);ld.style.display='none';ct.style.display='block';
-  }catch(e){clearTimeout(loadTimer);
-  if(e.name==='AbortError')showError('Timeout — sprawdź połączenie.',true);
-  else if(e.message.includes('fetch')||e.message.includes('etwork'))showError('Brak sieci. Otwórz w przeglądarce.',true);
-  else showError('Błąd: '+e.message,true);}
+    clearTimeout(loadTimer); if(!res.ok) throw new Error('HTTP '+res.status); const json=await res.json(); if(!json.hourly||!json.daily) throw new Error('Dane');
+    W=json; await render(name,lat,lon,true); ld.style.display='none'; ct.style.display='block'; if(scrollAfter) scrollToHero();
+  }catch(e){clearTimeout(loadTimer); if(e.name==='AbortError')showError('Timeout — sprawdź połączenie.',true); else if(e.message.includes('fetch')||e.message.includes('etwork'))showError('Brak sieci. Otwórz w przeglądarce.',true); else showError('Błąd: '+e.message,true);}
 }
-
-function render(n,lat,lon){renderHero(n,lat,lon);renderDays();loadExtras(lat,lon,n)}
-
-// IMGW: mapowanie polskich presetów → teryt województwa (2 cyfry)
-const IMGW_REGION={
-  'port pilawa':'14',   // mazowieckie (Zegrze) — uwaga: Pilawa Zegrze to mazowieckie
-  'zegrze':'14','warszawa':'14','nieporęt':'14',
-  'puck':'22','gdynia':'22','gdańsk':'22',  // pomorskie
-  'dziwnów':'32','mrzeżyno':'32','kołobrzeg':'32',  // zachodniopomorskie
-  'iława':'28','jeziorak':'28',  // warmińsko-mazurskie
-  'charzykowy':'22','złocieniec':'32','kiekrz':'30'  // pom / zachpom / wielkop
-};
-function imgwRegionFor(name){
-  if(!name)return null;
-  const n=name.toLowerCase();
-  for(const k in IMGW_REGION)if(n.includes(k))return IMGW_REGION[k];
-  return null;
-}
-function imgwParseDate(s){try{const d=new Date(s.replace(' ','T'));return isNaN(d)?null:d}catch(e){return null}}
-function imgwPickBest(records,now){
-  const active=[];
-  for(const r of records){
-    const from=imgwParseDate(r.obowiazuje_od||r.valid_from||'');
-    const to=imgwParseDate(r.obowiazuje_do||r.valid_to||'');
-    if(!from||!to)continue;
-    if(now>=from&&now<=to)active.push(r);
-  }
-  if(!active.length)return null;
-  active.sort((a,b)=>(parseInt(b.stopien||b.level||0)-parseInt(a.stopien||a.level||0))||(imgwParseDate(a.obowiazuje_do||a.valid_to)-imgwParseDate(b.obowiazuje_do||b.valid_to)));
-  return active[0];
-}
-
-// ═══ ULEPSZENIA: cross-check ICON, marine, ostrzeżenia ═══
-const COASTAL_PORTS=[{n:'gdynia',la:54.5,lo:18.5},{n:'puck',la:54.7,lo:18.4},{n:'dziwn',la:54.0,lo:14.7},{n:'mrze',la:54.16,lo:15.27},{n:'pilawa',la:54.36,lo:19.66}];
-function isCoastal(name,lat,lon){const n=(name||'').toLowerCase();if(COASTAL_PORTS.some(p=>n.includes(p.n)))return true;if(lat>=54.0&&lon>=14&&lon<=20)return true;return false}
-function isPL(lat,lon){return lat>=49&&lat<=55&&lon>=14&&lon<=24.5}
-
-async function loadExtras(lat,lon,name){
-  try{document.getElementById('extras-bar')?.remove()}catch(e){}
-  if(!W||!W.hourly)return;
-  const tasks=[];
-  // 1. ICON cross-check (only PL)
-  if(isPL(lat,lon)){
-    tasks.push(fetch(`https://api.open-meteo.com/v1/dwd-icon?latitude=${lat}&longitude=${lon}&hourly=wind_speed_10m&wind_speed_unit=kn&forecast_days=2&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null));
-  } else tasks.push(Promise.resolve(null));
-  // 2. Marine (only coastal)
-  if(isCoastal(name,lat,lon)){
-    tasks.push(fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&hourly=wave_height,wave_period&forecast_days=1&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null));
-  } else tasks.push(Promise.resolve(null));
-  // 3. Warnings (PL only, MeteoAlarm via Open-Meteo)
-  if(isPL(lat,lon)){
-    const imgwRegion=imgwRegionFor(name);
-    if(imgwRegion){
-      tasks.push(fetch('https://danepubliczne.imgw.pl/api/data/warningsmeteo').then(r=>r.ok?r.json():null).catch(()=>null));
-    } else tasks.push(Promise.resolve(null));
-    // Fallback forecast-based storm detector
-    tasks.push(fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=weather_code&forecast_days=1&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null));
-  } else tasks.push(Promise.resolve(null));
-
-  const [icon,marine,imgw,fbWarn]=await Promise.allSettled(tasks).then(rs=>rs.map(r=>r.value));
-  const imgwRegion2=imgwRegionFor(name);
-  const chips=[];
-  // Confidence: compare ICON vs main for window 11-16 today
-  if(icon&&icon.hourly){
-    try{
-      const ds=W.daily.time[0];const main=[],alt=[];
-      for(let i=0;i<W.hourly.time.length;i++){
-        if(!W.hourly.time[i].startsWith(ds))continue;
-        const hr=parseInt(W.hourly.time[i].slice(11,13),10);
-        if(hr>=11&&hr<16)main.push(W.hourly.wind_speed_10m[i]);
-      }
-      for(let i=0;i<icon.hourly.time.length;i++){
-        if(!icon.hourly.time[i].startsWith(ds))continue;
-        const hr=parseInt(icon.hourly.time[i].slice(11,13),10);
-        if(hr>=11&&hr<16)alt.push(icon.hourly.wind_speed_10m[i]);
-      }
-      if(main.length&&alt.length){
-        const am=main.reduce((a,b)=>a+b,0)/main.length;
-        const aa=alt.reduce((a,b)=>a+b,0)/alt.length;
-        const diff=Math.abs(am-aa);
-        let cls='ex-conf-high',lbl='wysoka zgodność';
-        if(diff>4){cls='ex-conf-low';lbl='niska zgodność'}
-        else if(diff>2){cls='ex-conf-mid';lbl='średnia zgodność'}
-        chips.push(`<span class="ex-chip ${cls}">📊 Pewność 11–16: <b>${lbl}</b> (Δ${diff.toFixed(1)}kn)</span>`);
-      }
-    }catch(e){}
-  }
-  // Marine
-  if(marine&&marine.hourly&&marine.hourly.wave_height){
-    try{
-      const wh=marine.hourly.wave_height.filter(v=>v!=null);
-      if(wh.length){
-        const max=Math.max(...wh),avg=wh.reduce((a,b)=>a+b,0)/wh.length;
-        chips.push(`<span class="ex-chip">🌊 Fala: <b>${avg.toFixed(1)}m</b> (max ${max.toFixed(1)}m)</span>`);
-      }
-    }catch(e){}
-  }
-  // IMGW official warnings (primary)
-  let imgwShown=false;
-  if(imgw&&Array.isArray(imgw)&&imgwRegion2){
-    try{
-      const regionRecords=imgw.filter(r=>{
-        const t=(r.teryt||r.TERYT||'').toString();
-        return t.startsWith(imgwRegion2);
-      });
-      const best=imgwPickBest(regionRecords,new Date());
-      if(best){
-        const evt=(best.nazwa_zdarzenia||best.event||'Ostrzeżenie').toString();
-        const lvl=parseInt(best.stopien||best.level||0)||'?';
-        const to=imgwParseDate(best.obowiazuje_do||best.valid_to);
-        const toStr=to?' do '+to.toLocaleString('pl-PL',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}):'';
-        chips.push(`<span class="ex-chip ex-warn" title="Źródło: IMGW">⚠️ IMGW: ${evt}, stopień ${lvl}${toStr}</span>`);
-        imgwShown=true;
-      }
-    }catch(e){}
-  }
-  // Fallback forecast-based storm detector (only if IMGW gave nothing)
-  if(!imgwShown&&fbWarn&&fbWarn.hourly&&fbWarn.hourly.weather_code){
-    try{
-      const danger=fbWarn.hourly.weather_code.some(c=>c>=95);
-      if(danger)chips.push(`<span class="ex-chip ex-warn" title="Prognoza Open-Meteo, nieoficjalne">⚠️ Burza w prognozie</span>`);
-    }catch(e){}
-  }
-  if(!chips.length)return;
-  const bar=document.createElement('div');bar.id='extras-bar';bar.className='extras-bar';bar.innerHTML=chips.join('');
-  const hero=document.getElementById('hero-card');if(hero)hero.appendChild(bar);
-}
-
+async function render(n,lat,lon,withExtras=true){renderHero(n,lat,lon); renderDays(); if(withExtras) await loadExtras(lat,lon,n);}
 function nowIdx(){const h=W.hourly,ts=new Date().toISOString().slice(0,10);let i=h.time.findIndex(t=>t.startsWith(ts));if(i<0)i=0;return Math.min(i+new Date().getHours(),h.time.length-1)}
-
-// ═══ PORADA 10–16 ═══
-// Zwraca {type,trim,priority,cssKey} lub null jeżeli brak danych z okna 10–16.
-// Używa knots (aplikacja pobiera wind_speed_unit=kn — bez konwersji).
+function getDaySlice(dayStr,start=9,end=18){ const h=W.hourly, out=[]; for(let i=0;i<h.time.length;i++){ if(!h.time[i].startsWith(dayStr)) continue; const hr=parseInt(h.time[i].slice(11,13),10); if(hr<start||hr>=end) continue; out.push(i);} return out; }
+function circularSpread(dirs){ if(!dirs.length) return 0; const sorted=[...dirs].map(d=>((d%360)+360)%360).sort((a,b)=>a-b); if(sorted.length===1) return 0; let maxGap=0; for(let i=0;i<sorted.length;i++){ const next=(i===sorted.length-1)?sorted[0]+360:sorted[i+1]; maxGap=Math.max(maxGap,next-sorted[i]); } return 360-maxGap; }
 function computeAdvice(dayStr){
-  const h=W.hourly;
-  const winds=[],gusts=[],dirs=[];
-  let rainFlag=false;
-  for(let i=0;i<h.time.length;i++){
-    if(!h.time[i].startsWith(dayStr))continue;
-    const hr=parseInt(h.time[i].slice(11,13),10);
-    if(hr<10||hr>16)continue;
-    winds.push(h.wind_speed_10m[i]);
-    gusts.push(h.wind_gusts_10m[i]);
-    dirs.push(h.wind_direction_10m[i]);
-    if((h.precipitation[i]||0)>0)rainFlag=true;
-    const wc=h.weather_code[i];
-    if(wc>=51)rainFlag=true; // mżawka i gorzej
-  }
-  if(!winds.length)return null;
-
-  const avgWind=winds.reduce((a,b)=>a+b,0)/winds.length;
-  const avgGust=gusts.reduce((a,b)=>a+b,0)/gusts.length;
-  const gustSpread=avgGust-avgWind;
-
-  // Cyrkularny dirSpread: posortuj kąty, znajdź największą lukę, spread = 360 - max_gap
-  const sorted=[...dirs].map(d=>((d%360)+360)%360).sort((a,b)=>a-b);
-  let maxGap=0;
-  if(sorted.length>1){
-    for(let i=0;i<sorted.length;i++){
-      const next=(i===sorted.length-1)?sorted[0]+360:sorted[i+1];
-      const gap=next-sorted[i];
-      if(gap>maxGap)maxGap=gap;
-    }
-  } else { maxGap=360 }
-  const dirSpread=360-maxGap;
-
-  // Reguły w kolejności priorytetów
-  // 1. Niestabilny
-  if(rainFlag)return{type:'Niestabilny',trim:'Bazowo',priority:'Proste decyzje i dobra organizacja',cssKey:'niestabilny'};
-  // 2. Mocny (silny wiatr lub silny z porywami)
-  if(avgWind>=18||(avgWind>=14&&gustSpread>=6))return{type:'Mocny',trim:'Płasko',priority:'Kontrola, prosty start, mniej ryzyka',cssKey:'mocny'};
-  // 3. Szkwałowy
-  if(gustSpread>=5)return{type:'Szkwałowy',trim:'Bazowo',priority:'Reaguj na porywy, nie zatrzymuj łódki',cssKey:'szkwalowy'};
-  // 4. Taktyczny
-  if(dirSpread>=25){
-    if(avgWind<8)return{type:'Taktyczny',trim:'Pełniej',priority:'Zmiany i czysty wiatr',cssKey:'taktyczny'};
-    if(avgWind<14)return{type:'Taktyczny',trim:'Bazowo',priority:'Obserwuj zmiany i pilnuj pozycji',cssKey:'taktyczny'};
-  }
-  // 5. Mocny
-  if(avgWind>=14)return{type:'Mocny',trim:'Płasko',priority:'Kontrola i równa prędkość',cssKey:'mocny'};
-  // 6. Stabilny — lekki
-  if(avgWind<8)return{type:'Stabilny',trim:'Pełniej',priority:'Płynność i prędkość',cssKey:'stabilny'};
-  // 7. Stabilny — bazowy
-  return{type:'Stabilny',trim:'Bazowo',priority:'Prędkość i powtarzalność',cssKey:'stabilny'};
+  const h=W.hourly, idxs=getDaySlice(dayStr,10,17); if(!idxs.length) return null;
+  const winds=idxs.map(i=>h.wind_speed_10m[i]), gusts=idxs.map(i=>h.wind_gusts_10m[i]), dirs=idxs.map(i=>h.wind_direction_10m[i]);
+  const rainFlag=idxs.some(i=>(h.precipitation[i]||0)>0 || (h.weather_code[i]||0)>=51);
+  const avgWind=winds.reduce((a,b)=>a+b,0)/winds.length, avgGust=gusts.reduce((a,b)=>a+b,0)/gusts.length, gustSpread=avgGust-avgWind, dirSpread=circularSpread(dirs);
+  if(rainFlag) return {type:'Niestabilny',trim:'Bazowo',priority:'Proste decyzje i dobra organizacja',cssKey:'niestabilny'};
+  if(gustSpread>=5) return {type:'Szkwałowy',trim:avgWind>=14?'Płasko':'Bazowo',priority:'Reaguj na porywy, nie zatrzymuj łódki',cssKey:'szkwalowy'};
+  if(dirSpread>=25 && avgWind<14) return {type:'Taktyczny',trim:avgWind<8?'Pełniej':'Bazowo',priority:avgWind<8?'Zmiany i czysty wiatr':'Obserwuj zmiany i pilnuj pozycji',cssKey:'taktyczny'};
+  if(avgWind>=14) return {type:'Mocny',trim:'Płasko',priority:'Kontrola i równa prędkość',cssKey:'mocny'};
+  return {type:'Stabilny',trim:avgWind<8?'Pełniej':'Bazowo',priority:avgWind<8?'Płynność i prędkość':'Prędkość i powtarzalność',cssKey:'stabilny'};
 }
-
-function computeReasons(w,g,rn,rp,dirSpread){
+function computeReasons(dayStr){
+  const h=W.hourly, idxs=getDaySlice(dayStr,10,17); if(!idxs.length) return [];
+  const winds=idxs.map(i=>h.wind_speed_10m[i]), gusts=idxs.map(i=>h.wind_gusts_10m[i]), dirs=idxs.map(i=>h.wind_direction_10m[i]);
+  const avgWind=winds.reduce((a,b)=>a+b,0)/winds.length, avgGust=gusts.reduce((a,b)=>a+b,0)/gusts.length, gustSpread=avgGust-avgWind, dirSpread=circularSpread(dirs);
+  const rainFlag=idxs.some(i=>(h.precipitation[i]||0)>0 || (h.weather_code[i]||0)>=51);
   const reasons=[];
-  if(w<3)reasons.push('brak wiatru');
-  else if(w<8)reasons.push('lekki wiatr');
-  else if(w<=16)reasons.push('optymalny wiatr');
-  else reasons.push('mocny wiatr');
-  if(g-w>6)reasons.push('duże porywy');
-  if(dirSpread>35)reasons.push('duże zmiany kierunku');
-  if(rn>2||rp>70)reasons.push('deszcz i niestabilność');
-  return reasons.slice(0,2);
+  if(rainFlag) reasons.push('deszcz i niestabilność');
+  if(avgWind<3) reasons.push('brak wiatru');
+  else if(avgWind<6) reasons.push('lekki wiatr');
+  else if(avgWind>=14) reasons.push('mocny wiatr');
+  else if(avgWind>=12&&avgWind<=15&&gustSpread<5&&!rainFlag) reasons.push('optymalny wiatr');
+  if(gustSpread>=5) reasons.push('duże porywy');
+  if(dirSpread>=25) reasons.push('duże zmiany kierunku');
+  return [...new Set(reasons)].slice(0,2);
 }
-
+async function loadExtras(lat,lon,name){
+  document.getElementById('extras-bar')?.remove();
+  if(!W||!W.hourly) return;
+  const chips=[];
+  const lower=(name||'').toLowerCase();
+  const isPL=lat>=49&&lat<=55&&lon>=14&&lon<=24.5;
+  const coastal=COASTAL_KEYS.some(k=>lower.includes(k));
+  const key=Object.keys(WARNING_TERYT).find(k=>lower.includes(k));
+  const [icon,marine,warnings] = await Promise.all([
+    isPL?fetch(`https://api.open-meteo.com/v1/dwd-icon?latitude=${lat}&longitude=${lon}&hourly=wind_speed_10m&wind_speed_unit=kn&forecast_days=2&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null):Promise.resolve(null),
+    coastal?fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&hourly=wave_height,wave_period&forecast_days=1&timezone=auto`).then(r=>r.ok?r.json():null).catch(()=>null):Promise.resolve(null),
+    isPL&&key?fetch('https://danepubliczne.imgw.pl/api/data/warningsmeteo').then(r=>r.ok?r.json():null).catch(()=>null):Promise.resolve(null)
+  ]);
+  if(icon?.hourly){
+    try{
+      const ds=W.daily.time[0]; const main=[],alt=[];
+      for(let i=0;i<W.hourly.time.length;i++){ if(W.hourly.time[i].startsWith(ds)){ const hr=parseInt(W.hourly.time[i].slice(11,13),10); if(hr>=11&&hr<16) main.push(W.hourly.wind_speed_10m[i]); }}
+      for(let i=0;i<icon.hourly.time.length;i++){ if(icon.hourly.time[i].startsWith(ds)){ const hr=parseInt(icon.hourly.time[i].slice(11,13),10); if(hr>=11&&hr<16) alt.push(icon.hourly.wind_speed_10m[i]); }}
+      if(main.length&&alt.length){ const diff=Math.abs(main.reduce((a,b)=>a+b,0)/main.length - alt.reduce((a,b)=>a+b,0)/alt.length); if(diff>2){ chips.push(`<span class="ex-chip ${diff>4?'ex-conf-low':'ex-conf-mid'}">📊 Pewność: <b>${diff>4?'niska':'średnia'}</b></span>`); }}
+    }catch(e){}
+  }
+  if(marine?.hourly?.wave_height){ const wh=marine.hourly.wave_height.filter(v=>v!=null); if(wh.length){ chips.push(`<span class="ex-chip">🌊 Fala: <b>${Math.max(...wh).toFixed(1)} m</b></span>`); }}
+  if(Array.isArray(warnings) && key){
+    try{
+      const code=WARNING_TERYT[key]; const now=new Date();
+      const active=warnings.filter(w=>Array.isArray(w.teryt)&&w.teryt.includes(code)).filter(w=>{ const from=new Date((w.obowiazuje_od||'').replace(' ','T')); const to=new Date((w.obowiazuje_do||'').replace(' ','T')); return !isNaN(from)&&!isNaN(to)&&from<=now&&now<=to; }).sort((a,b)=>(+b.stopien||0)-(+a.stopien||0));
+      if(active.length){ const w=active[0]; chips.push(`<span class="ex-chip ex-warn">⚠️ IMGW: <b>${w.nazwa_zdarzenia}</b>${w.stopien?` · ${w.stopien}°`:''}</span>`); }
+    }catch(e){}
+  }
+  if(!chips.length) return;
+  const bar=document.createElement('div'); bar.id='extras-bar'; bar.className='extras-bar'; bar.innerHTML=chips.join(''); document.getElementById('hero-card')?.appendChild(bar);
+}
+function metricCard(label,val){ return `<div class="metric-card"><div class="metric-label">${label}</div><div class="metric-value">${val}</div></div>`; }
+function windowCard(label,time,res,main=false){ return `<div class="win-box${main?' main':''}"><div class="win-name">${label}</div><div class="win-time">${time}</div><div class="win-score" style="color:${res?scoreClr(res.c):'var(--text3)'}">${res?res.s+'%':'—'}</div></div>`; }
 function renderHero(name,lat,lon){
   const h=W.hourly,i=nowIdx(),d=W.daily;
-  const t=h.temperature_2m[i],f=h.apparent_temperature[i],w=h.wind_speed_10m[i],
-    g=h.wind_gusts_10m[i],dir=h.wind_direction_10m[i],code=h.weather_code[i],
-    pres=h.pressure_msl[i],hum=h.relative_humidity_2m[i],cloud=h.cloud_cover[i],
-    prec=h.precipitation[i],pp=h.precipitation_probability[i];
-  const b=bft(w);
-  const sR=d.sunrise[0]?.slice(11,16)||'',sS=d.sunset[0]?.slice(11,16)||'';
-  const rid='rc'+Date.now();
-  // Today's racing windows
-  const todayStats=getDayRacingStats(d.time[0]);
-  const tw1=todayStats?winScore(todayStats.w1):null;
-  const tw2=todayStats?winScore(todayStats.w2):null;
-  const tw3=todayStats?winScore(todayStats.w3):null;
-  // Big ring: weighted average of windows
-  let r;
-  if(todayStats&&(tw1||tw2||tw3)){
-    let total=0,wsum=0;
-    if(tw1){total+=tw1.s*0.15;wsum+=0.15}
-    if(tw2){total+=tw2.s*0.70;wsum+=0.70}
-    if(tw3){total+=tw3.s*0.15;wsum+=0.15}
-    const overallS=wsum>0?Math.round(total/wsum):0;
-    const baseR=tw2||tw1||tw3||{l:'—',c:'sc-n'};
-    r={s:overallS,l:baseR.l,c:baseR.c};
-  } else {
-    r=rS(w,g,prec,pp);
-  }
-  // Reasons
-  const h10=W.hourly;
-  const windsDay=[],gusts10=[],dirs10=[];
-  for(let j=0;j<h10.time.length;j++){
-    if(!h10.time[j].startsWith(d.time[0]))continue;
-    const hr=parseInt(h10.time[j].slice(11,13),10);
-    if(hr>=9&&hr<18){windsDay.push(h10.wind_speed_10m[j]);gusts10.push(h10.wind_gusts_10m[j]);dirs10.push(h10.wind_direction_10m[j])}
-  }
-  const avgW=windsDay.length?windsDay.reduce((a,b)=>a+b,0)/windsDay.length:w;
-  const avgG=gusts10.length?gusts10.reduce((a,b)=>a+b,0)/gusts10.length:g;
-  const sorted=[...dirs10].map(d=>((d%360)+360)%360).sort((a,b)=>a-b);
-  let maxGap=0;
-  if(sorted.length>1){for(let j=0;j<sorted.length;j++){const nx=(j===sorted.length-1)?sorted[0]+360:sorted[j+1];const gap=nx-sorted[j];if(gap>maxGap)maxGap=gap;}}
-  else maxGap=360;
-  const dirSpread=360-maxGap;
-  const reasons=computeReasons(avgW,avgG,prec,pp,dirSpread);
-
-  const advice=computeAdvice(d.time[0]);
-  const hwHTML=(lbl,time,res,main)=>`
-    <div class="hw-item${main?' hw-main':''}">
-      <div class="hw-label">${lbl}</div>
-      <div class="hw-time">${time}</div>
-      <div class="hw-pct" style="color:${res?scoreClr(res.c):'var(--text3)'}">${res?res.s+'%':'—'}</div>
-    </div>`;
-
+  const t=h.temperature_2m[i],f=h.apparent_temperature[i],w=h.wind_speed_10m[i],g=h.wind_gusts_10m[i],dir=h.wind_direction_10m[i],code=h.weather_code[i],pres=h.pressure_msl[i],hum=h.relative_humidity_2m[i],cloud=h.cloud_cover[i];
+  const day=d.time[0], advice=computeAdvice(day), reasons=computeReasons(day), todayStats=getDayRacingStats(day);
+  const tw1=todayStats?winScore(todayStats.w1):null, tw2=todayStats?winScore(todayStats.w2):null, tw3=todayStats?winScore(todayStats.w3):null;
+  let score=0; if(todayStats&&(tw1||tw2||tw3)){ let total=0,wsum=0; if(tw1){total+=tw1.s*0.15;wsum+=0.15} if(tw2){total+=tw2.s*0.70;wsum+=0.70} if(tw3){total+=tw3.s*0.15;wsum+=0.15} score=wsum?Math.round(total/wsum):0; } else { score=rS(w,g,h.precipitation[i]||0,h.precipitation_probability[i]||0).s; }
+  const status=statusFromScore(score);
   document.getElementById('hero-card').innerHTML=`
-    <div class="hero-loc-bar">📍 <strong>${name}</strong></div>
-    <div class="hero-main-block">
-      <div class="hmb-pct" style="color:${scoreClr(r.c)}">${r.s}%</div>
-      <div class="hmb-status" style="color:${scoreClr(r.c)}">${r.l}</div>
-      ${reasons.length?`<div class="hmb-reasons">${reasons.map(x=>`<span>${x}</span>`).join('<span style="color:var(--text3)">·</span>')}</div>`:''}
-    </div>
-    <div class="hero-conditions">
-      <div class="hc-item">
-        <div class="hc-lbl">Wiatr</div>
-        <div class="hc-val ${wC(w)}">${w.toFixed(0)}<span style="font-size:10px;font-weight:400;color:var(--text3);margin-left:2px">kn</span><span class="hc-sub" style="margin-left:4px">${b}B</span></div>
+    <div class="hero-main">
+      <div class="hero-top">
+        <div class="hero-left">
+          <div class="hero-loc">📍 ${name}</div>
+          <div class="hero-condition"><span class="hero-wx-icon">${WI[code]||'🌤️'}</span><span>${WT[code]||''}</span><span>odcz. <b>${f.toFixed(0)}°</b></span></div>
+        </div>
+        <div class="hero-summary">
+          <div class="hero-bigpct" style="color:${scoreClr(status)}">${score}%</div>
+          <div class="hero-status" style="color:${scoreClr(status)}">${status}</div>
+          <div class="hero-reasons">${reasons.length?reasons.join(' · '):'—'}</div>
+        </div>
       </div>
-      <div class="hc-item">
-        <div class="hc-lbl">Porywy</div>
-        <div class="hc-val">${g.toFixed(0)}<span style="font-size:10px;font-weight:400;color:var(--text3);margin-left:2px">kn</span></div>
+      <div class="hero-metrics">
+        ${metricCard('Wiatr',`${w.toFixed(0)} kn (${bft(w)}B)`)}
+        ${metricCard('Porywy',`${g.toFixed(0)} kn`)}
+        ${metricCard('Kierunek',`${wD(dir)}`)}
+        ${metricCard('Temperatura',`${t.toFixed(0)}°`)}
       </div>
-      <div class="hc-item">
-        <div class="hc-lbl">Kierunek</div>
-        <div class="hc-val">${wD(dir)} ${wA(dir)}</div>
+      <div class="windows-card">
+        <div class="ha-head">⛵ Okna dnia</div>
+        <div class="windows-grid">
+          ${windowCard('Poranek','9–11',tw1,false)}
+          ${windowCard('Główne okno','11–16',tw2,true)}
+          ${windowCard('Końcówka','16–18',tw3,false)}
+        </div>
       </div>
-      <div class="hc-item">
-        <div class="hc-lbl">Temperatura</div>
-        <div class="hc-val">${WI[code]||'🌤️'} ${t.toFixed(0)}<span style="font-size:10px;font-weight:400;color:var(--text3)">°</span></div>
+      <div class="advice-card hero-advice">
+        <div class="ha-head">⛵ Porada 10–16</div>
+        ${advice?`<div class="ha-row"><div class="ha-item ha-type-${advice.cssKey}"><div class="ha-lbl">Charakter dnia</div><div class="ha-val">${advice.type}</div></div><div class="ha-item"><div class="ha-lbl">Trym</div><div class="ha-val">${advice.trim}</div></div><div class="ha-item ha-pri"><div class="ha-lbl">Priorytet</div><div class="ha-val">${advice.priority}</div></div></div>`:'<div class="ha-empty">Brak danych dla okna 10–16</div>'}
       </div>
-    </div>
-    <div class="hero-windows">
-      ${hwHTML('Poranek','9–11',tw1,false)}
-      ${hwHTML('Główne okno','11–16',tw2,true)}
-      ${hwHTML('Końcówka','16–18',tw3,false)}
-    </div>
-    <div class="hero-advice">
-      <div class="ha-head">⛵ Porada 10–16</div>
-      ${advice?`<div class="ha-row">
-        <div class="ha-item ha-type-${advice.cssKey}"><div class="ha-lbl">Charakter</div><div class="ha-val">${advice.type}</div></div>
-        <div class="ha-item"><div class="ha-lbl">Trym</div><div class="ha-val">${advice.trim}</div></div>
-        <div class="ha-item ha-pri"><div class="ha-lbl">Priorytet</div><div class="ha-val">${advice.priority}</div></div>
-      </div>`:'<div class="ha-empty">Brak danych dla okna 10–16</div>'}
-    </div>
-    <div class="stats-strip">
-      <div class="stat"><div class="stat-val">${pres?pres.toFixed(0):'—'}<span class="su"> hPa</span></div><div class="stat-lbl">Ciśnienie</div></div>
-      <div class="stat"><div class="stat-val">${hum}<span class="su">%</span></div><div class="stat-lbl">Wilgotność</div></div>
-      <div class="stat"><div class="stat-val">${cloud}<span class="su">%</span></div><div class="stat-lbl">Zachmurz.</div></div>
-      <div class="stat"><div class="stat-val">${sR} <span class="su">/ ${sS}</span></div><div class="stat-lbl">☀ / 🌙</div></div>
+      <div class="aux-card">
+        <div class="ha-head">ℹ️ Dodatkowe warunki</div>
+        <div class="aux-grid">
+          <div class="aux-item"><div class="metric-label">Ciśnienie</div><div class="metric-value">${pres?pres.toFixed(0):'—'} <span class="su">hPa</span></div></div>
+          <div class="aux-item"><div class="metric-label">Wilgotność</div><div class="metric-value">${hum}<span class="su">%</span></div></div>
+          <div class="aux-item"><div class="metric-label">Zachmurzenie</div><div class="metric-value">${cloud}<span class="su">%</span></div></div>
+          <div class="aux-item"><div class="metric-label">☀ / 🌙</div><div class="metric-value">${d.sunrise[0]?.slice(11,16)||'—'} <span class="su">/ ${d.sunset[0]?.slice(11,16)||'—'}</span></div></div>
+        </div>
+      </div>
     </div>`;
-  requestAnimationFrame(()=>{
-    // No canvas ring in new layout — score shown as big number
-  });
 }
-
-// Get racing-hour stats (9-18) and window indices for a given day
 function getDayRacingStats(dayStr){
-  const h=W.hourly;
-  const temps=[],feels=[],winds=[],gusts=[];
-  let precip=0,maxPP=0;
-  const w1=[],w2=[],w3=[];
+  const h=W.hourly; const temps=[],feels=[],winds=[],gusts=[],dirs=[]; let precip=0,maxPP=0; const w1=[],w2=[],w3=[];
   for(let i=0;i<h.time.length;i++){
-    if(!h.time[i].startsWith(dayStr))continue;
-    const hr=parseInt(h.time[i].slice(11,13),10);
-    if(hr<9||hr>=18)continue;
-    temps.push(h.temperature_2m[i]);
-    feels.push(h.apparent_temperature[i]);
-    winds.push(h.wind_speed_10m[i]);
-    gusts.push(h.wind_gusts_10m[i]);
-    precip+=h.precipitation[i];
-    maxPP=Math.max(maxPP,h.precipitation_probability[i]||0);
-    if(hr<11)w1.push(i);
-    else if(hr<16)w2.push(i);
-    else w3.push(i);
+    if(!h.time[i].startsWith(dayStr)) continue; const hr=parseInt(h.time[i].slice(11,13),10); if(hr<9||hr>=18) continue;
+    temps.push(h.temperature_2m[i]); feels.push(h.apparent_temperature[i]); winds.push(h.wind_speed_10m[i]); gusts.push(h.wind_gusts_10m[i]); dirs.push(h.wind_direction_10m[i]); precip+=h.precipitation[i]||0; maxPP=Math.max(maxPP,h.precipitation_probability[i]||0);
+    if(hr<11)w1.push(i); else if(hr<16)w2.push(i); else w3.push(i);
   }
-  if(!temps.length)return null;
-  return{
-    tMax:Math.max(...temps),tMin:Math.min(...temps),
-    fMax:Math.max(...feels),
-    wMax:Math.max(...winds),gMax:Math.max(...gusts),
-    precip,maxPP,w1,w2,w3
-  };
+  if(!temps.length) return null;
+  return {tMax:Math.max(...temps),tMin:Math.min(...temps),fMax:Math.max(...feels),wMax:Math.max(...winds),gMax:Math.max(...gusts),dirSpread:circularSpread(dirs),precip,maxPP,w1,w2,w3};
 }
-
-// Compute regatta score for a window of hourly indices
-// Compute window score by averaging per-hour scores.
-// Rationale: averaging raw wind first and then scoring causes bucket-boundary
-// jumps (e.g. avg 5.99kn → 25%, avg 6.01kn → 45%). Averaging scores is stable.
-function winScore(idxArr){
-  if(!idxArr||!idxArr.length)return null;
-  const h=W.hourly;
-  const scores=[];const results=[];
-  for(const i of idxArr){
-    const r=rS(h.wind_speed_10m[i],h.wind_gusts_10m[i],h.precipitation[i]||0,h.precipitation_probability[i]||0);
-    scores.push(r.s);results.push(r);
-  }
-  const avg=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
-  // Label/css: pick the per-hour result closest to the averaged value
-  let best=results[0],minDiff=Math.abs(results[0].s-avg);
-  for(const r of results){
-    const d=Math.abs(r.s-avg);
-    if(d<minDiff){minDiff=d;best=r}
-  }
-  return{s:avg,l:best.l,c:best.c};
-}
-
+function winScore(idxArr){ if(!idxArr||!idxArr.length) return null; const h=W.hourly; const scores=[]; for(const i of idxArr) scores.push(rS(h.wind_speed_10m[i],h.wind_gusts_10m[i],h.precipitation[i]||0,h.precipitation_probability[i]||0).s); const avg=Math.round(scores.reduce((a,b)=>a+b,0)/scores.length); return {s:avg,c:classFromScore(avg),status:statusFromScore(avg)}; }
 function renderDays(){
-  const d=W.daily,list=document.getElementById('days-list');list.innerHTML='';
+  const d=W.daily,list=document.getElementById('days-list'); list.innerHTML='';
   for(let i=0;i<d.time.length;i++){
-    const dt=new Date(d.time[i]+'T12:00:00');
-    const stats=getDayRacingStats(d.time[i]);
-    let r,r1,r2,r3,maxW,tMax,tMin,fMax,precip,b;
-    if(stats){
-      r1=winScore(stats.w1);
-      r2=winScore(stats.w2);
-      r3=winScore(stats.w3);
-      let total=0,wsum=0;
-      if(r1){total+=r1.s*0.15;wsum+=0.15}
-      if(r2){total+=r2.s*0.70;wsum+=0.70}
-      if(r3){total+=r3.s*0.15;wsum+=0.15}
-      const overallS=wsum>0?Math.round(total/wsum):0;
-      const baseR=r2||r1||r3||{l:'—',c:'sc-n'};
-      r={s:overallS,l:baseR.l,c:baseR.c};
-      maxW=stats.wMax;tMax=stats.tMax;tMin=stats.tMin;fMax=stats.fMax;precip=stats.precip;b=bft(maxW);
-    } else {
-      r={s:0,l:'—',c:'sc-n'};r1=r2=r3=null;
-      maxW=0;tMax=d.temperature_2m_max[i];tMin=d.temperature_2m_min[i];
-      fMax=d.apparent_temperature_max?d.apparent_temperature_max[i]:null;
-      precip=d.precipitation_sum[i];b=0;
-    }
-    const row=document.createElement('div');row.className='day-row';
-    row.innerHTML=`
-      <div class="day-head" onclick="togD(this)">
-        <div class="dh-day">${i===0?'Dziś':DS[dt.getDay()]}<small>${dt.getDate()}.${String(dt.getMonth()+1).padStart(2,'0')}</small></div>
-        <div class="dh-wx">${WI[d.weather_code[i]]||'🌤️'}</div>
-        <div class="dh-info">
-          <span class="dh-temps">${tMax.toFixed(0)}°<span>/${tMin.toFixed(0)}°</span>${fMax!=null?' odcz.'+fMax.toFixed(0)+'°':''}</span>
-          <span class="dh-wind ${wC(maxW)}">💨${maxW.toFixed(0)}kn(${b}B)</span>
-          ${precip>0?`<span class="dh-rain">🌧${precip.toFixed(1)}mm</span>`:''}
-        </div>
-        <div class="dh-score">
-          <span class="pill ${r.c}">⛵${r.s}%</span>
-          <div class="dh-windows">
-            <span class="win-badge ${r1?r1.c:'sc-n'}" title="Poranek 9–11"><span class="wb-l">Por</span><span class="wb-v">${r1?r1.s+'%':'—'}</span></span>
-            <span class="win-badge win-main ${r2?r2.c:'sc-n'}" title="Główne 11–16"><span class="wb-l">Głów</span><span class="wb-v">${r2?r2.s+'%':'—'}</span></span>
-            <span class="win-badge ${r3?r3.c:'sc-n'}" title="Końcówka 16–18"><span class="wb-l">Koń</span><span class="wb-v">${r3?r3.s+'%':'—'}</span></span>
-          </div>
-        </div>
-        <div class="dh-arr">▾</div>
-      </div>
-      <div class="day-detail"><div class="detail-inner" id="dd-${i}"></div></div>`;
-    list.appendChild(row);
-    // Auto-expand today (first row)
-    if(i===0){row.classList.add('expanded');fillH(0);}
+    const dt=new Date(d.time[i]+'T12:00:00'); const stats=getDayRacingStats(d.time[i]); let score=0,r1=null,r2=null,r3=null,maxW=0,tMax=d.temperature_2m_max[i],tMin=d.temperature_2m_min[i],precip=d.precipitation_sum[i]||0,b=0;
+    if(stats){ r1=winScore(stats.w1); r2=winScore(stats.w2); r3=winScore(stats.w3); let total=0,wsum=0; if(r1){total+=r1.s*0.15;wsum+=0.15} if(r2){total+=r2.s*0.70;wsum+=0.70} if(r3){total+=r3.s*0.15;wsum+=0.15} score=wsum?Math.round(total/wsum):0; maxW=stats.wMax; tMax=stats.tMax; tMin=stats.tMin; precip=stats.precip; b=bft(maxW); }
+    const status=statusFromScore(score), cls=classFromScore(score); const row=document.createElement('div'); row.className='day-row'+(i===weatherExpandedDay?' expanded':'');
+    row.innerHTML=`<div class="day-head" onclick="togD(this,${i})"><div class="dh-day">${i===0?'Dziś':DS[dt.getDay()]}<small>${dt.getDate()}.${String(dt.getMonth()+1).padStart(2,'0')}</small></div><div class="dh-wx">${WI[d.weather_code[i]]||'🌤️'}</div><div class="dh-info"><span class="dh-temps">${tMax.toFixed(0)}°<span>/${tMin.toFixed(0)}°</span></span><span class="dh-wind">💨 ${maxW.toFixed(0)}kn (${b}B)</span>${precip>0?`<span class="dh-rain">🌧 ${precip.toFixed(1)}mm</span>`:''}</div><div class="dh-score"><span class="pill ${cls}">${score}%</span><span class="win-legend">${status}</span></div><div class="dh-arr">▾</div></div><div class="day-detail"><div class="detail-inner" id="dd-${i}"></div></div>`;
+    list.appendChild(row); if(i===weatherExpandedDay) fillH(i);
   }
 }
-
-function togD(head){
-  const row=head.parentElement,was=row.classList.contains('expanded');
-  if(was)return;
-  const idx=[...row.parentElement.children].indexOf(row);
-  row.parentElement.querySelectorAll('.day-row').forEach(r=>r.classList.remove('expanded'));
-  row.classList.add('expanded');fillH(idx);
-}
-
+function togD(head,idx){ if(idx===weatherExpandedDay) return; weatherExpandedDay=idx; renderDays(); }
 function fillH(di){
-  const el=document.getElementById('dd-'+di);if(el.innerHTML)return;
-  const h=W.hourly,ds=W.daily.time[di];
+  const el=document.getElementById('dd-'+di); if(!el||el.innerHTML) return; const h=W.hourly, ds=W.daily.time[di];
   let html='<div class="detail-div"></div>';
   for(let i=0;i<h.time.length;i++){
-    if(!h.time[i].startsWith(ds))continue;
-    const hourNum=parseInt(h.time[i].slice(11,13),10);
-    if(hourNum<9||hourNum>=18)continue;
-    const hr=h.time[i].slice(11,16),ws=h.wind_speed_10m[i],gu=h.wind_gusts_10m[i],
-      wd=h.wind_direction_10m[i],wc=h.weather_code[i],t=h.temperature_2m[i],
-      f=h.apparent_temperature[i],pr=h.precipitation[i],pp=h.precipitation_probability[i];
-    const r=rS(ws,gu,pr,pp),b=bft(ws);
-    html+=`<div class="h-row">
-      <div class="h-time">${hr}</div>
-      <div class="h-wx">${WI[wc]||''}</div>
-      <div class="h-temp">${t.toFixed(0)}°</div>
-      <div class="h-feels">odcz.${f.toFixed(0)}°</div>
-      <div class="h-wind ${wC(ws)}">${ws.toFixed(0)}kn(${b}B)</div>
-      <div class="h-gust">por.${gu.toFixed(0)}kn</div>
-      <div class="h-extra">${wD(wd)}${wA(wd)}${pr>0?' 🌧'+pr.toFixed(1)+'mm':''}</div>
-      <div><span class="pill pill-sm ${r.c}">${r.s}%</span></div>
-    </div>`;
+    if(!h.time[i].startsWith(ds)) continue; const hourNum=parseInt(h.time[i].slice(11,13),10); if(hourNum<9||hourNum>=18) continue; const hr=h.time[i].slice(11,16), ws=h.wind_speed_10m[i], gu=h.wind_gusts_10m[i], wd=h.wind_direction_10m[i], wc=h.weather_code[i], t=h.temperature_2m[i], f=h.apparent_temperature[i], pr=h.precipitation[i], pp=h.precipitation_probability[i]; const rr=rS(ws,gu,pr,pp); html+=`<div class="h-row"><div class="h-time">${hr}</div><div class="h-wx">${WI[wc]||''}</div><div class="h-temp">${t.toFixed(0)}°</div><div class="h-feels">odcz.${f.toFixed(0)}°</div><div class="h-wind">${ws.toFixed(0)}kn (${bft(ws)}B)</div><div class="h-gust">por.${gu.toFixed(0)}kn</div><div class="h-extra">${wD(wd)}</div><div><span class="pill pill-sm ${rr.c}">${rr.s}%</span></div></div>`;
   }
   el.innerHTML=html;
 }
 
-function init(){
-  // Set theme button icon
-  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-  document.getElementById('theme-btn').textContent=isDark?'☀️':'🌙';
-  const d=document.querySelector('.chip.on');if(d)pick(d);
-}
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init)}else{init()}
-setTimeout(()=>{if(document.getElementById('wld').style.display!=='none'&&!W){init()}},2000);
-
-// ═══════════════════════════════════════════════════════════
-// ═══ KALENDARZ TRENINGÓW (Google Sheets) ═══
-// ═══════════════════════════════════════════════════════════
-const CAL_SHEET_ID='1S-L6azdXG3nFatIIMVe5Y4ZhDQD3LZuk-KxxgzqkBrY';
-const CAL_SHEET_URLS=[
-  // Preferred: explicit "Kalendarz" sheet via gviz (supports sheet name)
-  `https://docs.google.com/spreadsheets/d/${CAL_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Kalendarz`,
-  // Fallback: default first sheet via export API
-  `https://docs.google.com/spreadsheets/d/${CAL_SHEET_ID}/export?format=csv`
-];
-const CAL_MONTHS={'styczeń':1,'luty':2,'marzec':3,'kwiecień':4,'maj':5,'czerwiec':6,'lipiec':7,'sierpień':8,'wrzesień':9,'październik':10,'listopad':11,'grudzień':12};
 const CAL_MONTH_NAMES=['styczeń','luty','marzec','kwiecień','maj','czerwiec','lipiec','sierpień','wrzesień','październik','listopad','grudzień'];
 const CAL_MONTH_GEN=['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
-const CAL_DOW_MAP={'pon':1,'wt':2,'śr':3,'czw':4,'pt':5,'sob':6,'ndz':0};
 const CAL_DOW_LABELS=['Pn','Wt','Śr','Cz','Pt','Sb','Nd'];
-
-let CAL_AB_A=[],CAL_AB_B=[];let CAL_EVENTS=[],CAL_GROUP='all',CAL_VIEW_DATE=new Date(),CAL_SELECTED_DAY=null;
-
-// CSV parser handling quoted fields, escaped quotes, multiline cells
-function calParseCSV(text){
-  const rows=[];let row=[],cell='',q=false;
-  for(let i=0;i<text.length;i++){
-    const ch=text[i];
-    if(q){
-      if(ch==='"'){if(text[i+1]==='"'){cell+='"';i++}else q=false}
-      else cell+=ch;
-    } else {
-      if(ch==='"')q=true;
-      else if(ch===','){row.push(cell);cell=''}
-      else if(ch==='\n'){row.push(cell);rows.push(row);row=[];cell=''}
-      else if(ch!=='\r')cell+=ch;
-    }
-  }
-  if(cell||row.length){row.push(cell);rows.push(row)}
-  return rows;
-}
-
-function calNormGroup(label){
-  if(!label)return null;
-  const raw=label.toLowerCase().trim();
-  if(!raw)return null;
-  // Strip whitespace and dots for tolerant matching: "gr. A" → "gra"
-  const stripped=raw.replace(/[\s\.]+/g,'');
-  // Order matters: check more specific prefixes first
-  if(stripped.startsWith('grpoczat'))return'P';
-  if(raw.startsWith('kadra'))return'K';
-  if(stripped.startsWith('wydtrener')||raw.includes('trenersk'))return'T';
-  if(stripped.startsWith('gra')||raw.includes('grupa a'))return'A';
-  if(stripped.startsWith('grb')||raw.includes('grupa b'))return'B';
-  return null;
-}
-
-function calIsMarker(s){
-  const t=(s||'').trim().toLowerCase();
-  if(!t)return true;
-  if(t==='t'||t==='do'||t==='|'||t==='x')return true;
-  if(/^[-=>→←|·.]+$/.test(t))return true;
-  if(/^->>+$/.test(t)||/^=>>+$/.test(t)||/^-->>$/.test(t))return true;
-  return false;
-}
-
-function calDetectYear(monthName,firstDow){
-  const mNum=CAL_MONTHS[monthName];if(!mNum)return null;
-  const target=CAL_DOW_MAP[firstDow];if(target===undefined)return null;
-  for(const y of [2025,2026,2027,2024,2028]){
-    if(new Date(y,mNum-1,1).getDay()===target)return y;
-  }
-  return null;
-}
-
-function calParseEvents(rows){
-  const events=[];let i=0;
-  while(i<rows.length){
-    const row=rows[i];
-    if(!row||!row[0]||!row[0].trim()){i++;continue}
-    const monthName=row[0].toLowerCase().trim();
-    const monthNum=CAL_MONTHS[monthName];
-    if(!monthNum){i++;continue}
-    const dowRow=rows[i+1];
-    if(!dowRow){i++;continue}
-    // dowRow has "dzień tyg." in col 1, weekdays from col 2
-    const firstDow=(dowRow[2]||'').toLowerCase().trim();
-    const year=calDetectYear(monthName,firstDow);
-    if(!year){i+=2;continue}
-    const numDays=new Date(year,monthNum,0).getDate();
-    let parentGroup=null;
-    let j=i+2;
-    while(j<rows.length){
-      const groupRow=rows[j];
-      if(!groupRow){j++;continue}
-      // Check col 0 for next month name (block terminator)
-      const col0=(groupRow[0]||'').trim().toLowerCase();
-      if(CAL_MONTHS[col0])break;
-      // Group label is in col 1
-      const labelRaw=(groupRow[1]||'').trim();
-      if(!labelRaw){j++;continue}
-      const grpCode=calNormGroup(labelRaw);
-      if(!grpCode){j++;continue} // skip "dzień tyg.", legend rows, unknowns
-      // Track parent A/B for Kadra WOZŻ attribution
-      if(grpCode==='A'||grpCode==='B')parentGroup=grpCode;
-      let effectiveGroup=grpCode;
-      if(grpCode==='K'&&parentGroup)effectiveGroup=parentGroup;
-      // Walk cells day-by-day (day N is in col N+1: col 2 = day 1)
-      let curEvt=null;
-      for(let day=1;day<=numDays;day++){
-        const colIdx=day+1;
-        const cell=(groupRow[colIdx]||'').trim();
-        if(cell){
-          if(curEvt){
-            curEvt.endDay=day;
-            if(!calIsMarker(cell)&&(calIsMarker(curEvt.title)||cell.length>curEvt.title.length)){
-              curEvt.title=cell;
-            }
-          } else {
-            curEvt={startDay:day,endDay:day,title:cell};
-          }
-        } else {
-          if(curEvt){
-            const t=curEvt.title.trim();
-            if(t&&!calIsMarker(t)){
-              events.push({start:new Date(year,monthNum-1,curEvt.startDay),end:new Date(year,monthNum-1,curEvt.endDay),title:t,group:effectiveGroup});
-            }
-            curEvt=null;
-          }
-        }
-      }
-      if(curEvt){
-        const t=curEvt.title.trim();
-        if(t&&!calIsMarker(t)){
-          events.push({start:new Date(year,monthNum-1,curEvt.startDay),end:new Date(year,monthNum-1,curEvt.endDay),title:t,group:effectiveGroup});
-        }
-      }
-      j++;
-    }
-    i=j;
-  }
-  return events;
-}
-
-
 const CAL_AB_DATA=[{"d": "2026-04-11", "aT": "Trening", "aL": "Puck", "aU": null, "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-04-12", "aT": "Trening", "aL": "Puck", "aU": null, "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-04-17", "aT": "Trening", "aL": "Puck", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-04-18", "aT": "Trening", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": null}, {"d": "2026-04-19", "aT": "Trening", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": null}, {"d": "2026-04-24", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-04-25", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-04-26", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-04-27", "aT": "Regaty", "aL": "Puck", "aU": "I eliminacja ME i Mś", "bT": null, "bL": null, "bU": null}, {"d": "2026-04-28", "aT": "Regaty", "aL": "Puck", "aU": "I eliminacja ME i Mś", "bT": null, "bL": null, "bU": null}, {"d": "2026-04-29", "aT": "Regaty", "aL": "Puck", "aU": "I eliminacja ME i Mś", "bT": null, "bL": null, "bU": null}, {"d": "2026-04-30", "aT": "Regaty", "aL": "Puck", "aU": "I eliminacja ME i Mś", "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-05-01", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": "Regaty", "bL": "Puck", "bU": null}, {"d": "2026-05-02", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": "Regaty", "bL": "Puck", "bU": null}, {"d": "2026-05-03", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": "Regaty", "bL": "Puck", "bU": null}, {"d": "2026-05-04", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-05", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-06", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-09", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": null}, {"d": "2026-05-10", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": null}, {"d": "2026-05-13", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-14", "aT": "Zgrupowanie", "aL": "Gdynia", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-15", "aT": "Regaty", "aL": "Gdynia", "aU": "I el OOM + II el Mś, ME", "bT": null, "bL": null, "bU": null}, {"d": "2026-05-16", "aT": "Regaty", "aL": "Gdynia", "aU": "I el OOM + II el Mś, ME", "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-05-17", "aT": "Regaty", "aL": "Gdynia", "aU": "I el OOM + II el Mś, ME", "bT": "Trening", "bL": "Nieporęt", "bU": null}, {"d": "2026-05-18", "aT": "Regaty", "aL": "Gdynia", "aU": "I el OOM + II el Mś, ME", "bT": null, "bL": null, "bU": null}, {"d": "2026-05-26", "aT": "Zgrupowanie", "aL": "Dziwnów", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-27", "aT": "Zgrupowanie", "aL": "Dziwnów", "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-05-28", "aT": "Regaty", "aL": "Dziwnów", "aU": "II el OOM + III el. Mś, ME", "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-05-29", "aT": "Regaty", "aL": "Dziwnów", "aU": "II el OOM + III el. Mś, ME", "bT": "Regaty", "bL": "Iława", "bU": "II el. MPM"}, {"d": "2026-05-30", "aT": "Regaty", "aL": "Dziwnów", "aU": "II el OOM + III el. Mś, ME", "bT": "Regaty", "bL": "Iława", "bU": "II el. MPM"}, {"d": "2026-05-31", "aT": "Regaty", "aL": "Dziwnów", "aU": "II el OOM + III el. Mś, ME", "bT": "Regaty", "bL": "Iława", "bU": "II el. MPM"}, {"d": "2026-06-04", "aT": "Zgrupowanie", "aL": "Nieporęt", "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-06-05", "aT": "Zgrupowanie", "aL": "Nieporęt", "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-06-06", "aT": "Zgrupowanie", "aL": "Nieporęt", "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-06-07", "aT": "Zgrupowanie", "aL": "Nieporęt", "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-06-11", "aT": null, "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-06-12", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Giżycko", "bU": "III el. MPM"}, {"d": "2026-06-13", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Giżycko", "bU": "III el. MPM"}, {"d": "2026-06-14", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Giżycko", "bU": "III el. MPM"}, {"d": "2026-06-20", "aT": "?", "aL": "Zegrze", "aU": null, "bT": "?", "bL": "Zegrze", "bU": null}, {"d": "2026-06-21", "aT": "?", "aL": "Zegrze", "aU": null, "bT": "?", "bL": "Zegrze", "bU": null}, {"d": "2026-06-27", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-06-28", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-06-29", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-06-30", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-01", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-02", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-03", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-04", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-05", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-06", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Gdynia", "bU": "Kinder Joy"}, {"d": "2026-07-07", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Gdynia", "bU": "Kinder Joy"}, {"d": "2026-07-08", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Regaty", "bL": "Gdynia", "bU": "Kinder Joy"}, {"d": "2026-07-09", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-10", "aT": "Zgrupowanie", "aL": "Puck", "aU": null, "bT": "Zgrupowanie", "bL": "Puck", "bU": null}, {"d": "2026-07-11", "aT": "Transport", "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-07-15", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-16", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-17", "aT": "?", "aL": "Puck", "aU": "kadry do ME i Mś", "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-18", "aT": "?", "aL": "Puck", "aU": "kadry do ME i Mś", "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-19", "aT": "?", "aL": "Puck", "aU": "kadry do ME i Mś", "bT": "Zgrupowanie", "bL": "Nieporęt", "bU": null}, {"d": "2026-07-20", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": "IV el. MPM"}, {"d": "2026-07-21", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": "IV el. MPM"}, {"d": "2026-07-22", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Zegrze", "bU": "IV el. MPM"}, {"d": "2026-07-25", "aT": null, "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-07-26", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-27", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-28", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-29", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-30", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-07-31", "aT": "Regaty", "aL": "Kiekrz", "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-01", "aT": "Regaty", "aL": "Kiekrz", "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-02", "aT": "Regaty", "aL": "Kiekrz", "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-03", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-08-04", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-05", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-06", "aT": "Regaty", "aL": "Mrzeżyno", "aU": "III el. OOM", "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-07", "aT": "Regaty", "aL": "Mrzeżyno", "aU": "III el. OOM", "bT": "Regaty", "bL": "Złocieniec", "bU": "U12"}, {"d": "2026-08-08", "aT": "Regaty", "aL": "Mrzeżyno", "aU": "III el. OOM", "bT": "Regaty", "bL": "Złocieniec", "bU": "U12"}, {"d": "2026-08-09", "aT": "Regaty", "aL": "Mrzeżyno", "aU": "III el. OOM", "bT": "Regaty", "bL": "Złocieniec", "bU": "U12"}, {"d": "2026-08-10", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-08-11", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-12", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-13", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-14", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-15", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-16", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-17", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-18", "aT": "Zgrupowanie", "aL": null, "aU": null, "bT": null, "bL": null, "bU": null}, {"d": "2026-08-19", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-08-20", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-21", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-22", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Zgrupowanie", "bL": null, "bU": null}, {"d": "2026-08-23", "aT": "Regaty", "aL": "Dziwnów", "aU": "OOM", "bT": "Zgrupowanie", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-24", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-25", "aT": null, "aL": null, "aU": null, "bT": "Zgrupowanie", "bL": "Kiekrz", "bU": null}, {"d": "2026-08-26", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": "MPM"}, {"d": "2026-08-27", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": "MPM"}, {"d": "2026-08-28", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": "MPM"}, {"d": "2026-08-29", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Kiekrz", "bU": "MPM"}, {"d": "2026-08-30", "aT": null, "aL": null, "aU": null, "bT": "Transport", "bL": null, "bU": null}, {"d": "2026-09-05", "aT": "Regaty", "aL": "Zegrze", "aU": "Mistrzostwa Warszawy", "bT": "Regaty", "bL": "Zegrze", "bU": "Mistrzostwa Warszawy"}, {"d": "2026-09-06", "aT": "Regaty", "aL": "Zegrze", "aU": "Mistrzostwa Warszawy", "bT": "Regaty", "bL": "Zegrze", "bU": "Mistrzostwa Warszawy"}, {"d": "2026-09-12", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-09-13", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-09-18", "aT": "?", "aL": "Dziwnów", "aU": "MM PSKO", "bT": "Regaty", "bL": "?", "bU": "MM PSKO"}, {"d": "2026-09-19", "aT": "?", "aL": "Dziwnów", "aU": "MM PSKO", "bT": "Regaty", "bL": "?", "bU": "MM PSKO"}, {"d": "2026-09-20", "aT": "?", "aL": "Dziwnów", "aU": "MM PSKO", "bT": "Regaty", "bL": "?", "bU": "MM PSKO"}, {"d": "2026-09-25", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Nieporęt", "bU": "MMM"}, {"d": "2026-09-26", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Nieporęt", "bU": "MMM"}, {"d": "2026-09-27", "aT": null, "aL": null, "aU": null, "bT": "Regaty", "bL": "Nieporęt", "bU": "MMM"}, {"d": "2026-10-02", "aT": null, "aL": null, "aU": null, "bT": "?", "bL": "Dzierżno", "bU": "VIII  Cup"}, {"d": "2026-10-03", "aT": null, "aL": null, "aU": null, "bT": "?", "bL": "Dzierżno", "bU": "VIII  Cup"}, {"d": "2026-10-04", "aT": null, "aL": null, "aU": null, "bT": "?", "bL": "Dzierżno", "bU": "VIII  Cup"}, {"d": "2026-10-10", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-10-11", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-10-17", "aT": "Regaty", "aL": null, "aU": "Puchar Rektora UW", "bT": "Regaty", "bL": null, "bU": "Puchar Rektora UW"}, {"d": "2026-10-18", "aT": "Regaty", "aL": null, "aU": "Puchar Rektora UW", "bT": "Regaty", "bL": null, "bU": "Puchar Rektora UW"}, {"d": "2026-10-24", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-10-25", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}, {"d": "2026-10-31", "aT": null, "aL": null, "aU": null, "bT": "Trening", "bL": null, "bU": null}];
-function calBuildABEvents(grp){
-  const tK=grp.toLowerCase()+'T',lK=grp.toLowerCase()+'L',uK=grp.toLowerCase()+'U';
-  const out=[];
+let CAL_AB_A=[],CAL_AB_B=[],CAL_ALL=[],CAL_GROUP='all',CAL_VIEW_DATE=new Date(),CAL_SELECTED_DAY=null,CAL_UPCOMING_OPEN=false;
+function buildABEvents(grp){
+  const tK=grp.toLowerCase()+'T', lK=grp.toLowerCase()+'L', uK=grp.toLowerCase()+'U'; const out=[];
   for(const r of CAL_AB_DATA){
-    const t=r[tK];if(!t)continue;
-    const [y,m,d]=r.d.split('-').map(Number);
-    const dt=new Date(y,m-1,d);
-    const cleanT=(t==='?')?'Do weryfikacji':t;
-    const l=r[lK];const cleanL=(l&&l!=='?')?l:(l==='?'?'lokalizacja do potwierdzenia':null);
-    let title=cleanT;if(cleanL)title+=' — '+cleanL;
-    out.push({start:dt,end:new Date(dt),title:title,group:grp,notes:r[uK]||null});
+    const type=r[tK]; if(!type) continue; const [y,m,d]=r.d.split('-').map(Number); const date=new Date(y,m-1,d); const location=r[lK]&&r[lK]!=='?'?r[lK]:null; const notes=r[uK]||null;
+    out.push({start:date,end:new Date(date),group:grp,type:type==='?'?'Do weryfikacji':type,location,notes});
   }
   return out;
 }
-
-async function calLoad(){
-  CAL_AB_A=calBuildABEvents("A");CAL_AB_B=calBuildABEvents("B");
-  const upEl=document.getElementById('cal-upcoming');
-  const titleEl=document.getElementById('cm-title');
-  if(location.protocol==='file:'||location.origin==='null'){
-    console.warn('[Kalendarz] uruchomiono z lokalnego pliku');
-    upEl.innerHTML='<div class="cal-up-empty">⚠️ Kalendarz wymaga otwarcia strony z <b>https://devezo777.github.io/ykpoptimistweather/</b></div>';
-    document.getElementById('cm-grid').innerHTML='';
-    if(titleEl)titleEl.textContent='';
-    // Still render AB data even without sheets
-    CAL_EVENTS=[...CAL_AB_A,...CAL_AB_B].sort((a,b)=>a.start-b.start);
-    calInitView();calRender();
-    return;
-  }
-  let bestEvents=[];let lastErr=null;
-  for(const url of CAL_SHEET_URLS){
-    try{
-      const ctrl=new AbortController();const tm=setTimeout(()=>ctrl.abort(),10000);
-      const res=await fetch(url,{signal:ctrl.signal});clearTimeout(tm);
-      if(!res.ok){lastErr=new Error('HTTP '+res.status);continue}
-      const text=await res.text();
-      const rows=calParseCSV(text);
-      const events=calParseEvents(rows);
-      console.log('[Kalendarz] URL',url.split('/').slice(-2).join('/'),'→',rows.length,'wierszy,',events.length,'wydarzeń');
-      if(events.length>bestEvents.length)bestEvents=events;
-      if(bestEvents.length>0)break;
-    }catch(e){lastErr=e;console.warn('[Kalendarz] fetch error:',e.message);continue}
-  }
-  if(!bestEvents.length){
-    console.warn('[Kalendarz] brak wydarzeń z arkusza, używam tylko danych AB');
-    CAL_EVENTS=[...CAL_AB_A,...CAL_AB_B].sort((a,b)=>a.start-b.start);
-  } else {
-    CAL_EVENTS=bestEvents;
-  }
-  const byGroup=CAL_EVENTS.reduce((acc,e)=>{acc[e.group]=(acc[e.group]||0)+1;return acc},{});
-  console.log('[Kalendarz] ✓',CAL_EVENTS.length,'wydarzeń:',byGroup);
-  calInitView();calRender();
+function calInit(){
+  CAL_AB_A=buildABEvents('A'); CAL_AB_B=buildABEvents('B'); CAL_ALL=[...CAL_AB_A,...CAL_AB_B].sort((a,b)=>a.start-b.start||a.group.localeCompare(b.group));
+  const now=new Date(); CAL_VIEW_DATE=new Date(now.getFullYear(),now.getMonth(),1); CAL_SELECTED_DAY=now.getDate(); calRender();
 }
-
-function calInitView(){
-  // Always open current month; select today if current month
-  const now=new Date();now.setHours(0,0,0,0);
-  CAL_VIEW_DATE=new Date(now);CAL_VIEW_DATE.setDate(1);
-  // Pre-select today's date
-  CAL_SELECTED_DAY=now.getDate();
-}
-
-function calFiltered(){
-  if(CAL_GROUP==='A')return CAL_AB_A;
-  if(CAL_GROUP==='B')return CAL_AB_B;
-  if(CAL_GROUP==='all')return CAL_EVENTS;
-  return CAL_EVENTS.filter(e=>e.group===CAL_GROUP);
-}
-
-function calFmtRange(start,end){
-  const sD=start.getDate(),eD=end.getDate();
-  const sM=start.getMonth(),eM=end.getMonth();
-  if(sM===eM){if(sD===eD)return`${sD} ${CAL_MONTH_GEN[sM]}`;return`${sD}–${eD} ${CAL_MONTH_GEN[sM]}`;}
-  return`${sD} ${CAL_MONTH_GEN[sM]} – ${eD} ${CAL_MONTH_GEN[eM]}`;
-}
-
-function calEsc(s){return(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c])}
-
-const CAL_TYPE_ICON={'regaty':'⛵','trening':'🧭','zgrupowanie':'🏕️','transport':'🚐'};
-function calTypeIcon(title){
-  if(!title)return'📅';
-  const t=title.toLowerCase();
-  for(const[k,v]of Object.entries(CAL_TYPE_ICON)){if(t.startsWith(k))return v;}
-  return'📅';
-}
-function calHybridTitle(event){
-  // If there's a notes/subtitle embedded in title after " — ", check if notes exist
-  // For AB data: title is "Type — Location". Use notes as subtitle if available.
-  const t=event.title||'';
-  const n=event.notes||'';
-  if(n&&n!=='?')return{main:t,sub:n};
-  return{main:t,sub:''};
-}
-
+function calFiltered(){ return CAL_GROUP==='A'?CAL_AB_A:CAL_GROUP==='B'?CAL_AB_B:CAL_ALL; }
+function fmtRange(start,end){ const sD=start.getDate(),eD=end.getDate(),sM=start.getMonth(),eM=end.getMonth(); if(sM===eM) return sD===eD?`${sD} ${CAL_MONTH_GEN[sM]}`:`${sD}–${eD} ${CAL_MONTH_GEN[sM]}`; return `${sD} ${CAL_MONTH_GEN[sM]} – ${eD} ${CAL_MONTH_GEN[eM]}`; }
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function eventIcon(type){ return EVENT_ICONS[type]||'•'; }
+function eventHybridTitle(e){ if(e.notes && /regat|puchar|mistrz|el\.|kinder|oom|mpm|mmm|psko|uw/i.test(e.notes)) return e.notes; return e.location?`${e.type} — ${e.location}`:e.type; }
+function eventMetaLine(e){ const parts=[e.type, `Gr. ${e.group}`]; if(e.location) parts.push(e.location); return parts.join(' · '); }
+function dayEventsFor(y,m,d){ return calFiltered().filter(e=>e.start.getFullYear()===y && e.start.getMonth()===m && e.start.getDate()===d); }
 function calRenderUpcoming(){
-  const now=new Date();now.setHours(0,0,0,0);
-  const events=calFiltered().filter(e=>e.end>=now).sort((a,b)=>a.start-b.start);
-  const el=document.getElementById('cal-upcoming');
-  if(!events.length){el.innerHTML='<div class="cal-up-empty">Brak nadchodzących wydarzeń</div>';return}
-  const main=events[0];
-  const rest=events.slice(1);
-  const ht=calHybridTitle(main);
-  const icon=calTypeIcon(main.title);
-  let html=`<div class="cal-up-main">
-    <div style="display:flex;align-items:flex-start;gap:10px">
-      <div class="cal-up-type-icon">${icon}</div>
-      <div style="flex:1;min-width:0">
-        <div class="cal-up-label">Najbliższe wydarzenie</div>
-        <div class="cal-up-title-text">${calEsc(ht.main)}</div>
-        ${ht.sub?`<div class="cal-up-subtitle">${calEsc(ht.sub)}</div>`:''}
-        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:11px;color:var(--text2)">
-          <span class="cal-grp-tag cal-grp-${main.group}">${main.group}</span>
-          ${calFmtRange(main.start,main.end)}
-        </div>
-      </div>
-    </div>
-  </div>`;
-  if(rest.length){
-    const toggleId='cal-next-list';
-    html+=`<button class="cal-next-toggle" id="cal-next-toggle" onclick="calToggleNext()">
-      <span class="cnt-label">Pokaż kolejne wydarzenia</span> <span class="cnt-arrow">▾</span>
-    </button>
-    <div class="cal-next-list" id="${toggleId}">`;
-    for(const e of rest.slice(0,8)){
-      const eht=calHybridTitle(e);
-      html+=`<div class="cal-next-item">
-        <div class="cni-icon">${calTypeIcon(e.title)}</div>
-        <div class="cni-body">
-          <div class="cni-title">${calEsc(eht.main)}${eht.sub?` <span style="font-size:10px;color:var(--text3)">· ${calEsc(eht.sub)}</span>`:''}</div>
-          <div class="cni-meta"><span class="cal-grp-tag cal-grp-${e.group}">${e.group}</span>${calFmtRange(e.start,e.end)}</div>
-        </div>
-      </div>`;
-    }
-    if(!rest.length)html+='<div style="font-size:11px;color:var(--text3);padding:8px 0">Brak kolejnych wydarzeń</div>';
-    html+=`</div>`;
-  }
-  el.innerHTML=html;
+  const now=new Date(); now.setHours(0,0,0,0); const events=calFiltered().filter(e=>e.end>=now).sort((a,b)=>a.start-b.start); const el=document.getElementById('cal-upcoming');
+  if(!events.length){ el.innerHTML='<div class="cal-up-empty">Brak nadchodzących wydarzeń</div>'; return; }
+  const main=events[0], rest=events.slice(1,4);
+  el.innerHTML=`<div class="cal-hero-card"><div class="event-top"><span class="day-badge ${main.group}">${main.group}</span><span class="event-icon">${eventIcon(main.type)}</span><span class="event-type">Najbliższe wydarzenie</span></div><div class="event-title">${esc(eventHybridTitle(main))}</div><div class="event-meta">${esc(eventMetaLine(main))} · ${fmtRange(main.start,main.end)}</div>${main.notes && eventHybridTitle(main)!==main.notes?`<div class="event-note">${esc(main.notes)}</div>`:''}<div class="event-actions">${rest.length?`<button class="cal-more-toggle" onclick="toggleUpcoming()">${CAL_UPCOMING_OPEN?'Ukryj kolejne wydarzenia':'Pokaż kolejne wydarzenia'}</button>`:''}</div><div class="cal-up-rest${CAL_UPCOMING_OPEN?' open':''}">${rest.length?rest.map(e=>`<div class="cal-up-item"><div class="event-meta"><span class="day-badge ${e.group}">${e.group}</span> <span class="event-icon">${eventIcon(e.type)}</span> <span class="cup-it-title">${esc(eventHybridTitle(e))}</span></div><div class="cup-it-date">${fmtRange(e.start,e.end)}</div></div>`).join(''):'<div class="cal-up-empty">Brak kolejnych wydarzeń</div>'}</div></div>`;
 }
-
-function calToggleNext(){
-  const list=document.getElementById('cal-next-list');
-  const btn=document.getElementById('cal-next-toggle');
-  if(!list||!btn)return;
-  const open=list.classList.toggle('open');
-  btn.classList.toggle('open',open);
-  const arrow=btn.querySelector('.cnt-arrow');
-  const label=btn.querySelector('.cnt-label');
-  if(arrow)arrow.style.transform=open?'rotate(180deg)':'rotate(0deg)';
-  if(label)label.textContent=open?'Ukryj kolejne wydarzenia':'Pokaż kolejne wydarzenia';
-}
-
+function toggleUpcoming(){ CAL_UPCOMING_OPEN=!CAL_UPCOMING_OPEN; calRenderUpcoming(); }
 function calRenderMonth(){
-  const grid=document.getElementById('cm-grid');
-  const titleEl=document.getElementById('cm-title');
-  const y=CAL_VIEW_DATE.getFullYear(),m=CAL_VIEW_DATE.getMonth();
-  titleEl.textContent=`${CAL_MONTH_NAMES[m].charAt(0).toUpperCase()+CAL_MONTH_NAMES[m].slice(1)} ${y}`;
-  const first=new Date(y,m,1);
-  const firstDow=(first.getDay()+6)%7;
-  const numDays=new Date(y,m+1,0).getDate();
-  const today=new Date();today.setHours(0,0,0,0);
-  const isCurrentMonth=today.getFullYear()===y&&today.getMonth()===m;
-
-  // Build day → events map per group (for two-dot display)
-  const allFiltered=calFiltered();
-  const dayEventsA={},dayEventsB={},dayEventsAll={};
-  for(const e of allFiltered){
-    const it=new Date(e.start);
-    while(it<=e.end){
-      if(it.getFullYear()===y&&it.getMonth()===m){
-        const d=it.getDate();
-        if(!dayEventsAll[d])dayEventsAll[d]=[];
-        dayEventsAll[d].push(e);
-        if(e.group==='A'){if(!dayEventsA[d])dayEventsA[d]=[];dayEventsA[d].push(e);}
-        if(e.group==='B'){if(!dayEventsB[d])dayEventsB[d]=[];dayEventsB[d].push(e);}
-      }
-      it.setDate(it.getDate()+1);
-    }
-  }
-
-  let html='';
-  for(const dn of CAL_DOW_LABELS)html+=`<div class="cm-dow">${dn}</div>`;
-  for(let i=0;i<firstDow;i++)html+='<div class="cm-cell cm-other"></div>';
-  for(let d=1;d<=numDays;d++){
-    const isToday=isCurrentMonth&&today.getDate()===d;
-    const isSel=CAL_SELECTED_DAY===d;
-    const evts=dayEventsAll[d]||[];
-    const cls=['cm-cell'];
-    if(isToday)cls.push('cm-today');
-    if(isSel)cls.push('cm-sel');
-    if(evts.length)cls.push('cm-has');
-    // Show A and B dots separately
-    let dotsHtml='';
-    if(dayEventsA[d])dotsHtml+=`<span class="cm-dot dot-A"></span>`;
-    if(dayEventsB[d])dotsHtml+=`<span class="cm-dot dot-B"></span>`;
-    if(!dayEventsA[d]&&!dayEventsB[d]){
-      const groups=[...new Set(evts.map(e=>e.group))];
-      dotsHtml=groups.slice(0,3).map(g=>`<span class="cm-dot dot-${g}"></span>`).join('');
-    }
-    html+=`<div class="${cls.join(' ')}" onclick="calShowDay(${d})">
-      <div class="cm-num">${d}</div>
-      ${dotsHtml?`<div class="cm-dots">${dotsHtml}</div>`:''}
-    </div>`;
-  }
-  grid.innerHTML=html;
-
-  // Render day panel (always show if day is selected)
-  const evtsBox=document.getElementById('cm-events-box');
-  if(CAL_SELECTED_DAY){
-    calRenderDayPanel(CAL_SELECTED_DAY,dayEventsAll[CAL_SELECTED_DAY]||[]);
-  } else {
-    evtsBox.innerHTML='';
-  }
+  const grid=document.getElementById('cm-grid'), titleEl=document.getElementById('cm-title'); const y=CAL_VIEW_DATE.getFullYear(), m=CAL_VIEW_DATE.getMonth(); titleEl.textContent=`${CAL_MONTH_NAMES[m].charAt(0).toUpperCase()+CAL_MONTH_NAMES[m].slice(1)} ${y}`;
+  const first=new Date(y,m,1), firstDow=(first.getDay()+6)%7, numDays=new Date(y,m+1,0).getDate(); const today=new Date(); today.setHours(0,0,0,0);
+  let html=''; for(const dn of CAL_DOW_LABELS) html+=`<div class="cm-dow">${dn}</div>`; for(let i=0;i<firstDow;i++) html+='<div class="cm-cell cm-other"></div>';
+  for(let d=1;d<=numDays;d++){ const isToday=today.getFullYear()===y&&today.getMonth()===m&&today.getDate()===d; const isSel=CAL_SELECTED_DAY===d; const evts=dayEventsFor(y,m,d); const groups=[...new Set(evts.map(e=>e.group).filter(g=>g==='A'||g==='B'))]; const cls=['cm-cell']; if(isToday) cls.push('cm-today'); if(isSel) cls.push('cm-sel'); if(evts.length) cls.push('cm-has'); const dots=groups.map(g=>`<span class="cm-dot dot-${g}"></span>`).join(''); html+=`<div class="${cls.join(' ')}" onclick="calShowDay(${d})"><div class="cm-num">${d}</div>${dots?`<div class="cm-dots">${dots}</div>`:''}</div>`; }
+  grid.innerHTML=html; calRenderDayPanel(CAL_SELECTED_DAY);
 }
-
-function calShowDay(day){
-  CAL_SELECTED_DAY=day;
-  calRenderMonth();
+function calShowDay(day){ CAL_SELECTED_DAY=day; calRenderMonth(); }
+function calRenderDayPanel(day){
+  const el=document.getElementById('cm-events-box'); const m=CAL_VIEW_DATE.getMonth(), y=CAL_VIEW_DATE.getFullYear(); const events=dayEventsFor(y,m,day).sort((a,b)=>a.group.localeCompare(b.group));
+  if(!events.length){ el.innerHTML=`<div class="cm-events-box"><div class="cm-events-title">${day} ${CAL_MONTH_GEN[m]} ${y}</div><div class="empty-day"><span class="empty-day-emoji">🏝️</span><span>Brak wydarzeń tego dnia</span></div></div>`; return; }
+  el.innerHTML=`<div class="cm-events-box"><div class="cm-events-title">${day} ${CAL_MONTH_GEN[m]} ${y}</div>${events.map(e=>`<div class="day-card"><div class="day-card-icon">${eventIcon(e.type)}</div><div class="day-card-body"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span class="day-badge ${e.group}">${e.group}</span><div class="day-card-title">${esc(eventHybridTitle(e))}</div></div><div class="day-card-meta">${esc(eventMetaLine(e))}</div>${e.notes && eventHybridTitle(e)!==e.notes?`<div class="day-card-note">${esc(e.notes)}</div>`:''}</div></div>`).join('')}</div>`;
 }
+function calMonthMove(delta){ CAL_VIEW_DATE.setMonth(CAL_VIEW_DATE.getMonth()+delta); calRenderMonth(); }
+function calSetGroup(grp,btn){ CAL_GROUP=grp; document.querySelectorAll('.cal-tab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); calRender(); }
+function calRender(){ calRenderUpcoming(); calRenderMonth(); }
 
-function calRenderDayPanel(day,events){
-  const el=document.getElementById('cm-events-box');
-  const m=CAL_VIEW_DATE.getMonth(),y=CAL_VIEW_DATE.getFullYear();
-  if(!events||!events.length){
-    el.innerHTML=`<div class="cm-events-box">
-      <div class="cm-events-title">${day} ${CAL_MONTH_GEN[m]} ${y}</div>
-      <div class="cm-day-empty"><div class="cde-icon">🏝️</div>Brak wydarzeń tego dnia</div>
-    </div>`;
-    return;
-  }
-  // Separate A and B events
-  const aEvts=events.filter(e=>e.group==='A');
-  const bEvts=events.filter(e=>e.group==='B');
-  const otherEvts=events.filter(e=>e.group!=='A'&&e.group!=='B');
-  function grpCard(grp,evts){
-    if(!evts.length)return'';
-    return evts.map(e=>{
-      const ht=calHybridTitle(e);
-      const icon=calTypeIcon(e.title);
-      return`<div class="cm-grp-card cm-grp-card-${grp}">
-        <div class="cgc-head">
-          <span class="cgc-type-icon">${icon}</span>
-          <span class="cal-grp-tag cal-grp-${grp}">${grp}</span>
-          <span class="cgc-title">${calEsc(ht.main)}</span>
-        </div>
-        ${e.location||e.title.includes(' — ')?`<div class="cgc-loc">📍 ${calEsc(e.title.split(' — ')[1]||'')}</div>`:''}
-        ${ht.sub?`<div class="cgc-notes">${calEsc(ht.sub)}</div>`:''}
-      </div>`;
-    }).join('');
-  }
-  const cnt=events.length;
-  el.innerHTML=`<div class="cm-events-box">
-    <div class="cm-events-title">${day} ${CAL_MONTH_GEN[m]} ${y} · ${cnt} ${cnt===1?'wydarzenie':cnt<5?'wydarzenia':'wydarzeń'}</div>
-    ${grpCard('A',aEvts)}
-    ${grpCard('B',bEvts)}
-    ${otherEvts.map(e=>{const ht=calHybridTitle(e);return`<div class="cm-grp-card" style="border-left:3px solid var(--text3)">
-      <div class="cgc-head"><span class="cgc-type-icon">${calTypeIcon(e.title)}</span><span class="cal-grp-tag cal-grp-${e.group}">${e.group}</span><span class="cgc-title">${calEsc(ht.main)}</span></div>
-      ${ht.sub?`<div class="cgc-notes">${calEsc(ht.sub)}</div>`:''}
-    </div>`}).join('')}
-  </div>`;
+function init(){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark'; document.getElementById('theme-btn').textContent=isDark?'☀️':'🌙';
+  calInit(); const d=document.querySelector('.chip.on'); if(d) pick(d); setMainTab('weather',document.querySelector('.tab-btn[data-tab="weather"]'));
 }
-
-function calMonthMove(delta){
-  CAL_VIEW_DATE.setMonth(CAL_VIEW_DATE.getMonth()+delta);
-  CAL_SELECTED_DAY=null;calRender();
-}
-
-function calSetGroup(grp,btn){
-  CAL_GROUP=grp;
-  document.querySelectorAll('.cal-seg-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  // Keep current month and selected day, just refresh content
-  calRender();
-}
-
-function calRender(){calRenderUpcoming();calRenderMonth()}
-
-// Load calendar independently of weather (small delay to not block initial paint)
-setTimeout(()=>{calLoad()},300);
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+setTimeout(()=>{if(document.getElementById('wld').style.display!=='none'&&!W) init()},2000);
 </script>
+
 </body>
 </html>
